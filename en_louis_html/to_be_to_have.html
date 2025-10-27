@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       background: #f4f6f9;
       color: #333;
-      max-width: 600px;
+      max-width: 700px;
       margin: 40px auto;
       padding: 20px;
       border-radius: 10px;
@@ -43,6 +43,16 @@
       margin-top: 20px;
       font-size: 1.2em;
     }
+    .feedback {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
   </style>
 </head>
 <body>
@@ -61,20 +71,60 @@
   <script>
     const allQuestions = [
       { q: "I ___ a student.", options: ["am", "is", "are"], answer: "am" },
-      { q: "She ___ happy today.", options: ["are", "is", "am"], answer: "is" },
-      { q: "We ___ brothers.", options: ["am", "are", "is"], answer: "are" },
+      { q: "She ___ happy today.", options: ["is", "are", "am"], answer: "is" },
+      { q: "We ___ brothers.", options: ["are", "is", "am"], answer: "are" },
       { q: "They ___ two dogs.", options: ["have", "has", "having"], answer: "have" },
       { q: "He ___ a new bike.", options: ["has", "have", "is"], answer: "has" },
-      { q: "You ___ from Belgium.", options: ["am", "are", "is"], answer: "are" },
-      { q: "I ___ a blue pen.", options: ["has", "have", "is"], answer: "have" },
+      { q: "You ___ from Belgium.", options: ["are", "is", "am"], answer: "are" },
+      { q: "I ___ a blue pen.", options: ["have", "has", "is"], answer: "have" },
       { q: "We ___ tired after school.", options: ["are", "is", "am"], answer: "are" },
       { q: "She ___ a nice teacher.", options: ["is", "am", "are"], answer: "is" },
       { q: "They ___ a big house.", options: ["have", "has", "are"], answer: "have" },
-      { q: "___ you at home yesterday?", options: ["Was", "Were", "Are"], answer: "Were" },
-      { q: "___ he a good student?", options: ["Was", "Were", "Is"], answer: "Is" },
+      { q: "___ you at home yesterday?", options: ["Were", "Was", "Are"], answer: "Were" },
+      { q: "___ he a good student?", options: ["Is", "Was", "Were"], answer: "Is" },
       { q: "How many brothers ___ you have?", options: ["do", "does", "did"], answer: "do" },
       { q: "___ she got a pet?", options: ["Has", "Have", "Is"], answer: "Has" },
-      { q: "___ you hungry?", options: ["Are", "Is", "Am"], answer: "Are" }
+      { q: "___ you hungry?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "I ___ from Ireland.", options: ["am", "is", "are"], answer: "am" },
+      { q: "He ___ Scottish.", options: ["is", "are", "am"], answer: "is" },
+      { q: "We ___ pencils and erasers.", options: ["have", "has", "is"], answer: "have" },
+      { q: "She ___ a pencil case.", options: ["has", "have", "is"], answer: "has" },
+      { q: "I ___ the folder.", options: ["have", "has", "am"], answer: "have" },
+      { q: "You ___ tired?", options: ["are", "is", "am"], answer: "are" },
+      { q: "They ___ in the classroom.", options: ["are", "is", "am"], answer: "are" },
+      { q: "He ___ a lunch box.", options: ["has", "have", "is"], answer: "has" },
+      { q: "I ___ a water bottle.", options: ["have", "has", "am"], answer: "have" },
+      { q: "___ you understand the lesson?", options: ["Do", "Does", "Did"], answer: "Do" },
+      { q: "She ___ a notebook.", options: ["has", "have", "is"], answer: "has" },
+      { q: "We ___ in England.", options: ["are", "is", "am"], answer: "are" },
+      { q: "I ___ from Belgium.", options: ["am", "is", "are"], answer: "am" },
+      { q: "They ___ pencils and pens.", options: ["have", "has", "is"], answer: "have" },
+      { q: "He ___ an eraser.", options: ["has", "have", "is"], answer: "has" },
+      { q: "You ___ my friend.", options: ["are", "is", "am"], answer: "are" },
+      { q: "She ___ tired today.", options: ["is", "are", "am"], answer: "is" },
+      { q: "I ___ hungry.", options: ["am", "is", "are"], answer: "am" },
+      { q: "We ___ a new teacher.", options: ["have", "has", "is"], answer: "have" },
+      { q: "He ___ in the classroom.", options: ["is", "are", "am"], answer: "is" },
+      { q: "They ___ the homework.", options: ["have", "has", "is"], answer: "have" },
+      { q: "___ you want to sit down?", options: ["Do", "Does", "Did"], answer: "Do" },
+      { q: "I ___ a pen and a pencil.", options: ["have", "has", "am"], answer: "have" },
+      { q: "She ___ from Scotland.", options: ["is", "are", "am"], answer: "is" },
+      { q: "We ___ Irish.", options: ["are", "is", "am"], answer: "are" },
+      { q: "He ___ a folder.", options: ["has", "have", "is"], answer: "has" },
+      { q: "They ___ the classroom lights off.", options: ["have", "has", "is"], answer: "have" },
+      { q: "I ___ your question.", options: ["have", "has", "am"], answer: "have" },
+      { q: "She ___ a big bag.", options: ["has", "have", "is"], answer: "has" },
+      { q: "___ you from Belgium?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "I ___ a notebook and a pencil case.", options: ["have", "has", "am"], answer: "have" },
+      { q: "He ___ happy.", options: ["is", "are", "am"], answer: "is" },
+      { q: "We ___ ready for the lesson.", options: ["are", "is", "am"], answer: "are" },
+      { q: "You ___ the answer.", options: ["have", "has", "are"], answer: "have" },
+      { q: "They ___ good students.", options: ["are", "is", "am"], answer: "are" },
+      { q: "She ___ the answer to the question.", options: ["has", "have", "is"], answer: "has" },
+      { q: "I ___ a new pencil.", options: ["have", "has", "am"], answer: "have" },
+      { q: "He ___ tired.", options: ["is", "are", "am"], answer: "is" },
+      { q: "We ___ pencils in our pencil case.", options: ["have", "has", "are"], answer: "have" }
+      // Ajoute les autres phrases ici si nécessaire
     ];
 
     let selectedQuestions = [];
@@ -92,33 +142,42 @@
           `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`
         ).join("<br>");
         quizDiv.innerHTML += `
-          <div class="question">
+          <div class="question" id="question${index}">
             <strong>${index + 1}. ${item.q}</strong><br><br>
             ${optionsHTML}
+            <div class="feedback" id="feedback${index}"></div>
           </div>
         `;
       });
-      document.getElementById("result").innerText = "";
+      document.getElementById("result").innerHTML = "";
     }
 
     function checkAnswers() {
       let score = 0;
       selectedQuestions.forEach((item, index) => {
         const radios = document.getElementsByName("q" + index);
+        let userAnswer = "";
         for (const r of radios) {
-          if (r.checked && r.value === item.answer) {
-            score++;
-          }
+          if (r.checked) userAnswer = r.value;
+        }
+
+        const feedback = document.getElementById("feedback" + index);
+        if (userAnswer === item.answer) {
+          feedback.innerHTML = "Correct ✅";
+          feedback.className = "feedback correct";
+          score++;
+        } else {
+          feedback.innerHTML = `Wrong ❌. Correct answer: ${item.answer}`;
+          feedback.className = "feedback wrong";
         }
       });
-      document.getElementById("result").innerText = "Your score: " + score + " / 10";
+      document.getElementById("result").innerHTML = `Your score: <strong>${score} / 10</strong>`;
     }
 
     function resetQuiz() {
       generateQuiz();
     }
 
-    // Generate quiz on page load
     generateQuiz();
   </script>
 </body>
