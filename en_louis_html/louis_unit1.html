@@ -1,0 +1,723 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Traduction</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { font-size: 24px; }
+        p { font-size: 18px; }
+        input[type="text"] { font-size: 16px; padding: 5px; }
+        button { font-size: 16px; padding: 5px 10px; margin-left: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Quiz de Traduction</h1>
+    <form id="quizForm">
+
+<br>
+<p>Assieds-toi</p>
+<p>____ down</p>
+<input type="text" id="answer_0" name="answer_0" />
+<button type="button" onclick="showHint(0, 'iSt')">Aide</button>
+<button type="button" onclick="showAnswer(0, 'Sit')">Reponse</button>
+<p id="hint_0" style="display:none;">Indice: iSt</p>
+<p id="hint2_0" style="display:none;">Reponse: Sit</p>
+<p id="result_0"></p>
+<br>
+<p>Lève-toi</p>
+<p>____ up</p>
+<input type="text" id="answer_1" name="answer_1" />
+<button type="button" onclick="showHint(1, 'dntSa')">Aide</button>
+<button type="button" onclick="showAnswer(1, 'Stand')">Reponse</button>
+<p id="hint_1" style="display:none;">Indice: dntSa</p>
+<p id="hint2_1" style="display:none;">Reponse: Stand</p>
+<p id="result_1"></p>
+<br>
+<p>Je ne comprends pas.</p>
+<p>I ____ t understand .</p>
+<input type="text" id="answer_2" name="answer_2" />
+<button type="button" onclick="showHint(2, 'ond')">Aide</button>
+<button type="button" onclick="showAnswer(2, 'don')">Reponse</button>
+<p id="hint_2" style="display:none;">Indice: ond</p>
+<p id="hint2_2" style="display:none;">Reponse: don</p>
+<p id="result_2"></p>
+<br>
+<p>Je ne vois pas le tableau.</p>
+<p>I can t see the ____ .</p>
+<input type="text" id="answer_3" name="answer_3" />
+<button type="button" onclick="showHint(3, 'doabr')">Aide</button>
+<button type="button" onclick="showAnswer(3, 'board')">Reponse</button>
+<p id="hint_3" style="display:none;">Indice: doabr</p>
+<p id="hint2_3" style="display:none;">Reponse: board</p>
+<p id="result_3"></p>
+<br>
+<p>Peux-tu parler plus lentement, s’il te plaît ?</p>
+<p>Can you ____ more slowly , please ?</p>
+<input type="text" id="answer_4" name="answer_4" />
+<button type="button" onclick="showHint(4, 'paeks')">Aide</button>
+<button type="button" onclick="showAnswer(4, 'speak')">Reponse</button>
+<p id="hint_4" style="display:none;">Indice: paeks</p>
+<p id="hint2_4" style="display:none;">Reponse: speak</p>
+<p id="result_4"></p>
+<br>
+<p>Puis-je répondre à la question ?</p>
+<p>Can I ____ the question ?</p>
+<input type="text" id="answer_5" name="answer_5" />
+<button type="button" onclick="showHint(5, 'waresn')">Aide</button>
+<button type="button" onclick="showAnswer(5, 'answer')">Reponse</button>
+<p id="hint_5" style="display:none;">Indice: waresn</p>
+<p id="hint2_5" style="display:none;">Reponse: answer</p>
+<p id="result_5"></p>
+<br>
+<p>Puis-je aller aux toilettes ?</p>
+<p>Can I ____ to the restroom ?</p>
+<input type="text" id="answer_6" name="answer_6" />
+<button type="button" onclick="showHint(6, 'go')">Aide</button>
+<button type="button" onclick="showAnswer(6, 'go')">Reponse</button>
+<p id="hint_6" style="display:none;">Indice: go</p>
+<p id="hint2_6" style="display:none;">Reponse: go</p>
+<p id="result_6"></p>
+<br>
+<p>Peux-tu éteindre les lampes ?</p>
+<p>____ you switch off the lights ?</p>
+<input type="text" id="answer_7" name="answer_7" />
+<button type="button" onclick="showHint(7, 'aCn')">Aide</button>
+<button type="button" onclick="showAnswer(7, 'Can')">Reponse</button>
+<p id="hint_7" style="display:none;">Indice: aCn</p>
+<p id="hint2_7" style="display:none;">Reponse: Can</p>
+<p id="result_7"></p>
+<br>
+<p>Que signifie le mot ?</p>
+<p>____ does the word mean ?</p>
+<input type="text" id="answer_8" name="answer_8" />
+<button type="button" onclick="showHint(8, 'ahtW')">Aide</button>
+<button type="button" onclick="showAnswer(8, 'What')">Reponse</button>
+<p id="hint_8" style="display:none;">Indice: ahtW</p>
+<p id="hint2_8" style="display:none;">Reponse: What</p>
+<p id="result_8"></p>
+<br>
+<p>Que doit-on faire maintenant ?</p>
+<p>What do we have to do ____ ?</p>
+<input type="text" id="answer_9" name="answer_9" />
+<button type="button" onclick="showHint(9, 'now')">Aide</button>
+<button type="button" onclick="showAnswer(9, 'now')">Reponse</button>
+<p id="hint_9" style="display:none;">Indice: now</p>
+<p id="hint2_9" style="display:none;">Reponse: now</p>
+<p id="result_9"></p>
+<br>
+<p>Peux-tu parler plus fort ?</p>
+<p>Can you ____ louder ?</p>
+<input type="text" id="answer_10" name="answer_10" />
+<button type="button" onclick="showHint(10, 'asepk')">Aide</button>
+<button type="button" onclick="showAnswer(10, 'speak')">Reponse</button>
+<p id="hint_10" style="display:none;">Indice: asepk</p>
+<p id="hint2_10" style="display:none;">Reponse: speak</p>
+<p id="result_10"></p>
+<br>
+<p>Quelle est ton impression ?</p>
+<p>____ do you feel about that ?</p>
+<input type="text" id="answer_11" name="answer_11" />
+<button type="button" onclick="showHint(11, 'owH')">Aide</button>
+<button type="button" onclick="showAnswer(11, 'How')">Reponse</button>
+<p id="hint_11" style="display:none;">Indice: owH</p>
+<p id="hint2_11" style="display:none;">Reponse: How</p>
+<p id="result_11"></p>
+<br>
+<p>Que signifie le mot … ?</p>
+<p>What does the ____ mean ?</p>
+<input type="text" id="answer_12" name="answer_12" />
+<button type="button" onclick="showHint(12, 'word')">Aide</button>
+<button type="button" onclick="showAnswer(12, 'word')">Reponse</button>
+<p id="hint_12" style="display:none;">Indice: word</p>
+<p id="hint2_12" style="display:none;">Reponse: word</p>
+<p id="result_12"></p>
+<br>
+<p>Pour quand est le devoir/travail ?</p>
+<p>____ is the assignment due ?</p>
+<input type="text" id="answer_13" name="answer_13" />
+<button type="button" onclick="showHint(13, 'nehW')">Aide</button>
+<button type="button" onclick="showAnswer(13, 'When')">Reponse</button>
+<p id="hint_13" style="display:none;">Indice: nehW</p>
+<p id="hint2_13" style="display:none;">Reponse: When</p>
+<p id="result_13"></p>
+<br>
+<p>Peux-tu expliquer encore une fois ?</p>
+<p>Can you explain it ____ more , please ?</p>
+<input type="text" id="answer_14" name="answer_14" />
+<button type="button" onclick="showHint(14, 'cone')">Aide</button>
+<button type="button" onclick="showAnswer(14, 'once')">Reponse</button>
+<p id="hint_14" style="display:none;">Indice: cone</p>
+<p id="hint2_14" style="display:none;">Reponse: once</p>
+<p id="result_14"></p>
+<br>
+<p>Comment épelles-tu … ?</p>
+<p>How do you ____ ?</p>
+<input type="text" id="answer_15" name="answer_15" />
+<button type="button" onclick="showHint(15, 'lpels')">Aide</button>
+<button type="button" onclick="showAnswer(15, 'spell')">Reponse</button>
+<p id="hint_15" style="display:none;">Indice: lpels</p>
+<p id="hint2_15" style="display:none;">Reponse: spell</p>
+<p id="result_15"></p>
+<br>
+<p>D’où viens-tu ?</p>
+<p>Where ____ you from ?</p>
+<input type="text" id="answer_16" name="answer_16" />
+<button type="button" onclick="showHint(16, 'are')">Aide</button>
+<button type="button" onclick="showAnswer(16, 'are')">Reponse</button>
+<p id="hint_16" style="display:none;">Indice: are</p>
+<p id="hint2_16" style="display:none;">Reponse: are</p>
+<p id="result_16"></p>
+<br>
+<p>Je suis de Belgique.</p>
+<p>I m ____ Belgium .</p>
+<input type="text" id="answer_17" name="answer_17" />
+<button type="button" onclick="showHint(17, 'fmor')">Aide</button>
+<button type="button" onclick="showAnswer(17, 'from')">Reponse</button>
+<p id="hint_17" style="display:none;">Indice: fmor</p>
+<p id="hint2_17" style="display:none;">Reponse: from</p>
+<p id="result_17"></p>
+<br>
+<p>Who’s that guy over there?</p>
+<p>Qui est ce gars là ____ ?</p>
+<input type="text" id="answer_18" name="answer_18" />
+<button type="button" onclick="showHint(18, 'asb')">Aide</button>
+<button type="button" onclick="showAnswer(18, 'bas')">Reponse</button>
+<p id="hint_18" style="display:none;">Indice: asb</p>
+<p id="hint2_18" style="display:none;">Reponse: bas</p>
+<p id="result_18"></p>
+<br>
+<p>He is cute.</p>
+<p>Il est ____ .</p>
+<input type="text" id="answer_19" name="answer_19" />
+<button type="button" onclick="showHint(19, 'moginn')">Aide</button>
+<button type="button" onclick="showAnswer(19, 'mignon')">Reponse</button>
+<p id="hint_19" style="display:none;">Indice: moginn</p>
+<p id="hint2_19" style="display:none;">Reponse: mignon</p>
+<p id="result_19"></p>
+<br>
+<p>Lève ton doigt.</p>
+<p>____ your finger up .</p>
+<input type="text" id="answer_20" name="answer_20" />
+<button type="button" onclick="showHint(20, 'tPu')">Aide</button>
+<button type="button" onclick="showAnswer(20, 'Put')">Reponse</button>
+<p id="hint_20" style="display:none;">Indice: tPu</p>
+<p id="hint2_20" style="display:none;">Reponse: Put</p>
+<p id="result_20"></p>
+<br>
+<p>Crayon</p>
+<p>____</p>
+<input type="text" id="answer_21" name="answer_21" />
+<button type="button" onclick="showHint(21, 'ePlinc')">Aide</button>
+<button type="button" onclick="showAnswer(21, 'Pencil')">Reponse</button>
+<p id="hint_21" style="display:none;">Indice: ePlinc</p>
+<p id="hint2_21" style="display:none;">Reponse: Pencil</p>
+<p id="result_21"></p>
+<br>
+<p>Bic</p>
+<p>____</p>
+<input type="text" id="answer_22" name="answer_22" />
+<button type="button" onclick="showHint(22, 'ePn')">Aide</button>
+<button type="button" onclick="showAnswer(22, 'Pen')">Reponse</button>
+<p id="hint_22" style="display:none;">Indice: ePn</p>
+<p id="hint2_22" style="display:none;">Reponse: Pen</p>
+<p id="result_22"></p>
+<br>
+<p>Gomme</p>
+<p>____ rubber is correct in British English , but eraser is clearer for students</p>
+<input type="text" id="answer_23" name="answer_23" />
+<button type="button" onclick="showHint(23, 'rEesra')">Aide</button>
+<button type="button" onclick="showAnswer(23, 'Eraser')">Reponse</button>
+<p id="hint_23" style="display:none;">Indice: rEesra</p>
+<p id="hint2_23" style="display:none;">Reponse: Eraser</p>
+<p id="result_23"></p>
+<br>
+<p>Plumier</p>
+<p>____ case</p>
+<input type="text" id="answer_24" name="answer_24" />
+<button type="button" onclick="showHint(24, 'eniPcl')">Aide</button>
+<button type="button" onclick="showAnswer(24, 'Pencil')">Reponse</button>
+<p id="hint_24" style="display:none;">Indice: eniPcl</p>
+<p id="hint2_24" style="display:none;">Reponse: Pencil</p>
+<p id="result_24"></p>
+<br>
+<p>Farde</p>
+<p>Folder ____</p>
+<input type="text" id="answer_25" name="answer_25" />
+<button type="button" onclick="showHint(25, 'nerBdi')">Aide</button>
+<button type="button" onclick="showAnswer(25, 'Binder')">Reponse</button>
+<p id="hint_25" style="display:none;">Indice: nerBdi</p>
+<p id="hint2_25" style="display:none;">Reponse: Binder</p>
+<p id="result_25"></p>
+<br>
+<p>Boîte à tartines</p>
+<p>Lunch ____</p>
+<input type="text" id="answer_26" name="answer_26" />
+<button type="button" onclick="showHint(26, 'xbo')">Aide</button>
+<button type="button" onclick="showAnswer(26, 'box')">Reponse</button>
+<p id="hint_26" style="display:none;">Indice: xbo</p>
+<p id="hint2_26" style="display:none;">Reponse: box</p>
+<p id="result_26"></p>
+<br>
+<p>Gourde</p>
+<p>____ bottle Flask</p>
+<input type="text" id="answer_27" name="answer_27" />
+<button type="button" onclick="showHint(27, 'Waret')">Aide</button>
+<button type="button" onclick="showAnswer(27, 'Water')">Reponse</button>
+<p id="hint_27" style="display:none;">Indice: Waret</p>
+<p id="hint2_27" style="display:none;">Reponse: Water</p>
+<p id="result_27"></p>
+<br>
+<p>Irlandais</p>
+<p>____</p>
+<input type="text" id="answer_28" name="answer_28" />
+<button type="button" onclick="showHint(28, 'rihsI')">Aide</button>
+<button type="button" onclick="showAnswer(28, 'Irish')">Reponse</button>
+<p id="hint_28" style="display:none;">Indice: rihsI</p>
+<p id="hint2_28" style="display:none;">Reponse: Irish</p>
+<p id="result_28"></p>
+<br>
+<p>Écossais</p>
+<p>____</p>
+<input type="text" id="answer_29" name="answer_29" />
+<button type="button" onclick="showHint(29, 'hcisSott')">Aide</button>
+<button type="button" onclick="showAnswer(29, 'Scottish')">Reponse</button>
+<p id="hint_29" style="display:none;">Indice: hcisSott</p>
+<p id="hint2_29" style="display:none;">Reponse: Scottish</p>
+<p id="result_29"></p>
+<br>
+<p>Anglais</p>
+<p>____</p>
+<input type="text" id="answer_30" name="answer_30" />
+<button type="button" onclick="showHint(30, 'Enlhsgi')">Aide</button>
+<button type="button" onclick="showAnswer(30, 'English')">Reponse</button>
+<p id="hint_30" style="display:none;">Indice: Enlhsgi</p>
+<p id="hint2_30" style="display:none;">Reponse: English</p>
+<p id="result_30"></p>
+<br>
+<p>Angleterre</p>
+<p>____</p>
+<input type="text" id="answer_31" name="answer_31" />
+<button type="button" onclick="showHint(31, 'agldnEn')">Aide</button>
+<button type="button" onclick="showAnswer(31, 'England')">Reponse</button>
+<p id="hint_31" style="display:none;">Indice: agldnEn</p>
+<p id="hint2_31" style="display:none;">Reponse: England</p>
+<p id="result_31"></p>
+<br>
+<p>Écosse</p>
+<p>____</p>
+<input type="text" id="answer_32" name="answer_32" />
+<button type="button" onclick="showHint(32, 'dctnSlao')">Aide</button>
+<button type="button" onclick="showAnswer(32, 'Scotland')">Reponse</button>
+<p id="hint_32" style="display:none;">Indice: dctnSlao</p>
+<p id="hint2_32" style="display:none;">Reponse: Scotland</p>
+<p id="result_32"></p>
+<br>
+<p>Irlande</p>
+<p>____</p>
+<input type="text" id="answer_33" name="answer_33" />
+<button type="button" onclick="showHint(33, 'nerIdal')">Aide</button>
+<button type="button" onclick="showAnswer(33, 'Ireland')">Reponse</button>
+<p id="hint_33" style="display:none;">Indice: nerIdal</p>
+<p id="hint2_33" style="display:none;">Reponse: Ireland</p>
+<p id="result_33"></p>
+</form>
+<p><button type="button" onclick="correctAnswers()">Corrige</button></p>
+<p id="score"></p>
+<script>
+function correctAnswers() {
+    let score = 0;
+    const correctWords = ['Sit', 'Stand', 'don', 'board', 'speak', 'answer', 'go', 'Can', 'What', 'now', 'speak', 'How', 'word', 'When', 'once', 'spell', 'are', 'from', 'bas', 'mignon', 'Put', 'Pencil', 'Pen', 'Eraser', 'Pencil', 'Binder', 'box', 'Water', 'Irish', 'Scottish', 'English', 'England', 'Scotland', 'Ireland'];
+    const totalQuestions = correctWords.length;
+    const userAnswer_0 = document.getElementById("answer_0").value.trim();
+    const correctWord_0 = correctWords[0];
+    const resultElement_0 = document.getElementById("result_0");
+    if (userAnswer_0.toLowerCase() === correctWord_0.toLowerCase()) {
+        resultElement_0.textContent = "Correct!";
+        resultElement_0.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_0.textContent = "Incorrect, la bonne réponse était: " + correctWord_0;
+        resultElement_0.style.color = "red";
+    }
+    const userAnswer_1 = document.getElementById("answer_1").value.trim();
+    const correctWord_1 = correctWords[1];
+    const resultElement_1 = document.getElementById("result_1");
+    if (userAnswer_1.toLowerCase() === correctWord_1.toLowerCase()) {
+        resultElement_1.textContent = "Correct!";
+        resultElement_1.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_1.textContent = "Incorrect, la bonne réponse était: " + correctWord_1;
+        resultElement_1.style.color = "red";
+    }
+    const userAnswer_2 = document.getElementById("answer_2").value.trim();
+    const correctWord_2 = correctWords[2];
+    const resultElement_2 = document.getElementById("result_2");
+    if (userAnswer_2.toLowerCase() === correctWord_2.toLowerCase()) {
+        resultElement_2.textContent = "Correct!";
+        resultElement_2.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_2.textContent = "Incorrect, la bonne réponse était: " + correctWord_2;
+        resultElement_2.style.color = "red";
+    }
+    const userAnswer_3 = document.getElementById("answer_3").value.trim();
+    const correctWord_3 = correctWords[3];
+    const resultElement_3 = document.getElementById("result_3");
+    if (userAnswer_3.toLowerCase() === correctWord_3.toLowerCase()) {
+        resultElement_3.textContent = "Correct!";
+        resultElement_3.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_3.textContent = "Incorrect, la bonne réponse était: " + correctWord_3;
+        resultElement_3.style.color = "red";
+    }
+    const userAnswer_4 = document.getElementById("answer_4").value.trim();
+    const correctWord_4 = correctWords[4];
+    const resultElement_4 = document.getElementById("result_4");
+    if (userAnswer_4.toLowerCase() === correctWord_4.toLowerCase()) {
+        resultElement_4.textContent = "Correct!";
+        resultElement_4.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_4.textContent = "Incorrect, la bonne réponse était: " + correctWord_4;
+        resultElement_4.style.color = "red";
+    }
+    const userAnswer_5 = document.getElementById("answer_5").value.trim();
+    const correctWord_5 = correctWords[5];
+    const resultElement_5 = document.getElementById("result_5");
+    if (userAnswer_5.toLowerCase() === correctWord_5.toLowerCase()) {
+        resultElement_5.textContent = "Correct!";
+        resultElement_5.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_5.textContent = "Incorrect, la bonne réponse était: " + correctWord_5;
+        resultElement_5.style.color = "red";
+    }
+    const userAnswer_6 = document.getElementById("answer_6").value.trim();
+    const correctWord_6 = correctWords[6];
+    const resultElement_6 = document.getElementById("result_6");
+    if (userAnswer_6.toLowerCase() === correctWord_6.toLowerCase()) {
+        resultElement_6.textContent = "Correct!";
+        resultElement_6.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_6.textContent = "Incorrect, la bonne réponse était: " + correctWord_6;
+        resultElement_6.style.color = "red";
+    }
+    const userAnswer_7 = document.getElementById("answer_7").value.trim();
+    const correctWord_7 = correctWords[7];
+    const resultElement_7 = document.getElementById("result_7");
+    if (userAnswer_7.toLowerCase() === correctWord_7.toLowerCase()) {
+        resultElement_7.textContent = "Correct!";
+        resultElement_7.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_7.textContent = "Incorrect, la bonne réponse était: " + correctWord_7;
+        resultElement_7.style.color = "red";
+    }
+    const userAnswer_8 = document.getElementById("answer_8").value.trim();
+    const correctWord_8 = correctWords[8];
+    const resultElement_8 = document.getElementById("result_8");
+    if (userAnswer_8.toLowerCase() === correctWord_8.toLowerCase()) {
+        resultElement_8.textContent = "Correct!";
+        resultElement_8.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_8.textContent = "Incorrect, la bonne réponse était: " + correctWord_8;
+        resultElement_8.style.color = "red";
+    }
+    const userAnswer_9 = document.getElementById("answer_9").value.trim();
+    const correctWord_9 = correctWords[9];
+    const resultElement_9 = document.getElementById("result_9");
+    if (userAnswer_9.toLowerCase() === correctWord_9.toLowerCase()) {
+        resultElement_9.textContent = "Correct!";
+        resultElement_9.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_9.textContent = "Incorrect, la bonne réponse était: " + correctWord_9;
+        resultElement_9.style.color = "red";
+    }
+    const userAnswer_10 = document.getElementById("answer_10").value.trim();
+    const correctWord_10 = correctWords[10];
+    const resultElement_10 = document.getElementById("result_10");
+    if (userAnswer_10.toLowerCase() === correctWord_10.toLowerCase()) {
+        resultElement_10.textContent = "Correct!";
+        resultElement_10.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_10.textContent = "Incorrect, la bonne réponse était: " + correctWord_10;
+        resultElement_10.style.color = "red";
+    }
+    const userAnswer_11 = document.getElementById("answer_11").value.trim();
+    const correctWord_11 = correctWords[11];
+    const resultElement_11 = document.getElementById("result_11");
+    if (userAnswer_11.toLowerCase() === correctWord_11.toLowerCase()) {
+        resultElement_11.textContent = "Correct!";
+        resultElement_11.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_11.textContent = "Incorrect, la bonne réponse était: " + correctWord_11;
+        resultElement_11.style.color = "red";
+    }
+    const userAnswer_12 = document.getElementById("answer_12").value.trim();
+    const correctWord_12 = correctWords[12];
+    const resultElement_12 = document.getElementById("result_12");
+    if (userAnswer_12.toLowerCase() === correctWord_12.toLowerCase()) {
+        resultElement_12.textContent = "Correct!";
+        resultElement_12.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_12.textContent = "Incorrect, la bonne réponse était: " + correctWord_12;
+        resultElement_12.style.color = "red";
+    }
+    const userAnswer_13 = document.getElementById("answer_13").value.trim();
+    const correctWord_13 = correctWords[13];
+    const resultElement_13 = document.getElementById("result_13");
+    if (userAnswer_13.toLowerCase() === correctWord_13.toLowerCase()) {
+        resultElement_13.textContent = "Correct!";
+        resultElement_13.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_13.textContent = "Incorrect, la bonne réponse était: " + correctWord_13;
+        resultElement_13.style.color = "red";
+    }
+    const userAnswer_14 = document.getElementById("answer_14").value.trim();
+    const correctWord_14 = correctWords[14];
+    const resultElement_14 = document.getElementById("result_14");
+    if (userAnswer_14.toLowerCase() === correctWord_14.toLowerCase()) {
+        resultElement_14.textContent = "Correct!";
+        resultElement_14.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_14.textContent = "Incorrect, la bonne réponse était: " + correctWord_14;
+        resultElement_14.style.color = "red";
+    }
+    const userAnswer_15 = document.getElementById("answer_15").value.trim();
+    const correctWord_15 = correctWords[15];
+    const resultElement_15 = document.getElementById("result_15");
+    if (userAnswer_15.toLowerCase() === correctWord_15.toLowerCase()) {
+        resultElement_15.textContent = "Correct!";
+        resultElement_15.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_15.textContent = "Incorrect, la bonne réponse était: " + correctWord_15;
+        resultElement_15.style.color = "red";
+    }
+    const userAnswer_16 = document.getElementById("answer_16").value.trim();
+    const correctWord_16 = correctWords[16];
+    const resultElement_16 = document.getElementById("result_16");
+    if (userAnswer_16.toLowerCase() === correctWord_16.toLowerCase()) {
+        resultElement_16.textContent = "Correct!";
+        resultElement_16.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_16.textContent = "Incorrect, la bonne réponse était: " + correctWord_16;
+        resultElement_16.style.color = "red";
+    }
+    const userAnswer_17 = document.getElementById("answer_17").value.trim();
+    const correctWord_17 = correctWords[17];
+    const resultElement_17 = document.getElementById("result_17");
+    if (userAnswer_17.toLowerCase() === correctWord_17.toLowerCase()) {
+        resultElement_17.textContent = "Correct!";
+        resultElement_17.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_17.textContent = "Incorrect, la bonne réponse était: " + correctWord_17;
+        resultElement_17.style.color = "red";
+    }
+    const userAnswer_18 = document.getElementById("answer_18").value.trim();
+    const correctWord_18 = correctWords[18];
+    const resultElement_18 = document.getElementById("result_18");
+    if (userAnswer_18.toLowerCase() === correctWord_18.toLowerCase()) {
+        resultElement_18.textContent = "Correct!";
+        resultElement_18.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_18.textContent = "Incorrect, la bonne réponse était: " + correctWord_18;
+        resultElement_18.style.color = "red";
+    }
+    const userAnswer_19 = document.getElementById("answer_19").value.trim();
+    const correctWord_19 = correctWords[19];
+    const resultElement_19 = document.getElementById("result_19");
+    if (userAnswer_19.toLowerCase() === correctWord_19.toLowerCase()) {
+        resultElement_19.textContent = "Correct!";
+        resultElement_19.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_19.textContent = "Incorrect, la bonne réponse était: " + correctWord_19;
+        resultElement_19.style.color = "red";
+    }
+    const userAnswer_20 = document.getElementById("answer_20").value.trim();
+    const correctWord_20 = correctWords[20];
+    const resultElement_20 = document.getElementById("result_20");
+    if (userAnswer_20.toLowerCase() === correctWord_20.toLowerCase()) {
+        resultElement_20.textContent = "Correct!";
+        resultElement_20.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_20.textContent = "Incorrect, la bonne réponse était: " + correctWord_20;
+        resultElement_20.style.color = "red";
+    }
+    const userAnswer_21 = document.getElementById("answer_21").value.trim();
+    const correctWord_21 = correctWords[21];
+    const resultElement_21 = document.getElementById("result_21");
+    if (userAnswer_21.toLowerCase() === correctWord_21.toLowerCase()) {
+        resultElement_21.textContent = "Correct!";
+        resultElement_21.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_21.textContent = "Incorrect, la bonne réponse était: " + correctWord_21;
+        resultElement_21.style.color = "red";
+    }
+    const userAnswer_22 = document.getElementById("answer_22").value.trim();
+    const correctWord_22 = correctWords[22];
+    const resultElement_22 = document.getElementById("result_22");
+    if (userAnswer_22.toLowerCase() === correctWord_22.toLowerCase()) {
+        resultElement_22.textContent = "Correct!";
+        resultElement_22.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_22.textContent = "Incorrect, la bonne réponse était: " + correctWord_22;
+        resultElement_22.style.color = "red";
+    }
+    const userAnswer_23 = document.getElementById("answer_23").value.trim();
+    const correctWord_23 = correctWords[23];
+    const resultElement_23 = document.getElementById("result_23");
+    if (userAnswer_23.toLowerCase() === correctWord_23.toLowerCase()) {
+        resultElement_23.textContent = "Correct!";
+        resultElement_23.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_23.textContent = "Incorrect, la bonne réponse était: " + correctWord_23;
+        resultElement_23.style.color = "red";
+    }
+    const userAnswer_24 = document.getElementById("answer_24").value.trim();
+    const correctWord_24 = correctWords[24];
+    const resultElement_24 = document.getElementById("result_24");
+    if (userAnswer_24.toLowerCase() === correctWord_24.toLowerCase()) {
+        resultElement_24.textContent = "Correct!";
+        resultElement_24.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_24.textContent = "Incorrect, la bonne réponse était: " + correctWord_24;
+        resultElement_24.style.color = "red";
+    }
+    const userAnswer_25 = document.getElementById("answer_25").value.trim();
+    const correctWord_25 = correctWords[25];
+    const resultElement_25 = document.getElementById("result_25");
+    if (userAnswer_25.toLowerCase() === correctWord_25.toLowerCase()) {
+        resultElement_25.textContent = "Correct!";
+        resultElement_25.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_25.textContent = "Incorrect, la bonne réponse était: " + correctWord_25;
+        resultElement_25.style.color = "red";
+    }
+    const userAnswer_26 = document.getElementById("answer_26").value.trim();
+    const correctWord_26 = correctWords[26];
+    const resultElement_26 = document.getElementById("result_26");
+    if (userAnswer_26.toLowerCase() === correctWord_26.toLowerCase()) {
+        resultElement_26.textContent = "Correct!";
+        resultElement_26.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_26.textContent = "Incorrect, la bonne réponse était: " + correctWord_26;
+        resultElement_26.style.color = "red";
+    }
+    const userAnswer_27 = document.getElementById("answer_27").value.trim();
+    const correctWord_27 = correctWords[27];
+    const resultElement_27 = document.getElementById("result_27");
+    if (userAnswer_27.toLowerCase() === correctWord_27.toLowerCase()) {
+        resultElement_27.textContent = "Correct!";
+        resultElement_27.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_27.textContent = "Incorrect, la bonne réponse était: " + correctWord_27;
+        resultElement_27.style.color = "red";
+    }
+    const userAnswer_28 = document.getElementById("answer_28").value.trim();
+    const correctWord_28 = correctWords[28];
+    const resultElement_28 = document.getElementById("result_28");
+    if (userAnswer_28.toLowerCase() === correctWord_28.toLowerCase()) {
+        resultElement_28.textContent = "Correct!";
+        resultElement_28.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_28.textContent = "Incorrect, la bonne réponse était: " + correctWord_28;
+        resultElement_28.style.color = "red";
+    }
+    const userAnswer_29 = document.getElementById("answer_29").value.trim();
+    const correctWord_29 = correctWords[29];
+    const resultElement_29 = document.getElementById("result_29");
+    if (userAnswer_29.toLowerCase() === correctWord_29.toLowerCase()) {
+        resultElement_29.textContent = "Correct!";
+        resultElement_29.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_29.textContent = "Incorrect, la bonne réponse était: " + correctWord_29;
+        resultElement_29.style.color = "red";
+    }
+    const userAnswer_30 = document.getElementById("answer_30").value.trim();
+    const correctWord_30 = correctWords[30];
+    const resultElement_30 = document.getElementById("result_30");
+    if (userAnswer_30.toLowerCase() === correctWord_30.toLowerCase()) {
+        resultElement_30.textContent = "Correct!";
+        resultElement_30.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_30.textContent = "Incorrect, la bonne réponse était: " + correctWord_30;
+        resultElement_30.style.color = "red";
+    }
+    const userAnswer_31 = document.getElementById("answer_31").value.trim();
+    const correctWord_31 = correctWords[31];
+    const resultElement_31 = document.getElementById("result_31");
+    if (userAnswer_31.toLowerCase() === correctWord_31.toLowerCase()) {
+        resultElement_31.textContent = "Correct!";
+        resultElement_31.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_31.textContent = "Incorrect, la bonne réponse était: " + correctWord_31;
+        resultElement_31.style.color = "red";
+    }
+    const userAnswer_32 = document.getElementById("answer_32").value.trim();
+    const correctWord_32 = correctWords[32];
+    const resultElement_32 = document.getElementById("result_32");
+    if (userAnswer_32.toLowerCase() === correctWord_32.toLowerCase()) {
+        resultElement_32.textContent = "Correct!";
+        resultElement_32.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_32.textContent = "Incorrect, la bonne réponse était: " + correctWord_32;
+        resultElement_32.style.color = "red";
+    }
+    const userAnswer_33 = document.getElementById("answer_33").value.trim();
+    const correctWord_33 = correctWords[33];
+    const resultElement_33 = document.getElementById("result_33");
+    if (userAnswer_33.toLowerCase() === correctWord_33.toLowerCase()) {
+        resultElement_33.textContent = "Correct!";
+        resultElement_33.style.color = "green";
+        score += 1;
+    } else {
+        resultElement_33.textContent = "Incorrect, la bonne réponse était: " + correctWord_33;
+        resultElement_33.style.color = "red";
+    }
+    document.getElementById("score").textContent = "Votre score: " + score + " / " + totalQuestions;
+}
+
+        function showHint(index, hint) {
+            const hintElement = document.getElementById("hint_" + index);
+            hintElement.style.display = "block";
+        }
+
+        function showAnswer(index, answer) {
+            const answerElement = document.getElementById("hint2_" + index);
+            answerElement.style.display = "block";
+        }
+        
+</script>
+</body>
+</html>

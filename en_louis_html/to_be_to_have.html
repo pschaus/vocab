@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: To Be & To Have (Beginner English)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2a5d84;
+    }
+    .question {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #2a5d84;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #1c405c;
+    }
+    .result {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: To Be & To Have</h1>
+  <p style="text-align:center;">Test your English verbs “to be” and “to have”! Choose the correct answer.</p>
+  
+  <div id="quiz"></div>
+  
+  <div class="result" id="result"></div>
+  
+  <div style="text-align:center;">
+    <button onclick="checkAnswers()">Check Answers</button>
+    <button onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+
+  <script>
+    const allQuestions = [
+      { q: "I ___ a student.", options: ["am", "is", "are"], answer: "am" },
+      { q: "She ___ happy today.", options: ["are", "is", "am"], answer: "is" },
+      { q: "We ___ brothers.", options: ["am", "are", "is"], answer: "are" },
+      { q: "They ___ two dogs.", options: ["have", "has", "having"], answer: "have" },
+      { q: "He ___ a new bike.", options: ["has", "have", "is"], answer: "has" },
+      { q: "You ___ from Belgium.", options: ["am", "are", "is"], answer: "are" },
+      { q: "I ___ a blue pen.", options: ["has", "have", "is"], answer: "have" },
+      { q: "We ___ tired after school.", options: ["are", "is", "am"], answer: "are" },
+      { q: "She ___ a nice teacher.", options: ["is", "am", "are"], answer: "is" },
+      { q: "They ___ a big house.", options: ["have", "has", "are"], answer: "have" },
+      { q: "___ you at home yesterday?", options: ["Was", "Were", "Are"], answer: "Were" },
+      { q: "___ he a good student?", options: ["Was", "Were", "Is"], answer: "Is" },
+      { q: "How many brothers ___ you have?", options: ["do", "does", "did"], answer: "do" },
+      { q: "___ she got a pet?", options: ["Has", "Have", "Is"], answer: "Has" },
+      { q: "___ you hungry?", options: ["Are", "Is", "Am"], answer: "Are" }
+    ];
+
+    let selectedQuestions = [];
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function generateQuiz() {
+      selectedQuestions = shuffle(allQuestions).slice(0, 10);
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+      selectedQuestions.forEach((item, index) => {
+        let optionsHTML = item.options.map(opt => 
+          `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`
+        ).join("<br>");
+        quizDiv.innerHTML += `
+          <div class="question">
+            <strong>${index + 1}. ${item.q}</strong><br><br>
+            ${optionsHTML}
+          </div>
+        `;
+      });
+      document.getElementById("result").innerText = "";
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      selectedQuestions.forEach((item, index) => {
+        const radios = document.getElementsByName("q" + index);
+        for (const r of radios) {
+          if (r.checked && r.value === item.answer) {
+            score++;
+          }
+        }
+      });
+      document.getElementById("result").innerText = "Your score: " + score + " / 10";
+    }
+
+    function resetQuiz() {
+      generateQuiz();
+    }
+
+    // Generate quiz on page load
+    generateQuiz();
+  </script>
+</body>
+</html>

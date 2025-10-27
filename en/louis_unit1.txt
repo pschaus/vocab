@@ -1,0 +1,35 @@
+Assieds-toi # Sit down
+Lève-toi # Stand up
+Je ne comprends pas. # I don’t understand.
+Je ne vois pas le tableau. # I can’t see the board.
+Peux-tu parler plus lentement, s’il te plaît ? # Can you speak more slowly, please?
+Puis-je répondre à la question ? # Can I answer the question?
+Puis-je aller aux toilettes ? # Can I go to the restroom?
+Peux-tu éteindre les lampes ? # Can you switch off the lights?
+Que signifie le mot ? # What does the word mean?
+Que doit-on faire maintenant ? # What do we have to do now?
+Peux-tu parler plus fort ? # Can you speak louder?
+Quelle est ton impression ? # How do you feel about that?
+Que signifie le mot … ? # What does the word … mean?
+Pour quand est le devoir/travail ? # When is the assignment due?
+Peux-tu expliquer encore une fois ? # Can you explain it once more, please?
+Comment épelles-tu … ? # How do you spell … ?
+D’où viens-tu ? # Where are you from?
+Je suis de Belgique. # I’m from Belgium.
+Who’s that guy over there? # Qui est ce gars là-bas ?
+He is cute. # Il est mignon.
+Lève ton doigt. # Put your finger up.
+Crayon # Pencil
+Bic # Pen
+Gomme # Eraser (“rubber” is correct in British English, but “eraser” is clearer for students)
+Plumier # Pencil case
+Farde # Folder / Binder
+Boîte à tartines # Lunch box
+Gourde # Water bottle / Flask
+Irlandais # Irish
+Écossais # Scottish
+Anglais # English
+Angleterre # England
+Écosse # Scotland
+Irlande # Ireland
+
