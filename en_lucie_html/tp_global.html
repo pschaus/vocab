@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz - Verbes irréguliers anglais</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0; padding: 20px;
+  }
+  h1 { text-align: center; color: #333; }
+  .question {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  input[type="text"] {
+    width: 180px;
+    padding: 6px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  button {
+    background: #0078D7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 15px 5px;
+    cursor: pointer;
+  }
+  button:hover { background: #005fa3; }
+  #result {
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .correct-answer {
+    color: green;
+    font-size: 0.9em;
+    margin-left: 10px;
+  }
+  .wrong {
+    background-color: #ffe6e6;
+  }
+  .correct {
+    background-color: #e6ffe6;
+  }
+</style>
+</head>
+<body>
+
+<h1>Quiz - Verbes irréguliers anglais</h1>
+<div id="quiz"></div>
+
+<div style="text-align:center;">
+  <button onclick="checkAnswers()">Corriger</button>
+  <button onclick="generateQuiz()">Réinitialiser</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+const verbs = [
+  { fr: "acheter", inf: "buy", past: "bought", pp: "bought" },
+  { fr: "aller", inf: "go", past: "went", pp: "gone" },
+  { fr: "allumer, éclairer", inf: "light", past: "lit", pp: "lit" },
+  { fr: "apporter", inf: "bring", past: "brought", pp: "brought" },
+  { fr: "apprendre", inf: "learn", past: "learnt", pp: "learnt" },
+  { fr: "(s')appuyer", inf: "lean", past: "leant", pp: "leant" },
+  { fr: "attraper", inf: "catch", past: "caught", pp: "caught" },
+  { fr: "avoir", inf: "have", past: "had", pp: "had" },
+  { fr: "battre", inf: "beat", past: "beat", pp: "beaten" },
+  { fr: "blesser", inf: "hurt", past: "hurt", pp: "hurt" },
+  { fr: "boire", inf: "drink", past: "drank", pp: "drunk" },
+  { fr: "briller", inf: "shine", past: "shone", pp: "shone" },
+  { fr: "brûler", inf: "burn", past: "burnt", pp: "burnt" },
+  { fr: "cacher", inf: "hide", past: "hid", pp: "hidden" },
+  { fr: "casser", inf: "break", past: "broke", pp: "broken" },
+  { fr: "chanter", inf: "sing", past: "sang", pp: "sung" },
+  { fr: "choisir", inf: "choose", past: "chose", pp: "chosen" },
+  { fr: "coller", inf: "stick", past: "stuck", pp: "stuck" },
+  { fr: "combattre", inf: "fight", past: "fought", pp: "fought" },
+  { fr: "commencer", inf: "begin", past: "began", pp: "begun" },
+  { fr: "comprendre", inf: "understand", past: "understood", pp: "understood" },
+  { fr: "conduire", inf: "drive", past: "drove", pp: "driven" },
+  { fr: "conduire (monter)", inf: "ride", past: "rode", pp: "ridden" },
+  { fr: "construire", inf: "build", past: "built", pp: "built" },
+  { fr: "couler", inf: "sink", past: "sank", pp: "sunk" },
+  { fr: "courir", inf: "run", past: "ran", pp: "run" },
+  { fr: "coûter", inf: "cost", past: "cost", pp: "cost" },
+  { fr: "creuser", inf: "dig", past: "dug", pp: "dug" },
+  { fr: "dépenser", inf: "spend", past: "spent", pp: "spent" },
+  { fr: "dessiner", inf: "draw", past: "drew", pp: "drawn" },
+  { fr: "devenir", inf: "become", past: "became", pp: "become" },
+  { fr: "dire", inf: "say", past: "said", pp: "said" },
+  { fr: "distribuer", inf: "deal", past: "dealt", pp: "dealt" },
+  { fr: "donner", inf: "give", past: "gave", pp: "given" },
+  { fr: "dormir", inf: "sleep", past: "slept", pp: "slept" },
+  { fr: "éclater", inf: "burst", past: "burst", pp: "burst" },
+  { fr: "écrire", inf: "write", past: "wrote", pp: "written" },
+  { fr: "enseigner", inf: "teach", past: "taught", pp: "taught" },
+  { fr: "entendre", inf: "hear", past: "heard", pp: "heard" },
+  { fr: "envoyer", inf: "send", past: "sent", pp: "sent" },
+  { fr: "être", inf: "be", past: "was/were", pp: "been" },
+  { fr: "être assis", inf: "sit", past: "sat", pp: "sat" },
+  { fr: "être debout", inf: "stand", past: "stood", pp: "stood" },
+  { fr: "être étendu, couché", inf: "lie", past: "lay", pp: "lain" },
+  { fr: "s'éveiller", inf: "awake", past: "awoke", pp: "awoken" },
+  { fr: "faire (exécuter)", inf: "do", past: "did", pp: "done" },
+  { fr: "faire (fabriquer)", inf: "make", past: "made", pp: "made" },
+  { fr: "fermer", inf: "shut", past: "shut", pp: "shut" },
+  { fr: "frapper", inf: "hit", past: "hit", pp: "hit" },
+  { fr: "gâcher, gâter", inf: "spoil", past: "spoilt", pp: "spoilt" },
+  { fr: "gagner", inf: "win", past: "won", pp: "won" },
+  { fr: "garder", inf: "keep", past: "kept", pp: "kept" },
+  { fr: "geler", inf: "freeze", past: "froze", pp: "frozen" },
+  { fr: "glisser", inf: "slide", past: "slid", pp: "slid" },
+  { fr: "grandir", inf: "grow", past: "grew", pp: "grown" },
+  { fr: "interdire", inf: "forbid", past: "forbade", pp: "forbidden" },
+  { fr: "jeter", inf: "throw", past: "threw", pp: "thrown" },
+  { fr: "jurer", inf: "swear", past: "swore", pp: "sworn" },
+  { fr: "lier, attacher", inf: "bind", past: "bound", pp: "bound" },
+  { fr: "lire", inf: "read", past: "read", pp: "read" },
+  { fr: "manger", inf: "eat", past: "ate", pp: "eaten" },
+  { fr: "mener", inf: "lead", past: "led", pp: "led" },
+  { fr: "mettre", inf: "put", past: "put", pp: "put" },
+  { fr: "montrer", inf: "show", past: "showed", pp: "shown" },
+  { fr: "mordre", inf: "bite", past: "bit", pp: "bitten" },
+  { fr: "nager", inf: "swim", past: "swam", pp: "swum" },
+  { fr: "nourrir", inf: "feed", past: "fed", pp: "fed" },
+  { fr: "obtenir", inf: "get", past: "got", pp: "got" },
+  { fr: "oublier", inf: "forget", past: "forgot", pp: "forgotten" },
+  { fr: "pardonner", inf: "forgive", past: "forgave", pp: "forgiven" },
+  { fr: "parier", inf: "bet", past: "bet", pp: "bet" },
+  { fr: "parler", inf: "speak", past: "spoke", pp: "spoken" },
+  { fr: "payer", inf: "pay", past: "paid", pp: "paid" },
+  { fr: "pendre, accrocher", inf: "hang", past: "hung", pp: "hung" },
+  { fr: "penser", inf: "think", past: "thought", pp: "thought" },
+  { fr: "perdre", inf: "lose", past: "lost", pp: "lost" },
+  { fr: "pleurer", inf: "weep", past: "wept", pp: "wept" },
+  { fr: "plier", inf: "bend", past: "bent", pp: "bent" },
+  { fr: "porter, supporter", inf: "bear", past: "bore", pp: "born" },
+  { fr: "poser, déposer", inf: "lay", past: "laid", pp: "laid" },
+  { fr: "prendre", inf: "take", past: "took", pp: "taken" },
+  { fr: "voir", inf: "see", past: "saw", pp: "seen" },
+  { fr: "venir", inf: "come", past: "came", pp: "come" },
+  { fr: "voler (dérober)", inf: "steal", past: "stole", pp: "stolen" }
+];
+
+let selectedVerbs = [];
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function generateQuiz() {
+  const quizDiv = document.getElementById("quiz");
+  quizDiv.innerHTML = "";
+  document.getElementById("result").textContent = "";
+
+  selectedVerbs = shuffle([...verbs]).slice(0, 10);
+  selectedVerbs.forEach((verb, i) => {
+    quizDiv.innerHTML += `
+      <div class="question" id="q${i}">
+        <b>${i + 1}. ${verb.fr}</b><br>
+        Infinitif: <input type="text" id="inf${i}" placeholder="...">
+        <br>Prétérit: <input type="text" id="past${i}" placeholder="...">
+        <br>Participe passé: <input type="text" id="pp${i}" placeholder="...">
+        <div id="answer${i}" class="correct-answer"></div>
+      </div>
+    `;
+  });
+}
+
+function normalize(str) {
+  return str.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function checkAnswers() {
+  let score = 0;
+  selectedVerbs.forEach((verb, i) => {
+    const inf = normalize(document.getElementById("inf" + i).value);
+    const past = normalize(document.getElementById("past" + i).value);
+    const pp = normalize(document.getElementById("pp" + i).value);
+    let correct = 0;
+
+    if (inf === normalize(verb.inf)) { score++; correct++; document.getElementById("inf"+i).classList.add("correct"); } 
+    else document.getElementById("inf"+i).classList.add("wrong");
+
+    if (past === normalize(verb.past)) { score++; correct++; document.getElementById("past"+i).classList.add("correct"); } 
+    else document.getElementById("past"+i).classList.add("wrong");
+
+    if (pp === normalize(verb.pp)) { score++; correct++; document.getElementById("pp"+i).classList.add("correct"); } 
+    else document.getElementById("pp"+i).classList.add("wrong");
+
+    document.getElementById("answer"+i).innerHTML = 
+      `✔️ ${verb.inf} – ${verb.past} – ${verb.pp}`;
+  });
+  const total = selectedVerbs.length * 3;
+  const note = Math.round((score / total) * 10);
+  document.getElementById("result").textContent = `Score : ${note}/10 (${score}/${total} réponses correctes)`;
+}
+
+generateQuiz();
+</script>
+</body>
+</html>
