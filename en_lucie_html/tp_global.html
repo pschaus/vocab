@@ -52,6 +52,12 @@
   .correct {
     background-color: #e6ffe6;
   }
+  .clue {
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 10px;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -160,6 +166,11 @@ function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
+// Mélange les lettres d'un mot
+function scrambleWord(word) {
+  return word.split('').sort(() => Math.random() - 0.5).join('');
+}
+
 function generateQuiz() {
   const quizDiv = document.getElementById("quiz");
   quizDiv.innerHTML = "";
@@ -171,12 +182,19 @@ function generateQuiz() {
       <div class="question" id="q${i}">
         <b>${i + 1}. ${verb.fr}</b><br>
         Infinitif: <input type="text" id="inf${i}" placeholder="...">
+        <button onclick="showClue(${i})">Clue</button>
+        <span id="clue${i}" class="clue"></span>
         <br>Prétérit: <input type="text" id="past${i}" placeholder="...">
         <br>Participe passé: <input type="text" id="pp${i}" placeholder="...">
         <div id="answer${i}" class="correct-answer"></div>
       </div>
     `;
   });
+}
+
+function showClue(i) {
+  const scrambled = scrambleWord(selectedVerbs[i].inf);
+  document.getElementById("clue" + i).textContent = scrambled;
 }
 
 function normalize(str) {
