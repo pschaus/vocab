@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz: To Be – Short Answers & Questions</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2a5d84;
+    }
+    .question {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #2a5d84;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #1c405c;
+    }
+    .result {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    .feedback {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz: To Be – Short Forms & Questions</h1>
+  <p style="text-align:center;">Choose the correct question or short answer form of <em>to be</em>.</p>
+  
+  <div id="quiz"></div>
+  
+  <div class="result" id="result"></div>
+  
+  <div style="text-align:center;">
+    <button onclick="checkAnswers()">Check Answers</button>
+    <button onclick="resetQuiz()">Reset Quiz</button>
+  </div>
+
+  <script>
+    const allQuestions = [
+      // Question forms
+      { q: "___ you ready?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "___ she your sister?", options: ["Is", "Are", "Am"], answer: "Is" },
+      { q: "___ they in the classroom?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "___ I late?", options: ["Am", "Are", "Is"], answer: "Am" },
+      { q: "___ he from London?", options: ["Is", "Are", "Am"], answer: "Is" },
+      { q: "___ we in the same group?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "___ it cold outside?", options: ["Is", "Are", "Am"], answer: "Is" },
+      { q: "___ you hungry?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "___ they at school today?", options: ["Are", "Is", "Am"], answer: "Are" },
+      { q: "___ she late?", options: ["Is", "Are", "Am"], answer: "Is" },
+
+      // Short answers – affirmative
+      { q: "Are you ready? → Yes, ___", options: ["I am", "I’m", "am I"], answer: "I’m" },
+      { q: "Is he a student? → Yes, ___", options: ["he’s", "he is", "is he"], answer: "he’s" },
+      { q: "Are they friends? → Yes, ___", options: ["they’re", "they are", "are they"], answer: "they’re" },
+      { q: "Is it late? → Yes, ___", options: ["it’s", "it is", "is it"], answer: "it’s" },
+      { q: "Are we in the same team? → Yes, ___", options: ["we’re", "we are", "are we"], answer: "we’re" },
+
+      // Short answers – negative
+      { q: "Are you cold? → No, ___", options: ["I’m not", "I am not", "I aren’t"], answer: "I’m not" },
+      { q: "Is she tired? → No, ___", options: ["she isn’t", "she’s not", "she aren’t"], answer: "she isn’t" },
+      { q: "Are they in class? → No, ___", options: ["they aren’t", "they’re not", "they isn’t"], answer: "they aren’t" },
+      { q: "Is it raining? → No, ___", options: ["it isn’t", "it’s not", "it aren’t"], answer: "it isn’t" },
+      { q: "Are we late? → No, ___", options: ["we aren’t", "we’re not", "we isn’t"], answer: "we aren’t" }
+    ];
+
+    let selectedQuestions = [];
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function generateQuiz() {
+      selectedQuestions = shuffle(allQuestions).slice(0, 10);
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+      selectedQuestions.forEach((item, index) => {
+        let optionsHTML = item.options.map(opt => 
+          `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`
+        ).join("<br>");
+        quizDiv.innerHTML += `
+          <div class="question" id="question${index}">
+            <strong>${index + 1}. ${item.q}</strong><br><br>
+            ${optionsHTML}
+            <div class="feedback" id="feedback${index}"></div>
+          </div>
+        `;
+      });
+      document.getElementById("result").innerHTML = "";
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      selectedQuestions.forEach((item, index) => {
+        const radios = document.getElementsByName("q" + index);
+        let userAnswer = "";
+        for (const r of radios) {
+          if (r.checked) userAnswer = r.value;
+        }
+
+        const feedback = document.getElementById("feedback" + index);
+        if (userAnswer === item.answer) {
+          feedback.innerHTML = "Correct ✅";
+          feedback.className = "feedback correct";
+          score++;
+        } else {
+          feedback.innerHTML = `Wrong ❌. Correct answer: ${item.answer}`;
+          feedback.className = "feedback wrong";
+        }
+      });
+      document.getElementById("result").innerHTML = `Your score: <strong>${score} / 10</strong>`;
+    }
+
+    function resetQuiz() {
+      generateQuiz();
+    }
+
+    generateQuiz();
+  </script>
+</body>
+</html>
