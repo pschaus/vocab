@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz : Vocabulaire Mathématique</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      color: #333;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2a5d84;
+    }
+    .question {
+      background: white;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    button {
+      background-color: #2a5d84;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #1c405c;
+    }
+    .result {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    .feedback {
+      margin-top: 8px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz : Expressions Mathématiques en Français</h1>
+  <p style="text-align:center;">Choisis l'expression algébrique correspondant à la phrase donnée.</p>
+  
+  <div id="quiz"></div>
+  
+  <div class="result" id="result"></div>
+  
+  <div style="text-align:center;">
+    <button onclick="checkAnswers()">Vérifier les réponses</button>
+    <button onclick="resetQuiz()">Recommencer</button>
+  </div>
+
+  <script>
+    const allQuestions = [
+      { q: "La somme de x carré et de y carré", options: ["x + y", "x² + y²", "(x + y)²"], answer: "x² + y²" },
+      { q: "Le produit de a et b", options: ["a + b", "a × b", "a - b"], answer: "a × b" },
+      { q: "Le quotient de m par n", options: ["m × n", "m ÷ n", "n ÷ m"], answer: "m ÷ n" },
+      { q: "Le cube de x", options: ["x³", "x²", "3x"], answer: "x³" },
+      { q: "Le carré de la somme de a et b", options: ["a² + b²", "(a + b)²", "(a - b)²"], answer: "(a + b)²" },
+      { q: "Le produit de trois facteurs a, b et c", options: ["a + b + c", "a × b × c", "(a + b + c)²"], answer: "a × b × c" },
+      { q: "Le carré de la différence de x et y", options: ["(x - y)²", "(x + y)²", "x² - y²"], answer: "(x - y)²" },
+      { q: "La différence entre p et q", options: ["p - q", "q - p", "p + q"], answer: "p - q" },
+      { q: "Le double du carré de a", options: ["2a²", "a² + 2", "(2a)²"], answer: "2a²" },
+      { q: "Le triple de la somme de x et y", options: ["3(x + y)", "x + 3y", "3x + y"], answer: "3(x + y)" },
+      { q: "Le cube de la somme de a et b", options: ["(a + b)³", "a³ + b³", "a³ + 3ab²"], answer: "(a + b)³" },
+      { q: "Le carré du produit de a et b", options: ["(ab)²", "a² + b²", "(a + b)²"], answer: "(ab)²" },
+      { q: "Le quotient du cube de x par le carré de y", options: ["x³ ÷ y²", "x² ÷ y³", "(x + y)²"], answer: "x³ ÷ y²" },
+      { q: "Le carré du double de x", options: ["(2x)²", "2x²", "x² + 2"], answer: "(2x)²" },
+      { q: "Le produit du carré de a par b", options: ["a² × b", "a × b²", "a³ × b"], answer: "a² × b" },
+      { q: "La puissance quatrième de x", options: ["x⁴", "4x", "x⁵"], answer: "x⁴" },
+      { q: "La somme des cubes de x et y", options: ["x³ + y³", "(x + y)³", "3(x + y)"], answer: "x³ + y³" },
+      { q: "Le produit du quotient de x par y et de z", options: ["(x ÷ y) × z", "x ÷ (y × z)", "(x × y) ÷ z"], answer: "(x ÷ y) × z" },
+      { q: "Le quotient du double de a par b", options: ["(2a) ÷ b", "a ÷ (2b)", "2 ÷ (a × b)"], answer: "(2a) ÷ b" },
+      { q: "Le carré de la somme de trois termes a, b et c", options: ["(a + b + c)²", "a² + b² + c²", "(a + b + c)³"], answer: "(a + b + c)²" },
+      { q: "Le cube de la différence de x et y", options: ["(x - y)³", "(x + y)³", "x³ - y³"], answer: "(x - y)³" },
+      { q: "La somme de trois termes x, y et z", options: ["x + y + z", "(x + y)z", "x × y × z"], answer: "x + y + z" },
+      { q: "Le produit de quatre facteurs a, b, c et d", options: ["a × b × c × d", "a + b + c + d", "(a + b + c + d)²"], answer: "a × b × c × d" },
+      { q: "Le quart de n", options: ["n ÷ 4", "4n", "n × 4"], answer: "n ÷ 4" },
+      { q: "Le quotient du carré de x par y", options: ["x² ÷ y", "x ÷ y²", "(x + y)²"], answer: "x² ÷ y" },
+      { q: "Le produit de deux termes consécutifs x et x + 1", options: ["x(x + 1)", "(x + 1)²", "x² + 1"], answer: "x(x + 1)" },
+      { q: "Le cube du produit de a et b", options: ["(ab)³", "a³b", "a³ + b³"], answer: "(ab)³" },
+      { q: "La somme de deux puissances : x puissance 5 et x puissance 2", options: ["x⁵ + x²", "x⁷", "x² × x⁵"], answer: "x⁵ + x²" },
+      { q: "Le produit de x et de la puissance troisième de y", options: ["x × y³", "xy²", "x³y"], answer: "x × y³" }
+    ];
+
+    let selectedQuestions = [];
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function generateQuiz() {
+      selectedQuestions = shuffle(allQuestions).slice(0, 10);
+      const quizDiv = document.getElementById("quiz");
+      quizDiv.innerHTML = "";
+      selectedQuestions.forEach((item, index) => {
+        let optionsHTML = item.options.map(opt => 
+          `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`
+        ).join("<br>");
+        quizDiv.innerHTML += `
+          <div class="question" id="question${index}">
+            <strong>${index + 1}. ${item.q}</strong><br><br>
+            ${optionsHTML}
+            <div class="feedback" id="feedback${index}"></div>
+          </div>
+        `;
+      });
+      document.getElementById("result").innerHTML = "";
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      selectedQuestions.forEach((item, index) => {
+        const radios = document.getElementsByName("q" + index);
+        let userAnswer = "";
+        for (const r of radios) {
+          if (r.checked) userAnswer = r.value;
+        }
+
+        const feedback = document.getElementById("feedback" + index);
+        if (userAnswer === item.answer) {
+          feedback.innerHTML = "✅ Correct";
+          feedback.className = "feedback correct";
+          score++;
+        } else {
+          feedback.innerHTML = `❌ Mauvaise réponse. Réponse correcte : ${item.answer}`;
+          feedback.className = "feedback wrong";
+        }
+      });
+      document.getElementById("result").innerHTML = `Ton score : <strong>${score} / 10</strong>`;
+    }
+
+    function resetQuiz() {
+      generateQuiz();
+    }
+
+    generateQuiz();
+  </script>
+</body>
+</html>
