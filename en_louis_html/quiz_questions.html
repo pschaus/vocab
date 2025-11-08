@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Forme interrogative — Test</title>
+<style>
+  :root { --bg:#f6f8fb; --card:#fff; --accent:#2b8a3e; --muted:#666; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:#222; padding:1rem; }
+  header { text-align:center; margin-bottom:0.6rem; }
+  h1 { font-size:1.2rem; margin:0; }
+  p.lead { margin:0.4rem 0 1rem 0; color:var(--muted); font-size:0.95rem; }
+  .quiz { display:flex; flex-direction:column; gap:0.7rem; }
+  .card { background:var(--card); border-radius:12px; padding:0.9rem; box-shadow:0 6px 18px rgba(20,30,50,0.06); }
+  .clue { font-size:0.95rem; color:var(--muted); margin-bottom:0.5rem; }
+  .question-row { display:flex; gap:0.4rem; flex-wrap:wrap; align-items:center; }
+  input[type="text"] { flex:0 0 38%; min-width:100px; padding:0.45rem 0.5rem; border-radius:8px; border:1px solid #d0d6dc; font-size:1rem; }
+  .rest { font-size:1rem; color:#111; margin-left:0.2rem; }
+  button { width:100%; padding:0.9rem; font-size:1.05rem; border:0; background:var(--accent); color:#fff; border-radius:12px; margin-top:0.8rem; }
+  #result { margin-top:0.8rem; display:none; }
+  .result-card { background:#fff; padding:0.8rem; border-radius:10px; box-shadow:0 4px 12px rgba(20,30,50,0.05); }
+  .ok { color:green; font-weight:600; }
+  .bad { color:#c33; font-weight:600; }
+  .small { font-size:0.92rem; color:var(--muted); margin-top:0.3rem; }
+  @media (min-width:600px){
+    input[type="text"]{ flex-basis:28%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Forme interrogative — Test</h1>
+  <p class="lead">Complète les deux premiers mots de chaque question. Appuie sur <strong>Évaluation</strong> pour voir la correction.</p>
+</header>
+
+<main>
+  <div id="quiz" class="quiz"></div>
+
+  <button id="evalBtn">Évaluation</button>
+
+  <div id="result"></div>
+</main>
+
+<script>
+/*
+ Questions: chaque objet contient :
+  - clue : la réponse donnée (indice)
+  - template : chaîne avec "___ ___" suivi du reste (les deux ___ seront remplacés par inputs)
+  - answer : tableau de 2 mots attendus (toujours non-vides)
+  - correct : phrase-question complète (pour l'affichage après correction)
+*/
+const allQuestions = [
+  { clue: "My name's Paul.", template: "___ ___ name?", answer: ["What's","your"], correct: "What's your name?" },
+  { clue: "I'm married.", template: "___ ___ married or single?", answer: ["Are","you"], correct: "Are you married or single?" },
+  { clue: "No, they aren't.", template: "___ ___ American?", answer: ["Are","they"], correct: "Are they American?" },
+  { clue: "Yes, I am.", template: "___ ___ Australian?", answer: ["Are","you"], correct: "Are you Australian?" },
+  { clue: "No, she isn't.", template: "___ ___ a teacher?", answer: ["Is","she"], correct: "Is she a teacher?" },
+  { clue: "She's from Italy.", template: "Where ___ your wife ___?", answer: ["Where","from"], correct: "Where is your wife from?" },
+  { clue: "She's Anna.", template: "___ ___ name?", answer: ["What","her"], correct: "What is her name?" },
+  { clue: "Yes, my mother is at home.", template: "___ your mother ___ home?", answer: ["Is","at"], correct: "Is your mother at home?" },
+  { clue: "Yes, my parents are at school.", template: "___ your parents ___ school?", answer: ["Are","at"], correct: "Are your parents at school?" },
+  { clue: "Yes, the shops are open today.", template: "___  the shops ___ today?", answer: ["Are","open"], correct: "Are the shops open today?" },
+  { clue: "No, I'm not from London.", template: "___ ___ you from London?", answer: ["Are","you"], correct: "Are you from London?" },
+  { clue: "Yes, the post office is near here.", template: "___ ___ the post office near here?", answer: ["Is","the"], correct: "Is the post office near here?" },
+  { clue: "Yes, I am", template: "___ ___ sad?", answer: ["Are","you"], correct: "Are you sad?" }
+];
+
+// choisit 10 questions aléatoires (ou moins si la banque est plus petite)
+function pickRandom(n = 10) {
+  const copy = [...allQuestions];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, Math.min(n, copy.length));
+}
+
+let selected = pickRandom(10);
+
+function renderQuiz() {
+  const quiz = document.getElementById('quiz');
+  quiz.innerHTML = '';
+  selected.forEach((q, idx) => {
+    // replace the first occurrence of "___ ___" with placeholders (we assume template always contains it)
+    const parts = q.template.split('___ ___');
+    const before = parts[0];
+    const after = parts.slice(1).join('___ ___'); // resta le texte après les deux blanks
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="clue"><strong>Indice:</strong> ${escapeHtml(q.clue)}</div>
+      <div class="question-row">
+        <span class="rest">${escapeHtml(before)}</span>
+        <input type="text" id="q${idx}_1" placeholder="1er mot">
+        <input type="text" id="q${idx}_2" placeholder="2e mot">
+        <span class="rest">${escapeHtml(after)}</span>
+      </div>
+    `;
+    quiz.appendChild(card);
+  });
+}
+
+function normalize(s) {
+  if (!s) return '';
+  return s.toLowerCase()
+          .replace(/[’'`]/g, "")   // remove apostrophes
+          .replace(/[“”"–—]/g,"")  // remove fancy quotes/dashes
+          .replace(/[^a-z0-9\s]/g,"") // remove punctuation
+          .trim();
+}
+
+// accepte quelques variantes: par ex. "whats" == "what's"
+function isEqualInput(user, expected) {
+  return normalize(user) === normalize(expected);
+}
+
+function evaluate() {
+  let score = 0;
+  const results = [];
+  selected.forEach((q, idx) => {
+    const u1 = document.getElementById(`q${idx}_1`).value.trim();
+    const u2 = document.getElementById(`q${idx}_2`).value.trim();
+    const ok1 = isEqualInput(u1, q.answer[0]);
+    const ok2 = isEqualInput(u2, q.answer[1]);
+    const ok = ok1 && ok2;
+    if (ok) score++;
+    results.push({ idx: idx+1, clue: q.clue, user: [u1 || "(vide)", u2 || "(vide)"], expected: q.answer, correct: q.correct, ok1, ok2, ok });
+  });
+
+  // afficher résultat
+  const resDiv = document.getElementById('result');
+  resDiv.style.display = 'block';
+  let html = `<div class="result-card"><h3>Résultats</h3>`;
+  html += `<p class="small"><strong>Score :</strong> ${score} / ${selected.length}</p>`;
+  html += `<div style="margin-top:0.6rem">`;
+  results.forEach(r => {
+    html += `<div style="padding:0.45rem 0; border-top:1px solid #f0f2f5">`;
+    html += `<div class="small"><strong>${r.idx}.</strong> Indice : ${escapeHtml(r.clue)}</div>`;
+    html += `<div style="margin-top:0.25rem">Ta réponse : `;
+    html += `<span class="${r.ok1 ? 'ok' : 'bad'}">${escapeHtml(r.user[0])}</span> `;
+    html += `<span class="${r.ok2 ? 'ok' : 'bad'}">${escapeHtml(r.user[1])}</span>`;
+    html += `</div>`;
+    html += `<div class="small">Attendu : <strong>${escapeHtml(r.expected[0])}</strong> <strong>${escapeHtml(r.expected[1])}</strong></div>`;
+    html += `<div class="small">Question complète : ${escapeHtml(r.correct)}</div>`;
+    html += `</div>`;
+  });
+  html += `</div></div>`;
+  resDiv.innerHTML = html;
+  // faire défiler vers le résultat sur mobile
+  resDiv.scrollIntoView({behavior:'smooth'});
+}
+
+// simple escape pour éviter injection (suffisant ici)
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// initial render
+renderQuiz();
+
+// bouton évaluer
+document.getElementById('evalBtn').addEventListener('click', evaluate);
+
+// si tu veux regénérer un nouveau quiz sans recharger, décommente et utilise:
+// function regen() { selected = pickRandom(10); renderQuiz(); document.getElementById('result').style.display='none'; }
+</script>
+
+</body>
+</html>
