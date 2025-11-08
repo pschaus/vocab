@@ -3,205 +3,96 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Quiz Plaques d'immatriculation (anglais)</title>
+<title>Quiz – Plaques en anglais</title>
 <style>
-  :root { --bg:#f5f8fb; --card:#fff; --accent:#1f7ed0; --ok:#198754; --bad:#d63333; --muted:#666; }
-  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial; background:var(--bg); color:#111; padding:1rem; }
-  header { text-align:center; }
-  h1 { margin:0; font-size:1.25rem; }
-  p.lead { margin:0.4rem 0 1rem 0; color:var(--muted); font-size:0.95rem; }
-  .card { background:var(--card); border-radius:12px; padding:1rem; box-shadow:0 8px 22px rgba(15,30,60,0.06); max-width:720px; margin:0 auto; }
-  .big { font-size:1.4rem; text-align:center; margin:0.6rem 0; }
-  .controls { display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center; margin-top:0.6rem; }
-  button { padding:0.75rem 1rem; font-size:1rem; border:0; border-radius:10px; background:var(--accent); color:#fff; flex:1 1 auto; min-width:120px; }
-  button.secondary { background:#e9eef8; color:#0a47a1; }
-  input[type="text"] { width:100%; font-size:1.3rem; padding:0.6rem; border-radius:10px; border:1px solid #d0d6dc; box-sizing:border-box; text-align:center; letter-spacing:0.15em; }
-  .row { display:flex; gap:0.6rem; margin-top:0.6rem; }
-  .col { flex:1; }
-  .meta { display:flex; justify-content:space-between; color:var(--muted); margin-top:0.5rem; font-size:0.95rem; }
-  #result { margin-top:0.8rem; display:none; }
-  .result-card { background:#fff; padding:0.8rem; border-radius:10px; box-shadow:0 4px 12px rgba(20,30,50,0.05); }
-  .ok { color:var(--ok); font-weight:700; }
-  .bad { color:var(--bad); font-weight:700; }
-  .small { font-size:0.9rem; color:var(--muted); }
+  :root { --bg:#f5f7fa; --card:#fff; --accent:#2b8a3e; --muted:#666; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+         background:var(--bg); color:#222; padding:1rem; }
+  header { text-align:center; margin-bottom:1rem; }
+  h1 { font-size:1.2rem; margin:0; }
+  p.lead { margin:0.4rem 0 1.2rem 0; color:var(--muted); font-size:0.95rem; }
+  .card { background:var(--card); border-radius:12px; padding:1.2rem; 
+          box-shadow:0 6px 18px rgba(20,30,50,0.06); max-width:400px; margin:auto; text-align:center; }
+  input[type="text"] { width:80%; padding:0.5rem; font-size:1.2rem; text-align:center; border-radius:10px; border:1px solid #ccc; margin-top:0.6rem; }
+  button { padding:0.7rem 1rem; font-size:1rem; border:0; border-radius:10px; cursor:pointer; margin:0.3rem; }
+  .btn-primary { background:var(--accent); color:#fff; }
+  .btn-secondary { background:#888; color:#fff; }
+  .result { margin-top:0.8rem; font-weight:bold; font-size:1.1rem; }
+  .ok { color:green; }
+  .bad { color:#c33; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Quiz : Plaques d'immatriculation (anglais)</h1>
-  <p class="lead">Écoute la plaque prononcée lettre par lettre, puis écris-la (ex : <strong>f7lp2</strong>).</p>
+  <h1>Quiz – Plaques d’immatriculation (écoute & écris)</h1>
+  <p class="lead">Écoute la plaque prononcée en anglais, puis écris-la sans espaces.</p>
 </header>
 
-<main class="card" id="app">
-  <div class="meta">
-    <div>Question <span id="qIndex">0</span>/<span id="qTotal">0</span></div>
-    <div class="small">Voix: <span id="voiceInfo">—</span></div>
+<main>
+  <div class="card">
+    <button id="playFast" class="btn-primary">🔊 Lecture rapide</button>
+    <button id="playSlow" class="btn-secondary">🐢 Lecture lente</button>
+    <div>
+      <input type="text" id="answer" placeholder="ex: ab12cd">
+    </div>
+    <button id="checkBtn" class="btn-primary">✅ Valider</button>
+    <button id="nextBtn" class="btn-secondary" style="display:none;">⏭ Suivant</button>
+    <div id="feedback" class="result"></div>
   </div>
-
-  <div class="big" id="prompt">—</div>
-
-  <div class="controls">
-    <button id="playBtn">🔊 Lecture rapide</button>
-    <button id="slowBtn" class="secondary">🐢 Lecture lente</button>
-  </div>
-
-  <div style="margin-top:0.8rem;">
-    <input id="answerInput" type="text" inputmode="text" placeholder="Tape la plaque entendue (ex: f7lp2)" autocomplete="off" autocapitalize="none" />
-  </div>
-
-  <div class="row">
-    <div class="col"><button id="checkBtn" class="secondary">Valider</button></div>
-    <div class="col"><button id="nextBtn" class="secondary">Suivante</button></div>
-  </div>
-
-  <div style="margin-top:0.6rem;">
-    <button id="finishBtn">Évaluation</button>
-  </div>
-
-  <div id="result"></div>
 </main>
 
 <script>
-const TOTAL = 10;
-
+// Génère une plaque aléatoire (6 caractères : lettres et chiffres)
 function randomPlate() {
   const letters = "abcdefghijklmnopqrstuvwxyz";
   const digits = "0123456789";
-  function pick(arr, n) {
-    let s = "";
-    for (let i=0;i<n;i++) s += arr[Math.floor(Math.random()*arr.length)];
-    return s;
-  }
-  // 5 à 6 caractères aléatoires (mix lettres/chiffres)
-  const length = Math.floor(Math.random()*2)+5;
   let plate = "";
-  for (let i=0; i<length; i++) {
-    plate += (Math.random() < 0.6) ? pick(letters,1) : pick(digits,1);
+  for (let i = 0; i < 6; i++) {
+    plate += Math.random() < 0.5 ? 
+      letters[Math.floor(Math.random() * letters.length)] : 
+      digits[Math.floor(Math.random() * digits.length)];
   }
-  return plate.toLowerCase();
+  return plate;
 }
 
-function makeQuiz(n) {
-  const arr = [];
-  for (let i=0;i<n;i++) arr.push(randomPlate());
-  return arr;
+let currentPlate = randomPlate();
+
+function speakPlate(rate = 1) {
+  const msg = new SpeechSynthesisUtterance();
+  msg.lang = "en-GB"; // accent britannique, tu peux changer en "en-US"
+  msg.rate = rate;
+  msg.text = currentPlate.split("").join(" "); // épelle les lettres séparées
+  window.speechSynthesis.speak(msg);
 }
 
-let quiz = makeQuiz(TOTAL);
-let index = 0;
-let attempts = [];
-
-const synth = window.speechSynthesis;
-let voices = [];
-function loadVoices() {
-  voices = synth.getVoices() || [];
-  const preferred = voices.find(v => /en-(GB)/i.test(v.lang)) || voices.find(v => /^en/i.test(v.lang)) || voices[0];
-  const info = preferred ? `${preferred.name} (${preferred.lang})` : 'n/a';
-  document.getElementById('voiceInfo').textContent = info;
-  return preferred;
-}
-let voice = loadVoices();
-if (speechSynthesis.onvoiceschanged !== undefined) {
-  speechSynthesis.onvoiceschanged = () => voice = loadVoices();
+function newQuestion() {
+  currentPlate = randomPlate();
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("nextBtn").style.display = "none";
 }
 
-function speakPlate(plate, slow=false) {
-  if (!('speechSynthesis' in window)) {
-    alert("Synthèse vocale non disponible dans ce navigateur.");
-    return;
+document.getElementById("playFast").onclick = () => speakPlate(1.1);
+document.getElementById("playSlow").onclick = () => speakPlate(0.7);
+
+document.getElementById("checkBtn").onclick = () => {
+  const ans = document.getElementById("answer").value.trim().toLowerCase();
+  const fb = document.getElementById("feedback");
+  if (ans === currentPlate) {
+    fb.textContent = "✅ Correct !";
+    fb.className = "result ok";
+  } else {
+    fb.innerHTML = `❌ Mauvais. Réponse : <span class="bad">${currentPlate}</span>`;
+    fb.className = "result bad";
   }
-  const items = plate.split("");
-  const utterance = new SpeechSynthesisUtterance(items.join(" "));
-  utterance.lang = voice ? voice.lang : "en-US";
-  utterance.voice = voice;
-  utterance.rate = slow ? 0.2 : 0.9;
-  utterance.pitch = 1.0;
-  synth.cancel();
-  synth.speak(utterance);
-}
+  document.getElementById("nextBtn").style.display = "inline-block";
+};
 
-const prompt = document.getElementById("prompt");
-const qIndex = document.getElementById("qIndex");
-const qTotal = document.getElementById("qTotal");
-const playBtn = document.getElementById("playBtn");
-const slowBtn = document.getElementById("slowBtn");
-const answerInput = document.getElementById("answerInput");
-const checkBtn = document.getElementById("checkBtn");
-const nextBtn = document.getElementById("nextBtn");
-const finishBtn = document.getElementById("finishBtn");
-const resultDiv = document.getElementById("result");
+document.getElementById("nextBtn").onclick = newQuestion;
 
-qTotal.textContent = quiz.length;
-
-function renderQuestion() {
-  qIndex.textContent = index+1;
-  prompt.textContent = "🔈 Écoute la plaque";
-  answerInput.value = "";
-  answerInput.focus();
-}
-
-function normalize(s) {
-  return (s||"").toLowerCase().replace(/[^a-z0-9]/g,"").trim();
-}
-
-function checkAnswer() {
-  const user = normalize(answerInput.value);
-  const correct = normalize(quiz[index]);
-  const ok = user === correct;
-  attempts.push({plate: correct, user: user || "(vide)", ok});
-  prompt.innerHTML = ok ? `<span class="ok">✅ Correct (${correct})</span>` : `<span class="bad">❌ Faux — c’était "${correct}"</span>`;
-  checkBtn.disabled = true;
-  nextBtn.disabled = false;
-}
-
-function nextQuestion() {
-  index++;
-  if (index >= quiz.length) {
-    prompt.textContent = "Quiz terminé — appuie sur Évaluation.";
-    checkBtn.disabled = true;
-    nextBtn.disabled = true;
-    return;
-  }
-  renderQuestion();
-  checkBtn.disabled = false;
-  nextBtn.disabled = true;
-  playCurrent(false);
-}
-
-function playCurrent(slow=false) {
-  const plate = quiz[index];
-  speakPlate(plate, slow);
-}
-
-function showResults() {
-  while (attempts.length < quiz.length)
-    attempts.push({plate: quiz[attempts.length], user:"(non répondu)", ok:false});
-  const score = attempts.filter(a=>a.ok).length;
-  let html = `<div class="result-card"><h3>Résultats</h3><p class="small"><strong>Score :</strong> ${score} / ${quiz.length}</p>`;
-  attempts.forEach((a,i)=>{
-    html += `<div style="border-top:1px solid #eee; padding:0.4rem 0;">
-      <strong>${i+1}.</strong> ${a.ok ? '<span class="ok">✅</span>' : '<span class="bad">❌</span>'}
-      <div class="small">Attendu : ${a.plate}</div>
-      <div class="small">Réponse : ${a.user}</div>
-    </div>`;
-  });
-  html += "</div>";
-  resultDiv.innerHTML = html;
-  resultDiv.style.display = "block";
-  resultDiv.scrollIntoView({behavior:"smooth"});
-}
-
-playBtn.onclick = () => playCurrent(false);
-slowBtn.onclick = () => playCurrent(true);
-checkBtn.onclick = checkAnswer;
-nextBtn.onclick = nextQuestion;
-finishBtn.onclick = showResults;
-
-renderQuestion();
-nextBtn.disabled = true;
-checkBtn.disabled = false;
-setTimeout(()=>{try{playCurrent(false);}catch(e){}},700);
+// Démarre le premier quiz
+speakPlate(1);
 </script>
 
 </body>
