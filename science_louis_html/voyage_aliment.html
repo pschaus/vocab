@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Digestion: Mécanique ou Chimique</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+        .question-block {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .options label {
+            display: block;
+            margin: 8px 0;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .options label:hover {
+            background-color: #e0f7fa;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        #submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        #submit-btn:hover {
+            background-color: #218838;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid;
+            display: none; /* Masqué initialement */
+        }
+        .correct {
+            border-color: #28a745;
+            color: #28a745;
+            background-color: #e6ffed;
+        }
+        .incorrect {
+            border-color: #dc3545;
+            color: #dc3545;
+            background-color: #ffe6e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔬 Quiz : Actions de la Digestion</h1>
+    <p>Identifiez chaque étape de la digestion comme étant principalement une **Action Mécanique** (physique) ou une **Action Chimique** (avec des substances comme les enzymes/acides).</p>
+
+    <form id="quiz-form">
+        <div class="question-block" data-answer="MÉCANIQUE">
+            <p class="question-text">1. Les cornflakes sont **écrasés** par une pression de 100kg/cm² et **broyés** par les molaires.</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="MÉCANIQUE"> Action Mécanique</label>
+                <label><input type="radio" name="q1" value="CHIMIQUE"> Action Chimique</label>
+            </div>
+        </div>
+
+        <div class="question-block" data-answer="CHIMIQUE">
+            <p class="question-text">2. Les cornflakes baignent dans la **salive** (liquide corrosif) produite par les glandes salivaires.</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="MÉCANIQUE"> Action Mécanique</label>
+                <label><input type="radio" name="q2" value="CHIMIQUE"> Action Chimique</label>
+            </div>
+        </div>
+        
+        <div class="question-block" data-answer="MÉCANIQUE">
+            <p class="question-text">3. Dans l'estomac, il y a **malaxage mécanique** et **gigantesques convulsions**.</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="MÉCANIQUE"> Action Mécanique</label>
+                <label><input type="radio" name="q3" value="CHIMIQUE"> Action Chimique</label>
+            </div>
+        </div>
+
+        <div class="question-block" data-answer="CHIMIQUE">
+            <p class="question-text">4. Le peu qui reste est **rongé** par l'**acide virulent** (suc gastrique) dans l'estomac.</p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="MÉCANIQUE"> Action Mécanique</label>
+                <label><input type="radio" name="q4" value="CHIMIQUE"> Action Chimique</label>
+            </div>
+        </div>
+        
+        <div class="question-block" data-answer="CHIMIQUE">
+            <p class="question-text">5. Le foie et le pancréas déversent la **bile** et le **suc pancréatique** dans l'intestin grêle.</p>
+            <div class="options">
+                <label><input type="radio" name="q5" value="MÉCANIQUE"> Action Mécanique</label>
+                <label><input type="radio" name="q5" value="CHIMIQUE"> Action Chimique</label>
+            </div>
+        </div>
+
+        <button type="submit" id="submit-btn">✅ Terminer le Quiz</button>
+    </form>
+
+    <div id="results"></div>
+</div>
+
+<script>
+    document.getElementById('quiz-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const questions = document.querySelectorAll('.question-block');
+        let score = 0;
+        let totalQuestions = questions.length;
+        const resultsDiv = document.getElementById('results');
+        
+        questions.forEach((q, index) => {
+            const correctAnswer = q.getAttribute('data-answer');
+            const selectedOption = document.querySelector(`input[name="q${index + 1}"]:checked`);
+            
+            // Réinitialiser la couleur pour l'accessibilité
+            q.style.border = '1px solid #ddd';
+            q.style.backgroundColor = '#f9f9f9';
+            
+            if (selectedOption) {
+                const selectedAnswer = selectedOption.value;
+                if (selectedAnswer === correctAnswer) {
+                    score++;
+                    q.style.border = '2px solid #28a745'; // Vert pour correct
+                    q.style.backgroundColor = '#e6ffed';
+                } else {
+                    q.style.border = '2px solid #dc3545'; // Rouge pour incorrect
+                    q.style.backgroundColor = '#ffe6e6';
+                }
+            } else {
+                 // Si non répondu, on peut ajouter une indication
+                 q.style.border = '2px solid #ffc107'; 
+            }
+        });
+        
+        // Afficher les résultats finaux
+        resultsDiv.innerHTML = `Votre score est de ${score} / ${totalQuestions}.`;
+        resultsDiv.style.display = 'block';
+
+        if (score === totalQuestions) {
+            resultsDiv.classList.remove('incorrect');
+            resultsDiv.classList.add('correct');
+            resultsDiv.innerHTML += "<br>Félicitations ! Vous avez tout bon ! 🎉";
+        } else {
+            resultsDiv.classList.remove('correct');
+            resultsDiv.classList.add('incorrect');
+            resultsDiv.innerHTML += "<br>Continuez à réviser ! 🤔";
+        }
+        
+        // Remonter l'utilisateur aux résultats (utile pour les longs quiz sur mobile)
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>
