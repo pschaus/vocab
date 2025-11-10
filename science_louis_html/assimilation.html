@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz : L'Assimilation et la Matière Organique</title>
+    <style>
+        :root {
+            --color-bg: #f4f7f6;
+            --color-text: #333;
+            --color-primary: #17a2b8; /* Bleu-Cyan pour le thème Biologie */
+            --color-correct: #28a745;
+            --color-incorrect: #dc3545;
+            --color-white: #ffffff;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--color-white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Style pour l'image (si vous l'insérez) */
+        .illustration-zone {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .illustration-zone img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            border: 1px solid #ccc;
+        }
+        
+        /* Conteneur du texte à trous */
+        .cloze-text {
+            font-size: 1.2rem;
+            line-height: 2.5;
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px dashed #ccc;
+            border-radius: var(--border-radius);
+            background-color: #e8f8f9;
+        }
+        
+        /* Style des listes déroulantes */
+        .cloze-select {
+            padding: 5px 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            min-width: 150px;
+            margin: 0 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .cloze-select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        /* Styles de feedback */
+        .correct-input { border-color: var(--color-correct) !important; background-color: #eaf7ed; }
+        .incorrect-input { border-color: var(--color-incorrect) !important; background-color: #f7eded; }
+
+        .quiz-actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .quiz-button {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin: 0 5px;
+        }
+        
+        .quiz-button:hover {
+            background-color: #117a8b;
+        }
+
+        #resetBtn {
+            background-color: #6c757d;
+        }
+        
+        #resetBtn:hover {
+            background-color: #5a6268;
+        }
+
+        #score-container {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: var(--border-radius);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🧠 Quiz : Définir l'Assimilation</h1>
+        <p>Complétez la définition de l'assimilation en choisissant les bons termes dans chaque liste déroulante.</p>
+
+        <div class="illustration-zone">
+            <img src="image_assimilation.png" alt="Schéma expliquant l'assimilation de la matière organique">
+        </div>
+
+        <form id="quizForm">
+            <div class="cloze-text">
+                L'assimilation est le <select id="q1" class="cloze-select"></select> des <select id="q2" class="cloze-select"></select> <br>
+                au niveau des <select id="q3" class="cloze-select"></select> pour fabriquer de la <select id="q4" class="cloze-select"></select> (<select id="q5" class="cloze-select"></select>).
+            </div>
+
+            <div id="score-container"></div>
+
+            <div class="quiz-actions">
+                <button type="button" id="submitBtn" class="quiz-button">Vérifier</button>
+                <button type="button" id="resetBtn" class="quiz-button" style="display:none;">Recommencer</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION DU QUIZ ---
+
+        // Les bonnes réponses, basées sur votre définition manuscrite
+        const correctAnswers = {
+            1: "réassemblage",
+            2: "nutriments",
+            3: "cellules",
+            4: "nouvelle matière organique",
+            5: "=vivant"
+        };
+        
+        // Liste unique de tous les mots pour les options (y compris les distracteurs si vous voulez)
+        const wordList = [
+            "transport", "réassemblage", "absorption", 
+            "matière inorganique", "nutriments", "eau",
+            "estomac", "cellules", "intestin grêle",
+            "ancienne matière organique", "nouvelle matière organique", "graisse",
+            "=vivant", "inerte", "minéral"
+        ];
+
+        // Mappage de chaque question avec les options disponibles (pour un meilleur contrôle)
+        const optionsMap = {
+            q1: ["--- Choisir ---", "réassemblage", "transport", "digestion"],
+            q2: ["--- Choisir ---", "protéines", "nutriments", "sels minéraux"],
+            q3: ["--- Choisir ---", "organes", "cellules", "tissus"],
+            q4: ["--- Choisir ---", "nourriture", "déchets", "nouvelle matière organique"],
+            q5: ["--- Choisir ---", "=vivant", "inerte", "liquide"]
+        };
+
+
+        const totalQuestions = Object.keys(correctAnswers).length;
+
+        // --- 2. ÉLÉMENTS DU DOM ---
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const scoreContainer = document.getElementById('score-container');
+        const quizForm = document.getElementById('quizForm');
+
+        // --- 3. FONCTIONS DU QUIZ ---
+
+        /**
+         * Normalise une chaîne de caractères pour la comparaison (sans accents, minuscule)
+         */
+        function normalizeString(str) {
+            return str
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
+                .toLowerCase() 
+                .trim(); 
+        }
+        
+        /**
+         * Remplit toutes les listes déroulantes avec les options définies dans optionsMap
+         */
+        function populateDropdowns() {
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selectId = `q${i}`;
+                const selectElement = document.getElementById(selectId);
+                if (selectElement) {
+                    // Les options pour cette question
+                    const currentOptions = optionsMap[selectId] || ["--- Choisir ---"];
+                    
+                    let optionsHtml = '';
+                    currentOptions.forEach(word => {
+                        // Utilise la première option comme valeur vide (Choisir)
+                        if (word.startsWith('---')) {
+                             optionsHtml += `<option value="">${word}</option>`;
+                        } else {
+                             optionsHtml += `<option value="${normalizeString(word)}">${word}</option>`;
+                        }
+                    });
+                    selectElement.innerHTML = optionsHtml;
+                }
+            }
+        }
+
+        /**
+         * Vérifie les réponses de l'utilisateur
+         */
+        function checkAnswers() {
+            let score = 0;
+            let allCorrect = true;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selectId = `q${i}`;
+                const input = document.getElementById(selectId); 
+                
+                // Normalise les réponses
+                const normalizedCorrectAnswer = normalizeString(correctAnswers[i]);
+                const normalizedUserAnswer = input.value; 
+
+                // Réinitialise les styles
+                input.classList.remove('correct-input', 'incorrect-input');
+                
+                // Vérification
+                if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                    score++;
+                    input.classList.add('correct-input');
+                } else {
+                    allCorrect = false;
+                    input.classList.add('incorrect-input');
+                }
+                
+                // Désactive l'input après vérification
+                input.disabled = true;
+            }
+
+            // Affiche le score
+            scoreContainer.innerHTML = `Votre score : ${score} / ${totalQuestions}`;
+            
+            // Gère l'affichage des boutons
+            submitBtn.style.display = 'none';
+            resetBtn.style.display = 'inline-block';
+        }
+
+        /**
+         * Réinitialise le quiz
+         */
+        function resetQuiz() {
+            scoreContainer.innerHTML = '';
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selectId = `q${i}`;
+                const input = document.getElementById(selectId);
+                
+                // Réinitialise tout
+                input.value = ''; // Réinitialise à la première option (Choisir)
+                input.disabled = false;
+                input.classList.remove('correct-input', 'incorrect-input');
+            }
+            
+            // Gère l'affichage des boutons
+            submitBtn.style.display = 'inline-block';
+            resetBtn.style.display = 'none';
+        }
+
+        // --- 4. ÉCOUTEURS D'ÉVÉNEMENTS ---
+
+        // Au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDropdowns(); 
+        });
+
+        // Clic sur le bouton "Vérifier"
+        submitBtn.addEventListener('click', checkAnswers);
+        
+        // Clic sur le bouton "Recommencer"
+        resetBtn.addEventListener('click', resetQuiz);
+
+    </script>
+</body>
+</html>

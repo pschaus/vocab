@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Vrai ou Faux - Absorption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #008cba;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5em;
+        }
+
+        /* Section Image (simplifiée) */
+        #image-input-section {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            background-color: #fff8e1;
+            text-align: center; /* Centrer l'image si elle est petite */
+        }
+        #image-input-section img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+        
+        /* Styles des Questions */
+        .question-block {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #cceeff;
+            border-radius: 8px;
+            background-color: #e9f7ff;
+        }
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+        }
+        .options label {
+            flex-grow: 1;
+            text-align: center;
+            padding: 12px 15px;
+            margin: 0 5px;
+            background-color: #fff;
+            border: 2px solid #008cba;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .options input[type="radio"] {
+            display: none;
+        }
+        .options input[type="radio"]:checked + span {
+            background-color: #008cba;
+            color: white;
+            border-color: #005f7a;
+            font-weight: bold;
+        }
+        .feedback {
+            margin-top: 8px;
+            font-size: 0.9em;
+            font-weight: bold;
+            text-align: right;
+            min-height: 1.2em;
+        }
+        .correct-feedback { color: #28a745; }
+        .incorrect-feedback { color: #dc3545; }
+
+        #submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid;
+            display: none;
+        }
+        .score-correct { border-color: #28a745; color: #28a745; background-color: #e6ffed; }
+        .score-incorrect { border-color: #dc3545; color: #dc3545; background-color: #ffe6e6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>❓ Quiz : Vrai ou Faux sur l'Absorption</h1>
+    <p>Utilisez l'image de référence pour répondre aux affirmations ci-dessous.</p>
+    
+    <div id="image-input-section">
+        <img src="absorption.jpg" alt="Graphique de l'absorption des nutriments">
+    </div>
+
+    <form id="quiz-form">
+        
+        <div class="question-block" data-answer="FAUX">
+            <p class="question-text">1. Les proportions de protéines, lipides et glucides restent constantes de la bouche jusqu’au début de l’intestin grêle.</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="VRAI"><span>VRAI</span></label>
+                <label><input type="radio" name="q1" value="FAUX"><span>FAUX</span></label>
+            </div>
+            <div class="feedback" id="f1"></div>
+        </div>
+
+        <div class="question-block" data-answer="VRAI">
+            <p class="question-text">2. L’absorption des nutriments se déroule principalement au niveau de l’intestin grêle.</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="VRAI"><span>VRAI</span></label>
+                <label><input type="radio" name="q2" value="FAUX"><span>FAUX</span></label>
+            </div>
+            <div class="feedback" id="f2"></div>
+        </div>
+        
+        <div class="question-block" data-answer="FAUX">
+            <p class="question-text">3. Les quantités de protéines, lipides et glucides diminuent fortement dans l’estomac.</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="VRAI"><span>VRAI</span></label>
+                <label><input type="radio" name="q3" value="FAUX"><span>FAUX</span></label>
+            </div>
+            <div class="feedback" id="f3"></div>
+        </div>
+
+        <div class="question-block" data-answer="VRAI">
+            <p class="question-text">4. Les glucides sont totalement absorbés avant d’arriver au gros intestin.</p>
+            <div class="options">
+                <label><input type="radio" name="q4" value="VRAI"><span>VRAI</span></label>
+                <label><input type="radio" name="q4" value="FAUX"><span>FAUX</span></label>
+            </div>
+            <div class="feedback" id="f4"></div>
+        </div>
+        
+        <div class="question-block" data-answer="VRAI">
+            <p class="question-text">5. Au niveau de la bouche, aucun nutriment n’a encore été absorbé.</p>
+            <div class="options">
+                <label><input type="radio" name="q5" value="VRAI"><span>VRAI</span></label>
+                <label><input type="radio" name="q5" value="FAUX"><span>FAUX</span></label>
+            </div>
+            <div class="feedback" id="f5"></div>
+        </div>
+
+        <button type="submit" id="submit-btn">✅ Vérifier les Réponses</button>
+    </form>
+
+    <div id="results"></div>
+</div>
+
+<script>
+    // Seule la logique d'évaluation du quiz est conservée
+    document.getElementById('quiz-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const questions = document.querySelectorAll('.question-block');
+        let score = 0;
+        const totalQuestions = questions.length;
+        const resultsDiv = document.getElementById('results');
+        
+        questions.forEach((q, index) => {
+            const questionNumber = index + 1;
+            const correctAnswer = q.getAttribute('data-answer');
+            const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+            const feedbackDiv = document.getElementById(`f${questionNumber}`);
+            
+            // Réinitialiser le style et le feedback
+            q.style.border = '1px solid #cceeff';
+            q.style.backgroundColor = '#e9f7ff';
+            feedbackDiv.textContent = '';
+            feedbackDiv.className = 'feedback';
+            
+            // Réinitialiser le style de toutes les options non sélectionnées
+            document.querySelectorAll(`input[name="q${questionNumber}"] + span`).forEach(span => {
+                 span.style.border = '2px solid #008cba';
+            });
+
+
+            if (selectedOption) {
+                const selectedAnswer = selectedOption.value;
+                if (selectedAnswer === correctAnswer) {
+                    score++;
+                    q.style.border = '2px solid #28a745'; // Vert pour correct
+                    q.style.backgroundColor = '#d4edda';
+                    feedbackDiv.textContent = 'Correct !';
+                    feedbackDiv.classList.add('correct-feedback');
+                } else {
+                    q.style.border = '2px solid #dc3545'; // Rouge pour incorrect
+                    q.style.backgroundColor = '#f8d7da';
+                    feedbackDiv.textContent = `Faux. La bonne réponse était : ${correctAnswer}.`;
+                    feedbackDiv.classList.add('incorrect-feedback');
+                    
+                    // Optionnel : mettre en évidence la bonne réponse
+                    document.querySelector(`input[name="q${questionNumber}"][value="${correctAnswer}"] + span`).style.border = '2px solid #28a745';
+                    document.querySelector(`input[name="q${questionNumber}"][value="${correctAnswer}"] + span`).style.backgroundColor = '#e6ffed';
+                }
+            } else {
+                 // Si non répondu
+                 q.style.border = '2px solid #ffc107'; 
+                 q.style.backgroundColor = '#fff3cd';
+                 feedbackDiv.textContent = 'Veuillez répondre.';
+                 feedbackDiv.classList.add('incorrect-feedback');
+            }
+        });
+        
+        // Afficher les résultats finaux
+        resultsDiv.innerHTML = `Votre score est de ${score} / ${totalQuestions}.`;
+        resultsDiv.style.display = 'block';
+
+        if (score === totalQuestions) {
+            resultsDiv.classList.remove('score-incorrect');
+            resultsDiv.classList.add('score-correct');
+            resultsDiv.innerHTML += "<br>Parfait ! Vous maîtrisez les principes de l'absorption. 💯";
+        } else {
+            resultsDiv.classList.remove('score-correct');
+            resultsDiv.classList.add('score-incorrect');
+            resultsDiv.innerHTML += "<br>Revoyez les affirmations en rouge !";
+        }
+        
+        // Remonter l'utilisateur aux résultats
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz : Structure de l'Intestin Grêle</title>
+    
+    <style>
+        :root {
+            --color-bg: #f4f7f6;
+            --color-text: #333;
+            --color-primary: #8a2be2; /* Violet pour le thème "Cellulaire" */
+            --color-correct: #28a745;
+            --color-incorrect: #dc3545;
+            --color-white: #ffffff;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: var(--color-primary);
+            margin-bottom: 0.5em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--color-white);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .quiz-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .image-area {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* NOUVELLE RÈGLE pour s'assurer que l'image s'adapte */
+        .image-area img {
+            max-width: 100%; 
+            height: auto; /* TRÈS IMPORTANT pour maintenir le ratio */
+            border-radius: var(--border-radius);
+            border: 2px solid #eee;
+            /* Si vous aviez un max-height dans .image-placeholder, vous pouvez l'appliquer ici si nécessaire */
+            max-height: 450px; /* Ajout d'une hauteur maximale pour les très grandes images */
+            object-fit: contain; /* S'assure que l'image est entièrement visible */
+            display: block;
+            margin: 0 auto;
+        }
+        
+        /* Suppression des styles du placeholder car l'image est maintenant insérée directement */
+        .image-placeholder {
+            /* Ces styles ne sont plus utiles si vous utilisez une balise <img> directe */
+             display: none; 
+        }
+
+        .quiz-area {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .quiz-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .quiz-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .quiz-list label {
+            width: 30px; 
+        }
+
+        .quiz-list select {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid #ccc;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background-color: var(--color-white);
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%238a2be2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20128c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4l128-128c3.6-3.6%205.4-7.8%205.4-12.8%200-5-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 10px;
+        }
+
+        .quiz-list select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+        }
+
+        .feedback {
+            margin-left: 10px;
+            font-size: 1.3rem;
+            width: 20px; 
+        }
+        
+        .feedback-text {
+            margin-left: 5px;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--color-incorrect);
+            font-weight: normal;
+        }
+
+        /* Classes de validation */
+        .correct-input {
+            border-color: var(--color-correct) !important;
+            background-color: #f0fff4;
+        }
+        .incorrect-input {
+            border-color: var(--color-incorrect) !important;
+            background-color: #fff0f0;
+        }
+        .correct-feedback {
+            color: var(--color-correct);
+        }
+        .incorrect-feedback {
+            color: var(--color-incorrect);
+        }
+        
+        #score-container {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .score-good {
+            background-color: #e6f7ec;
+            color: var(--color-correct);
+        }
+
+        .score-bad {
+            background-color: #fbebee;
+            color: var(--color-incorrect);
+        }
+
+        .quiz-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .quiz-button {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-button:hover {
+            background-color: #6a1b9a; /* Teinte plus foncée */
+        }
+
+        #resetBtn {
+            background-color: #6c757d;
+        }
+        
+        #resetBtn:hover {
+            background-color: #5a6268;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🔬 Quiz : Structure de l'Intestin Grêle</h1>
+        <p>Utilisez l'image et les listes déroulantes pour identifier chaque partie numérotée.</p>
+
+        <div class="quiz-wrapper">
+            
+            <div class="image-area">
+                <h2>Schéma à compléter</h2>
+                <img src="absorption_schema.jpg" alt="Schéma de l'intestin grêle numéroté de 1 à 8">
+            </div>
+
+            <div class="quiz-area">
+                <h2>Vos réponses</h2>
+                <form id="quizForm">
+                    <ol class="quiz-list">
+                        <li><label for="q1">1.</label> <select id="q1"></select> <span class="feedback" id="f1"></span><span class="feedback-text" id="ft1"></span></li>
+                        <li><label for="q2">2.</label> <select id="q2"></select> <span class="feedback" id="f2"></span><span class="feedback-text" id="ft2"></span></li>
+                        <li><label for="q3">3.</label> <select id="q3"></select> <span class="feedback" id="f3"></span><span class="feedback-text" id="ft3"></span></li>
+                        <li><label for="q4">4.</label> <select id="q4"></select> <span class="feedback" id="f4"></span><span class="feedback-text" id="ft4"></span></li>
+                        <li><label for="q5">5.</label> <select id="q5"></select> <span class="feedback" id="f5"></span><span class="feedback-text" id="ft5"></span></li>
+                        <li><label for="q6">6.</label> <select id="q6"></select> <span class="feedback" id="f6"></span><span class="feedback-text" id="ft6"></span></li>
+                        <li><label for="q7">7.</label> <select id="q7"></select> <span class="feedback" id="f7"></span><span class="feedback-text" id="ft7"></span></li>
+                        <li><label for="q8">8.</label> <select id="q8"></select> <span class="feedback" id="f8"></span><span class="feedback-text" id="ft8"></span></li>
+                    </ol>
+
+                    <div id="score-container"></div>
+
+                    <div class="quiz-actions">
+                        <button type="button" id="submitBtn" class="quiz-button">Vérifier mes réponses</button>
+                        <button type="button" id="resetBtn" class="quiz-button" style="display:none;">Recommencer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. CONFIGURATION DU QUIZ ---
+
+        // Objet avec les bonnes réponses (Numéro: "Réponse")
+        const correctAnswers = {
+            1: "Intestin grèle",
+            2: "Villosité intestinale",
+            3: "Cellule intestinale",
+            4: "Capilaires sangins",
+            5: "Lumen",
+            6: "Replis et villosités",
+            7: "Micro villosités",
+            8: "Lumen"
+        };
+        
+        // Liste de tous les mots pour les options
+        const wordList = [
+            "Capilaires sangins", "Cellule intestinale", "Intestin grèle",
+            "Lumen", "Micro villosités", "Replis et villosités", "Villosité intestinale"
+        ].sort(); 
+
+        // Total des questions (fixé à 8)
+        const totalQuestions = 8;
+
+        // --- 2. ÉLÉMENTS DU DOM ---
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const scoreContainer = document.getElementById('score-container');
+
+        // --- 3. FONCTIONS DU QUIZ ---
+
+        /**
+         * Normalise une chaîne de caractères pour la comparaison (robustesse)
+         */
+        function normalizeString(str) {
+            return str
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
+                .toLowerCase() 
+                .trim(); 
+        }
+        
+        /**
+         * Remplit toutes les listes déroulantes avec les options
+         */
+        function populateDropdowns() {
+            let optionsHtml = '<option value="">--- Choisissez ---</option>';
+            
+            wordList.forEach(word => {
+                optionsHtml += `<option value="${word}">${word}</option>`;
+            });
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selectElement = document.getElementById(`q${i}`);
+                if (selectElement) {
+                    selectElement.innerHTML = optionsHtml;
+                }
+            }
+        }
+
+        /**
+         * Vérifie les réponses de l'utilisateur
+         */
+        function checkAnswers() {
+            let score = 0;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const input = document.getElementById(`q${i}`); 
+                const feedbackIcon = document.getElementById(`f${i}`);
+                const feedbackText = document.getElementById(`ft${i}`);
+                
+                const correctAnswer = correctAnswers[i];
+                const normalizedCorrectAnswer = normalizeString(correctAnswer);
+
+                const userAnswer = input.value;
+                const normalizedUserAnswer = normalizeString(userAnswer);
+
+                // Réinitialise les styles et le texte
+                input.classList.remove('correct-input', 'incorrect-input');
+                feedbackIcon.classList.remove('correct-feedback', 'incorrect-feedback');
+                feedbackIcon.textContent = '';
+                feedbackText.textContent = '';
+                
+                if (normalizedUserAnswer === normalizedCorrectAnswer) {
+                    score++;
+                    input.classList.add('correct-input');
+                    feedbackIcon.classList.add('correct-feedback');
+                    feedbackIcon.textContent = '✔';
+                } else {
+                    input.classList.add('incorrect-input');
+                    feedbackIcon.classList.add('incorrect-feedback');
+                    feedbackIcon.textContent = '❌';
+                    // Si la réponse est fausse (ou vide), affiche la correction
+                    feedbackText.textContent = `(${correctAnswer})`; 
+                }
+                
+                // Désactive l'input après vérification
+                input.disabled = true;
+            }
+
+            // Affiche le score final
+            scoreContainer.innerHTML = `Votre score : ${score} / ${totalQuestions}`;
+            if (score >= (totalQuestions / 2)) {
+                scoreContainer.className = 'score-good';
+            } else {
+                scoreContainer.className = 'score-bad';
+            }
+
+            // Gère l'affichage des boutons
+            submitBtn.style.display = 'none';
+            resetBtn.style.display = 'inline-block';
+        }
+
+        /**
+         * Réinitialise le quiz
+         */
+        function resetQuiz() {
+            scoreContainer.innerHTML = '';
+            scoreContainer.className = '';
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const input = document.getElementById(`q${i}`);
+                const feedbackIcon = document.getElementById(`f${i}`);
+                const feedbackText = document.getElementById(`ft${i}`);
+
+                // Réinitialise tout
+                input.value = ''; 
+                input.disabled = false;
+                input.classList.remove('correct-input', 'incorrect-input');
+                feedbackIcon.textContent = '';
+                feedbackIcon.classList.remove('correct-feedback', 'incorrect-feedback');
+                feedbackText.textContent = '';
+            }
+            
+            // Gère l'affichage des boutons
+            submitBtn.style.display = 'inline-block';
+            resetBtn.style.display = 'none';
+        }
+
+        // --- 4. ÉCOUTEURS D'ÉVÉNEMENTS ---
+
+        // Au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            populateDropdowns(); // Remplit les listes déroulantes
+        });
+
+        // Clic sur le bouton "Vérifier"
+        submitBtn.addEventListener('click', checkAnswers);
+        
+        // Clic sur le bouton "Recommencer"
+        resetBtn.addEventListener('click', resetQuiz);
+
+    </script>
+</body>
+</html>
