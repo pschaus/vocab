@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulaire Digestion - Quiz Dynamique</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        h1 {
+            color: #ff6347;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            border-bottom: 2px solid #ff6347;
+            padding-bottom: 10px;
+        }
+        .instruction {
+            text-align: center;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #555;
+        }
+        .quiz-area {
+            line-height: 2.0;
+            font-size: 1.1em;
+            text-align: justify;
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .missing-word {
+            display: inline-block;
+            margin: 0 5px;
+        }
+        .missing-word select {
+            padding: 6px;
+            border-radius: 5px;
+            border: 2px solid #007bff;
+            font-size: 1em;
+            background-color: #e6f7ff;
+            cursor: pointer;
+            width: auto;
+            min-width: 120px; /* Taille minimale pour le mobile */
+            -webkit-appearance: none;
+            appearance: none;
+            text-align: center;
+            text-align-last: center;
+        }
+        #submit-btn, #refresh-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        #submit-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+        #submit-btn:hover {
+            background-color: #138496;
+        }
+        #refresh-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        #refresh-btn:hover {
+            background-color: #e0a800;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid;
+            display: none;
+        }
+        .correct-result {
+            border-color: #28a745;
+            color: #28a745;
+            background-color: #e6ffed;
+        }
+        .incorrect-result {
+            border-color: #dc3545;
+            color: #dc3545;
+            background-color: #ffe6e6;
+        }
+        .highlight-correct {
+            background-color: #d4edda !important;
+            border-color: #28a745 !important;
+            font-weight: bold;
+        }
+        .highlight-incorrect {
+            background-color: #f8d7da !important;
+            border-color: #dc3545 !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📚 Testez votre Vocabulaire de la Digestion</h1>
+    <p class="instruction">Complétez le texte en sélectionnant le terme correct dans les 10 zones à compléter. Le texte et les mots manquants changent à chaque nouvel essai !</p>
+
+    <form id="quiz-form">
+        <div class="quiz-area" id="quiz-text-container">
+            Chargement du quiz...
+        </div>
+
+        <button type="submit" id="submit-btn">🔎 Vérifier mes Réponses</button>
+        <button type="button" id="refresh-btn">🔄 Nouveau Quiz (10 mots aléatoires)</button>
+    </form>
+
+    <div id="results"></div>
+</div>
+
+<script>
+    // Tableau des mots techniques et leurs alternatives (pour les choix multiples)
+    const VOCABULARY = {
+        'incisives': ['canines', 'prémolaires', 'incisives'],
+        'molaires': ['canines', 'incisives', 'molaires'],
+        'langue': ['glandes salivaires', 'pharynx', 'langue'],
+        'salive': ['bile', 'suc gastrique', 'salive'],
+        'glandes salivaires': ['pancréas', 'glandes salivaires', 'foie'],
+        'œsophage': ['estomac', 'œsophage', 'pharynx'],
+        'estomac': ['intestin grêle', 'œsophage', 'estomac'],
+        'suc gastrique': ['bile', 'suc intestinal', 'suc gastrique'],
+        'Malaxage mécanique': ['Attaque chimique', 'Malaxage mécanique', 'Absorption'],
+        'convulsions': ['contractions', 'dilatations', 'convulsions'],
+        'pylore': ['duodénum', 'anus', 'pylore'],
+        'intestin': ['estomac', 'intestin', 'œsophage'],
+        'duodénum': ['jéjunum', 'iléon', 'duodénum'],
+        'intestin grêle': ['gros intestin', 'estomac', 'intestin grêle'],
+        'foie': ['pancréas', 'estomac', 'foie'],
+        'pancréas': ['glandes salivaires', 'foie', 'pancréas'],
+        'bile': ['salive', 'suc intestinal', 'bile'],
+        'suc pancréatique': ['suc gastrique', 'suc intestinal', 'suc pancréatique'],
+        'suc intestinal': ['bile', 'suc gastrique', 'suc intestinal'],
+        'nutriments': ['résidus', 'déchets', 'nutriments'],
+        'capillaires sanguins': ['veines', 'artères', 'capillaires sanguins'],
+        'gros intestin': ['intestin grêle', 'estomac', 'gros intestin'],
+        'anus': ['pylore', 'duodénum', 'anus']
+    };
+
+    // Texte original complet avec des marqueurs pour les mots clés
+    const originalTextTemplate = `
+        Une aventure étonnante !
+        Nous, les cornflakes, tranquillement occupés à prendre un bain de lait, nous voilà happés sans ménagement par un enfant affamé. Pas le temps de dire ouf ! Au rythme des mâchoires, une pression de 100kg par cm² nous écrase. Coupés par les [incisives] tranchantes, broyés par les [molaires] et malaxés par la [langue], nous baignons dans un liquide corrosif, la [salive] produite par les [glandes salivaires].
+        Nous pensons notre supplice terminé, en réalité l'enfer commence. En effet, nous voilà envoyés sans ménagement dans l'[œsophage], une chute d'environ 30cm, trajet T.G.V. à une vitesse de 3cm par seconde. Dix secondes d'un voyage qui sera sans retour.
+        Dans l'[estomac], nous sommes méconnaissables, complètement transformés, et le peu qu'il reste de nous est rongé par l'acide virulent, le [suc gastrique] produit par celui-ci. [Malaxage mécanique] et attaque chimique, tel est son rôle. En effet, de gigantesques [convulsions] s'ajoutant à cette agression nous font penser que la fin de nos jours est proche. Erreur évidente car après environ 5 heures de maltraitance, le [pylore], gardien de la porte, nous éjecte de l'estomac.
+        Seuls les petits fragments (moins de 1mm de diamètre) franchissent l'étroit canal qui mène à l'[intestin]. Dès cet instant, le [duodénum], début de l'[intestin grêle], nous attire. Le [foie] et le [pancréas] en rajoutent, comme si cela ne suffisait pas, en déversant la [bile] et le [suc pancréatique]. Le gros du travail est fait par les deux premiers mètres de l'[intestin grêle]. C'est le [suc intestinal] qui nous achève pendant 8 heures, dans les quatre mètres de ce long serpentin. Une partie de notre équipage, les [nutriments], passent dans des petits [capillaires sanguins] pour nourrir les cellules, les autres, plus inutiles, séjournent pendant 15 heures, en transit, dans le [gros intestin] avant d'être éjectés par l'[anus].
+    `;
+
+    const MAX_GAPS = 10;
+    let correctAnswersMap = new Map(); // Stocke la bonne réponse pour chaque champ généré
+
+    /**
+     * Mélange un tableau de manière aléatoire (algorithme de Fisher-Yates).
+     * @param {Array} array - Le tableau à mélanger.
+     * @returns {Array} Le tableau mélangé.
+     */
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    /**
+     * Génère une liste aléatoire de mots à compléter.
+     * @returns {Array} Une liste de 10 mots clés uniques.
+     */
+    function selectRandomWords() {
+        const allWords = Object.keys(VOCABULARY);
+        // Mélanger tous les mots et prendre les 10 premiers
+        return shuffleArray(allWords).slice(0, MAX_GAPS);
+    }
+
+    /**
+     * Génère le HTML pour la liste déroulante d'une question.
+     * @param {string} correctWord - Le mot qui est la bonne réponse.
+     * @param {number} questionIndex - L'index pour nommer le champ.
+     * @returns {string} Le code HTML du select.
+     */
+    function generateSelectHTML(correctWord, questionIndex) {
+        const options = VOCABULARY[correctWord];
+        // Assurer que la bonne réponse est présente, même si le tableau d'options est mal formé (par sécurité)
+        if (!options.includes(correctWord)) {
+             options.push(correctWord);
+        }
+        
+        // Mélanger les options pour éviter l'ordre prévisible
+        const shuffledOptions = shuffleArray([...options]);
+
+        let optionsHTML = '<option value="">--- Choisir ---</option>';
+        shuffledOptions.forEach(option => {
+            optionsHTML += `<option value="${option}">${option}</option>`;
+        });
+
+        return `<select name="q${questionIndex}" data-correct="${correctWord}">${optionsHTML}</select>`;
+    }
+
+    /**
+     * Construit le quiz en insérant les listes déroulantes aux emplacements des mots clés sélectionnés.
+     * @param {Array} wordsToOmit - Les mots qui seront remplacés par des champs à compléter.
+     */
+    function generateQuiz(wordsToOmit) {
+        let quizHTML = originalTextTemplate;
+        correctAnswersMap.clear();
+
+        let questionIndex = 1;
+        
+        wordsToOmit.forEach(word => {
+            const regex = new RegExp(`\\[${word}\\]`, 'g');
+            const selectHTML = generateSelectHTML(word, questionIndex);
+            
+            // Remplacer le marqueur [mot] par le champ à compléter
+            quizHTML = quizHTML.replace(regex, `<span class="missing-word" data-qindex="${questionIndex}">${selectHTML}</span>`);
+            correctAnswersMap.set(`q${questionIndex}`, word);
+            
+            questionIndex++;
+        });
+
+        // Supprimer les marqueurs des mots non sélectionnés (les laisser en texte normal)
+        quizHTML = quizHTML.replace(/\[(.*?)\]/g, '$1');
+
+        document.getElementById('quiz-text-container').innerHTML = quizHTML;
+        document.getElementById('results').style.display = 'none';
+    }
+
+    /**
+     * Évalue les réponses du quiz.
+     */
+    function evaluateQuiz(event) {
+        event.preventDefault();
+        
+        let score = 0;
+        const totalQuestions = correctAnswersMap.size;
+        const resultsDiv = document.getElementById('results');
+        
+        // Réinitialiser les styles
+        document.querySelectorAll('.missing-word select').forEach(select => {
+            select.classList.remove('highlight-correct', 'highlight-incorrect');
+            select.style.borderColor = '#007bff';
+        });
+
+        // Vérifier chaque réponse
+        correctAnswersMap.forEach((correctAnswer, questionName) => {
+            const selectElement = document.querySelector(`select[name="${questionName}"]`);
+            if (selectElement) {
+                const selectedAnswer = selectElement.value;
+                if (selectedAnswer === correctAnswer) {
+                    score++;
+                    selectElement.classList.add('highlight-correct');
+                } else {
+                    selectElement.classList.add('highlight-incorrect');
+                    // On peut aussi afficher la bonne réponse si c'est faux (optionnel)
+                }
+            }
+        });
+        
+        // Afficher les résultats finaux
+        resultsDiv.style.display = 'block';
+        resultsDiv.innerHTML = `Votre score est de ${score} / ${totalQuestions}.`;
+
+        if (score === totalQuestions) {
+            resultsDiv.classList.remove('incorrect-result');
+            resultsDiv.classList.add('correct-result');
+            resultsDiv.innerHTML += "<br>Exceptionnel ! Vous maîtrisez la digestion sur le bout des doigts ! 🏆";
+        } else {
+            resultsDiv.classList.remove('correct-result');
+            resultsDiv.classList.add('incorrect-result');
+            resultsDiv.innerHTML += "<br>Vérifiez les mots en rouge et cliquez sur 'Nouveau Quiz' pour une nouvelle série de questions !";
+        }
+        
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Initialisation du quiz au chargement de la page
+    function init() {
+        generateQuiz(selectRandomWords());
+        document.getElementById('quiz-form').addEventListener('submit', evaluateQuiz);
+        document.getElementById('refresh-btn').addEventListener('click', () => {
+            generateQuiz(selectRandomWords());
+        });
+    }
+
+    window.onload = init;
+</script>
+
+</body>
+</html>
