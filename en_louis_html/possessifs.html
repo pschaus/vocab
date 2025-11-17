@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice Simple : Pronoms Possessifs</title>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box; 
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        h1 {
+            color: #005a9c;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .question-item {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap; 
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .question-item select {
+            font-size: 1em;
+            padding: 5px 8px;
+            margin: 0 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fdfdfd;
+        }
+
+        .feedback {
+            font-weight: bold;
+            margin-left: 15px;
+            font-size: 1.1em;
+        }
+
+        /* Classes pour la correction */
+        .correct {
+            background-color: #e6f7e9;
+            border-color: #5cb85c;
+        }
+
+        .incorrect {
+            background-color: #f9e8e8;
+            border-color: #d9534f;
+        }
+
+        .correct .feedback {
+            color: #5cb85c;
+        }
+
+        .incorrect .feedback {
+            color: #d9534f;
+            font-size: 0.9em; 
+        }
+
+        /* Style générique pour les boutons */
+        .quiz-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px; /* Ajout d'un margin-top */
+        }
+
+        .quiz-button:hover {
+            opacity: 0.9;
+        }
+
+        .quiz-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Bouton de soumission */
+        #submit-btn {
+            background-color: #007bff;
+        }
+
+        /* Nouveau bouton de réinitialisation */
+        #reset-btn {
+            background-color: #28a745; /* Vert */
+            display: none; /* Caché par défaut */
+        }
+
+        #results {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Exercice : Pronoms Possessifs (Simple)</h1>
+        <p>Complétez les 10 phrases suivantes en choisissant le bon pronom possessif (my, your, his, her, its, our, their).</p>
+        
+        <div id="quiz-container"></div>
+        
+        <button id="submit-btn" class="quiz-button">Corriger</button>
+        <button id="reset-btn" class="quiz-button">Recommencer un nouveau quiz</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const allQuestions = [
+                { start: "I have a cat.", end: "cat is black.", answer: "my" },
+                { start: "He has a bike.", end: "bike is blue.", answer: "his" },
+                { start: "She has a doll.", end: "doll is new.", answer: "her" },
+                { start: "We have a car.", end: "car is fast.", answer: "our" },
+                { start: "They have a house.", end: "house is big.", answer: "their" },
+                { start: "What is", end: "name?", answer: "your" },
+                { start: "The dog is happy.", end: "tail is long.", answer: "its" },
+                { start: "This is", end: "book.", answer: "my" },
+                { start: "John is a student.", end: "bag is heavy.", answer: "his" },
+                { start: "Maria is here.", end: "coat is red.", answer: "her" },
+                { start: "You are a teacher.", end: "students are smart.", answer: "your" },
+                { start: "We are siblings.", end: "parents are nice.", answer: "our" },
+                { start: "The students are quiet.", end: "class is ready.", answer: "their" },
+                { start: "The house is old.", end: "roof is green.", answer: "its" },
+                { start: "I am a doctor.", end: "job is important.", answer: "my" },
+                { start: "He is tall.", end: "hair is brown.", answer: "his" },
+                { start: "She is a singer.", end: "voice is beautiful.", answer: "her" },
+                { start: "You and I have a secret.", end: "secret is safe.", answer: "our" },
+                { start: "The children have new toys.", end: "toys are in the box.", answer: "their" },
+                { start: "The cat has milk.", end: "bowl is full.", answer: "its" }
+            ];
+
+            const pronouns = ["my", "his", "her", "its", "your", "their", "our"];
+            const numQuestionsToShow = 10;
+            
+            // Références DOM
+            const quizContainer = document.getElementById('quiz-container');
+            const submitBtn = document.getElementById('submit-btn');
+            const resultsContainer = document.getElementById('results');
+            const resetBtn = document.getElementById('reset-btn'); // Nouveau bouton
+
+            let currentQuestions = [];
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            function createDropdown(index, correctAnswer) {
+                const select = document.createElement('select');
+                select.id = `select-${index}`;
+                select.dataset.answer = correctAnswer; 
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.textContent = "---";
+                select.appendChild(defaultOption);
+
+                pronouns.forEach(pronoun => {
+                    const option = document.createElement('option');
+                    option.value = pronoun;
+                    option.textContent = pronoun;
+                    select.appendChild(option);
+                });
+
+                return select;
+            }
+
+            // Fonction pour charger le quiz (utilisée au début et pour recommencer)
+            function loadQuiz() {
+                currentQuestions = shuffleArray([...allQuestions]).slice(0, numQuestionsToShow);
+                quizContainer.innerHTML = '';
+                
+                currentQuestions.forEach((question, index) => {
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question-item';
+                    questionElement.id = `q-${index}`;
+                    
+                    const startText = document.createElement('span');
+                    startText.textContent = question.start + " ";
+                    
+                    const endText = document.createElement('span');
+                    endText.textContent = " " + question.end;
+                    
+                    const dropdown = createDropdown(index, question.answer);
+                    
+                    const feedbackSpan = document.createElement('span');
+                    feedbackSpan.className = 'feedback';
+
+                    questionElement.appendChild(startText);
+                    questionElement.appendChild(dropdown);
+                    questionElement.appendChild(endText);
+                    questionElement.appendChild(feedbackSpan);
+                    
+                    quizContainer.appendChild(questionElement);
+                });
+
+                // Réinitialiser l'état des boutons et du score
+                resultsContainer.innerHTML = '';
+                submitBtn.style.display = 'block'; // Afficher le bouton Corriger
+                submitBtn.disabled = false;
+                resetBtn.style.display = 'none';  // Cacher le bouton Recommencer
+            }
+
+            // Fonction pour vérifier les réponses
+            function checkAnswers() {
+                let score = 0;
+                
+                currentQuestions.forEach((question, index) => {
+                    const questionElement = document.getElementById(`q-${index}`);
+                    const select = document.getElementById(`select-${index}`);
+                    const feedback = questionElement.querySelector('.feedback');
+                    
+                    const userAnswer = select.value;
+                    const correctAnswer = select.dataset.answer;
+
+                    questionElement.classList.remove('correct', 'incorrect');
+
+                    if (userAnswer === correctAnswer) {
+                        score++;
+                        questionElement.classList.add('correct');
+                        feedback.textContent = '✔';
+                    } else {
+                        questionElement.classList.add('incorrect');
+                        feedback.textContent = `✘ (Correct : ${correctAnswer})`;
+                    }
+                    select.disabled = true; // Griser la liste après correction
+                });
+
+                // Afficher le score
+                resultsContainer.innerHTML = `<h2>Votre Score : ${score} / ${numQuestionsToShow}</h2>`;
+                
+                // Gérer l'affichage des boutons
+                submitBtn.style.display = 'none'; // Cacher le bouton Corriger
+                resetBtn.style.display = 'block'; // Afficher le bouton Recommencer
+            }
+
+            // Écouteurs d'événements
+            submitBtn.addEventListener('click', checkAnswers);
+            resetBtn.addEventListener('click', loadQuiz); // Le bouton Reset relance simplement le quiz
+            
+            // Charger le quiz au démarrage
+            loadQuiz();
+        });
+    </script>
+</body>
+</html>

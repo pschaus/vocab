@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice de Français : Dictée 4 (é/er)</title>
+    
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px 30px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            color: #004a99;
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #004a99;
+            margin-top: 30px;
+        }
+
+        /* Boîte pour la règle */
+        .rule-box {
+            background-color: #e6f3ff;
+            border: 1px solid #b3d7ff;
+            border-left: 5px solid #0056b3;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .rule-box p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+
+        /* Style pour chaque question */
+        .question-item {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+            display: flex;
+            flex-wrap: wrap; 
+            align-items: center;
+        }
+
+        /* Style pour les questions de grammaire (é/er) */
+        .grammar-question select {
+            font-size: 1em;
+            padding: 5px 8px;
+            margin: 0 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fdfdfd;
+        }
+
+        /* Style pour les questions d'orthographe (écrit) */
+        .spelling-question .listen-btn {
+            font-size: 0.9em;
+            padding: 6px 10px;
+            margin: 0 10px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .spelling-question .listen-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .spelling-question input[type="text"] {
+            font-size: 1em;
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+        }
+
+        /* Style pour la correction */
+        .feedback {
+            font-weight: bold;
+            margin-left: 15px;
+            font-size: 1.1em;
+            flex-grow: 1; 
+            text-align: right;
+        }
+        .correct {
+            background-color: #e6f7e9;
+            border-color: #5cb85c;
+        }
+        .incorrect {
+            background-color: #f9e8e8;
+            border-color: #d9534f;
+        }
+        .correct .feedback {
+            color: #5cb85c;
+        }
+        .incorrect .feedback {
+            color: #d9534f;
+            font-size: 0.9em;
+        }
+
+        /* Style des boutons */
+        .quiz-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        .quiz-button:hover {
+            opacity: 0.9;
+        }
+        #submit-btn {
+            background-color: #007bff;
+        }
+        #reset-btn {
+            background-color: #28a745;
+            display: none; 
+        }
+        
+        /* Style du score */
+        #results {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Exercice de Français : Dictée 4</h1>
+
+        <div class="rule-box">
+            <h2>Règle : é ou er ?</h2>
+            <p>Si tu peux remplacer la forme par <strong>fait</strong>, tu choisis une forme en <strong>é</strong> (participe passé).</p>
+            <p><em>Ex : J’ai mangé (j'ai fait) mon gâteau.</em></p>
+            <p>Si tu peux remplacer la forme par <strong>faire</strong>, tu choisis la forme en <strong>er</strong> (infinitif).</p>
+            <p><em>Ex : Pour y arriver, il faut s’entraîner (il faut faire) !</em></p>
+        </div>
+
+        <h2>Exercice (10 questions aléatoires)</h2>
+        <p>Complétez les phrases en choisissant le verbe correctement accordé, ou écoutez le mot et écrivez-le.</p>
+
+        <div id="quiz-container"></div>
+        
+        <button id="submit-btn" class="quiz-button">Corriger</button>
+        <button id="reset-btn" class="quiz-button">Recommencer un nouveau quiz</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // Fonction pour générer toutes les formes d'un verbe régulier en -ER
+            function getVerbForms(baseVerb) {
+                const root = baseVerb.slice(0, -2); // e.g., 'termin' from 'terminer'
+                return [
+                    baseVerb, // 0: Infinitif (terminer)
+                    root + 'é', // 1: Masc Singulier (terminé)
+                    root + 'ée', // 2: Fém Singulier (terminée)
+                    root + 'és', // 3: Masc Pluriel (terminés)
+                    root + 'ées' // 4: Fém Pluriel (terminées)
+                ];
+            }
+
+            const verbOptions = {
+                'terminer': getVerbForms('terminer'),
+                'défricher': getVerbForms('défricher'),
+                'envoyer': getVerbForms('envoyer'),
+                'ramasser': getVerbForms('ramasser'),
+                'changer': getVerbForms('changer'),
+                'donner': getVerbForms('donner'),
+                'photographier': getVerbForms('photographier'),
+                'grimacer': getVerbForms('grimacer'),
+                'partager': getVerbForms('partager'),
+                'préparer': getVerbForms('préparer')
+            };
+
+            // --- Banque de questions ---
+            const allQuestions = [
+                
+                // --- Type 1: Orthographe (Mots à connaître) ---
+                { type: 'spelling', promptStart: 'L\'', promptEnd: ' cultive la terre.', wordToSpeak: 'agriculteur', answer: 'agriculteur' },
+                { type: 'spelling', promptStart: 'Il travaille dans un grand ', promptEnd: '.', wordToSpeak: 'champ', answer: 'champ' },
+                { type: 'spelling', promptStart: 'Quelle ', promptEnd: ' est-il ?', wordToSpeak: 'heure', answer: 'heure' },
+                { type: 'spelling', promptStart: 'Elle a envoyé sa ', promptEnd: '.', wordToSpeak: 'candidature', answer: 'candidature' },
+                { type: 'spelling', promptStart: 'C\'est ma ', promptEnd: ' aînée.', wordToSpeak: 'sœur', answer: 'sœur' },
+                { type: 'spelling', promptStart: 'L\'', promptEnd: ' est immense.', wordToSpeak: 'océan', answer: 'océan' },
+                { type: 'spelling', promptStart: 'J\'ai trouvé un ', promptEnd: ' sur la plage.', wordToSpeak: 'coquillage', answer: 'coquillage' },
+                { type: 'spelling', promptStart: 'Le ', promptEnd: ' était magnifique.', wordToSpeak: 'spectacle', answer: 'spectacle' },
+                { type: 'spelling', promptStart: 'Il va au ', promptEnd: ' ce soir.', wordToSpeak: 'théâtre', answer: 'théâtre' },
+                { type: 'spelling', promptStart: 'Le ', promptEnd: ' joue très bien.', wordToSpeak: 'comédien', answer: 'comédien' },
+                { type: 'spelling', promptStart: 'Nous marchons dans le ', promptEnd: '.', wordToSpeak: 'bois', answer: 'bois' },
+                { type: 'spelling', promptStart: 'La ', promptEnd: ' est fertile.', wordToSpeak: 'terre', answer: 'terre' },
+                { type: 'spelling', promptStart: 'Le ', promptEnd: ' explique la leçon.', wordToSpeak: 'professeur', answer: 'professeur' },
+                { type: 'spelling', promptStart: 'Ce pompier est ', promptEnd: '.', wordToSpeak: 'courageux', answer: 'courageux' },
+                { type: 'spelling', promptStart: 'Le champ est ', promptEnd: ' par le tracteur.', wordToSpeak: 'labouré', answer: 'labouré' },
+                
+                // --- Type 2: Grammaire (é/er) avec formes complètes ---
+                // Infinitif (remplacer par 'faire')
+                { type: 'grammar', start: 'Il faut ', verb: 'terminer', end: ' le travail à temps.', options: verbOptions.terminer, answer: 'terminer' },
+                { type: 'grammar', start: 'Pour ', verb: 'défricher', end: ' un terrain, c\'est long.', options: verbOptions.défricher, answer: 'défricher' },
+                { type: 'grammar', start: 'Après le spectacle, il doit ', verb: 'changer', end: ' ses vêtements.', options: verbOptions.changer, answer: 'changer' },
+                { type: 'grammar', start: 'Nous allons ', verb: 'partager', end: ' le gâteau.', options: verbOptions.partager, answer: 'partager' },
+                { type: 'grammar', start: 'On vient de ', verb: 'donner', end: ' les résultats.', options: verbOptions.donner, answer: 'donner' },
+
+                // Participe Passé - Avoir (remplacer par 'fait')
+                { type: 'grammar', start: 'Tu as ', verb: 'envoyer', end: ' une lettre importante.', options: verbOptions.envoyer, answer: 'envoyé' }, // Pas d'accord avec avoir
+                { type: 'grammar', start: 'J\'ai ', verb: 'photographier', end: ' ce beau spectacle.', options: verbOptions.photographier, answer: 'photographié' }, // Pas d'accord avec avoir
+                { type: 'grammar', start: 'Les coquillages qu\'il a ', verb: 'ramasser', end: ' sont jolis.', options: verbOptions.ramasser, answer: 'ramassés' }, // Accord avec COD placé avant
+                { type: 'grammar', start: 'Elle n\'a pas ', verb: 'grimacer', end: ' devant l\'objectif.', options: verbOptions.grimacer, answer: 'grimacé' }, // Pas d'accord avec avoir
+
+                // Participe Passé - Être (remplacer par 'fait')
+                { type: 'grammar', start: 'La candidature a été ', verb: 'envoyer', end: ' ce matin.', options: verbOptions.envoyer, answer: 'envoyée' }, // Accord avec le sujet 'candidature' (fém sing)
+                { type: 'grammar', start: 'Les terres sont ', verb: 'défricher', end: ' par l\'agriculteur.', options: verbOptions.défricher, answer: 'défrichées' }, // Accord avec le sujet 'terres' (fém plur)
+                { type: 'grammar', start: 'Il est ', verb: 'terminer', end: ' à l\'heure.', options: verbOptions.terminer, answer: 'terminé' }, // Accord avec le sujet 'il' (masc sing)
+                { type: 'grammar', start: 'Nous sommes ', verb: 'préparer', end: ' pour le goûter.', options: verbOptions.préparer, answer: 'préparés' }, // Accord avec le sujet 'nous' (masc pluriel supposé)
+                { type: 'grammar', start: 'Elles sont ', verb: 'ramasser', end: ' les fleurs.', options: verbOptions.ramasser, answer: 'ramassées' } // Accord avec le sujet 'elles' (fém plur)
+            ];
+
+            const numQuestionsToShow = 10;
+            
+            // Références DOM
+            const quizContainer = document.getElementById('quiz-container');
+            const submitBtn = document.getElementById('submit-btn');
+            const resultsContainer = document.getElementById('results');
+            const resetBtn = document.getElementById('reset-btn'); 
+
+            let currentQuestions = [];
+            
+            // Initialisation de la synthèse vocale
+            const synth = window.speechSynthesis;
+            if (!synth) {
+                console.warn("La synthèse vocale n'est pas supportée par ce navigateur.");
+            }
+
+            // --- Fonctions ---
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Fonction pour lire le mot
+            function speakWord(word) {
+                if (synth) {
+                    const utterance = new SpeechSynthesisUtterance(word);
+                    utterance.lang = 'fr-FR'; 
+                    utterance.rate = 0.9; 
+                    synth.speak(utterance);
+                } else {
+                    alert("La synthèse vocale n'est pas supportée sur ce navigateur.");
+                }
+            }
+
+            // Fonction pour construire le quiz
+            function loadQuiz() {
+                // Sélectionne 10 questions aléatoires
+                currentQuestions = shuffleArray([...allQuestions]).slice(0, numQuestionsToShow);
+                quizContainer.innerHTML = ''; 
+                
+                currentQuestions.forEach((question, index) => {
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question-item';
+                    questionElement.id = `q-${index}`;
+                    
+                    const feedbackSpan = document.createElement('span');
+                    feedbackSpan.className = 'feedback';
+
+                    if (question.type === 'grammar') {
+                        // --- Crée une question de grammaire (é/er) ---
+                        questionElement.classList.add('grammar-question');
+                        
+                        // Texte avant (y compris la première partie du verbe si elle existe, ex: 'Les terres sont ')
+                        const startText = document.createElement('span');
+                        startText.textContent = question.start;
+                        questionElement.appendChild(startText);
+                        
+                        // Liste déroulante avec les formes complètes
+                        const select = document.createElement('select');
+                        select.id = `select-${index}`;
+                        select.dataset.answer = question.answer;
+
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = "";
+                        defaultOption.textContent = "---";
+                        select.appendChild(defaultOption);
+
+                        // Ajout des options (ex: terminer, terminé, terminée...)
+                        question.options.forEach(option => {
+                            const opt = document.createElement('option');
+                            opt.value = option;
+                            opt.textContent = option;
+                            select.appendChild(opt);
+                        });
+                        questionElement.appendChild(select);
+
+                        // Texte après
+                        const endText = document.createElement('span');
+                        endText.textContent = question.end;
+                        questionElement.appendChild(endText);
+
+                    } else if (question.type === 'spelling') {
+                        // --- Crée une question d'orthographe (écrit) ---
+                        questionElement.classList.add('spelling-question');
+
+                        // Texte avant
+                        const startText = document.createElement('span');
+                        startText.textContent = question.promptStart;
+                        questionElement.appendChild(startText);
+
+                        // Bouton "Écouter"
+                        const listenBtn = document.createElement('button');
+                        listenBtn.textContent = '🔊 Écouter';
+                        listenBtn.className = 'listen-btn';
+                        listenBtn.id = `btn-${index}`;
+                        listenBtn.type = 'button'; 
+                        listenBtn.dataset.word = question.wordToSpeak;
+                        listenBtn.onclick = () => speakWord(question.wordToSpeak);
+                        questionElement.appendChild(listenBtn);
+                        
+                        // Zone de texte
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.id = `input-${index}`;
+                        input.dataset.answer = question.answer;
+                        questionElement.appendChild(input);
+
+                        // Texte après
+                        const endText = document.createElement('span');
+                        endText.textContent = question.promptEnd;
+                        questionElement.appendChild(endText);
+                    }
+
+                    questionElement.appendChild(feedbackSpan);
+                    quizContainer.appendChild(questionElement);
+                });
+
+                // Réinitialiser l'état des boutons et du score
+                resultsContainer.innerHTML = '';
+                submitBtn.style.display = 'block';
+                submitBtn.disabled = false;
+                resetBtn.style.display = 'none';
+            }
+
+            // Fonction pour vérifier les réponses
+            function checkAnswers() {
+                let score = 0;
+                
+                currentQuestions.forEach((question, index) => {
+                    const questionElement = document.getElementById(`q-${index}`);
+                    const feedback = questionElement.querySelector('.feedback');
+                    let isCorrect = false;
+
+                    questionElement.classList.remove('correct', 'incorrect');
+                    
+                    if (question.type === 'grammar') {
+                        // --- Correction Grammaire ---
+                        const select = document.getElementById(`select-${index}`);
+                        const userAnswer = select.value;
+                        const correctAnswer = select.dataset.answer;
+
+                        if (userAnswer === correctAnswer) {
+                            isCorrect = true;
+                        } else {
+                            feedback.textContent = `✘ (Correct : ${correctAnswer})`;
+                        }
+                        select.disabled = true;
+
+                    } else if (question.type === 'spelling') {
+                        // --- Correction Orthographe ---
+                        const input = document.getElementById(`input-${index}`);
+                        // .trim() enlève les espaces, .toLowerCase() ignore la casse
+                        const userAnswer = input.value.trim().toLowerCase();
+                        const correctAnswer = question.answer.toLowerCase();
+
+                        if (userAnswer === correctAnswer) {
+                            isCorrect = true;
+                        } else {
+                            feedback.textContent = `✘ (Correct : ${question.answer})`;
+                        }
+                        input.disabled = true;
+                        document.getElementById(`btn-${index}`).disabled = true;
+                    }
+
+                    // Appliquer les styles de correction
+                    if (isCorrect) {
+                        score++;
+                        questionElement.classList.add('correct');
+                        feedback.textContent = '✔';
+                    } else {
+                        questionElement.classList.add('incorrect');
+                    }
+                });
+
+                // Afficher le score
+                resultsContainer.innerHTML = `<h2>Votre Score : ${score} / ${numQuestionsToShow}</h2>`;
+                
+                // Gérer l'affichage des boutons
+                submitBtn.style.display = 'none';
+                resetBtn.style.display = 'block';
+            }
+
+            // --- Écouteurs d'événements ---
+            submitBtn.addEventListener('click', checkAnswers);
+            resetBtn.addEventListener('click', loadQuiz);
+            
+            // Charger le quiz au démarrage
+            loadQuiz();
+        });
+    </script>
+</body>
+</html>
