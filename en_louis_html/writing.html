@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mémorisation : Letter to Simon</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 { color: #2c3e50; margin-bottom: 10px; }
+
+        /* Barre de contrôles */
+        .controls {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.1s, box-shadow 0.2s;
+        }
+        button:active { transform: scale(0.98); }
+
+        .btn-study { background-color: #3498db; color: white; }
+        .btn-gen { background-color: #e67e22; color: white; }
+        .btn-check { background-color: #27ae60; color: white; }
+
+        /* Zone de texte */
+        #text-container {
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            line-height: 2.2; /* Espacement augmenté pour les bulles de correction */
+            font-size: 19px;
+            position: relative;
+        }
+
+        .letter-date { text-align: right; margin-bottom: 20px; font-weight: bold; color: #555; }
+        .letter-sign { margin-top: 40px; font-weight: bold; }
+
+        /* Styles des inputs et conteneurs */
+        .word-wrapper {
+            position: relative; /* Important pour positionner la bulle */
+            display: inline-block;
+        }
+
+        input.blank-input {
+            border: none;
+            border-bottom: 2px solid #bbb;
+            background: #f4f8fb;
+            font-size: 18px;
+            color: #2c3e50;
+            text-align: center;
+            padding: 2px 4px;
+            margin: 0 2px;
+            font-family: inherit;
+            font-weight: 500;
+            border-radius: 4px 4px 0 0;
+        }
+
+        input.blank-input:focus {
+            outline: none;
+            border-bottom: 2px solid #3498db;
+            background: #eaf6ff;
+        }
+
+        /* Feedback correction */
+        .correct {
+            border-bottom: 2px solid #27ae60 !important;
+            background-color: #e8f8f5 !important;
+            color: #27ae60 !important;
+        }
+
+        .incorrect {
+            border-bottom: 2px solid #e74c3c !important;
+            background-color: #fdedec !important;
+            color: #e74c3c !important;
+        }
+
+        /* Bulle de correction flottante */
+        .correction-bubble {
+            position: absolute;
+            bottom: 100%; /* Juste au dessus du mot */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+            pointer-events: none; /* Ne gêne pas le clic */
+            margin-bottom: 5px;
+            opacity: 0;
+            animation: fadeIn 0.3s forwards;
+        }
+        
+        /* Petite flèche sous la bulle */
+        .correction-bubble::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #e74c3c transparent transparent transparent;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, 5px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+    </style>
+</head>
+<body>
+
+    <h1>Memorize : Letter to Simon</h1>
+
+    <div class="controls">
+        <label for="hole-count">Mots manquants :</label>
+        <select id="hole-count">
+            <option value="5">5 mots</option>
+            <option value="10" selected>10 mots</option>
+            <option value="15">15 mots</option>
+            <option value="20">20 mots</option>
+            <option value="25">25 mots</option>
+            <option value="30">30 mots</option>
+        </select>
+
+        <button class="btn-gen" onclick="generateQuiz()">🔄 Générer le Test</button>
+        <button class="btn-check" onclick="checkAnswers()">✅ Correction</button>
+        <button class="btn-study" onclick="showFullText()">📖 Voir texte complet</button>
+    </div>
+
+    <div id="text-container">
+        </div>
+
+    <script>
+        const fullTextObj = {
+            date: "Thursday 20th of November 2025",
+            salutation: "Dear Simon",
+            paragraphs: [
+                "How are you today ? I’m your new pen friend. I’m happy to learn about you this year. I introduce myself.",
+                "I’m a pupil of Saint Marie in the city of Huy in Belgium. I live in Fize-Fontaine. I’m twelve years old. I have got one brother and one sister. My sister is fifteen. Her name is Lucie. My brother is sixteen. His name is Tom. They are great! We have got a dog. His name is Charlie. My best friend is Liam.",
+                "And you, have you got brothers or sisters ? Or are you an only child ? What is your phone number ? Where are you from ? How old are you ? Are your parents nice ? Who is your best friend ?",
+                "I’m looking forward to reading you. Kind regards."
+            ],
+            signature: "Louis"
+        };
+
+        const container = document.getElementById('text-container');
+        let currentHoleIndices = []; // Pour stocker où sont les trous
+
+        // Reconstitue tout le texte en une seule chaine pour l'analyse, mais garde la structure pour l'affichage
+        function showFullText() {
+            let html = `
+                <div class="letter-date">${fullTextObj.date}</div>
+                <div><p>${fullTextObj.salutation}</p>`;
+            
+            fullTextObj.paragraphs.forEach(p => {
+                html += `<p>${p}</p>`;
+            });
+
+            html += `<p>${fullTextObj.signature}</p></div>`; // Signature is usually part of flow or separate div
+            container.innerHTML = html;
+        }
+
+        // Fonction utilitaire pour découper le texte en tokens (mots + ponctuation)
+        function tokenize(text) {
+            return text.split(/(\s+|[.,!?;])/);
+        }
+
+        // Fonction principale de génération
+        function generateQuiz() {
+            const count = parseInt(document.getElementById('hole-count').value);
+            
+            // 1. On construit une liste de tous les mots éligibles (plus de 1 lettre, pas de ponctuation)
+            // On va stocker : { section: 'date'|'p0'|'p1'..., word: 'Thursday', indexInString: 5 }
+            let allWords = [];
+            
+            // Helper pour ajouter des mots à la liste
+            const scanText = (text, sectionId) => {
+                const tokens = tokenize(text);
+                tokens.forEach((token, idx) => {
+                    // Critère : doit contenir des lettres et longueur > 1 (pour éviter de cacher "I" ou "a" trop souvent si on veut du dur, mais ici on garde tout sauf ponctuation pure)
+                    if (token.trim().length > 0 && !/^[.,!?;]+$/.test(token)) {
+                        allWords.push({
+                            word: token.trim(),
+                            section: sectionId,
+                            tokenIndex: idx,
+                            originalToken: token // garde les espaces éventuels
+                        });
+                    }
+                });
+            };
+
+            scanText(fullTextObj.date, 'date');
+            scanText(fullTextObj.salutation, 'salutation');
+            fullTextObj.paragraphs.forEach((p, i) => scanText(p, 'p'+i));
+            scanText(fullTextObj.signature, 'signature');
+
+            // 2. Sélection aléatoire des indices à cacher
+            // Mélanger le tableau allWords
+            for (let i = allWords.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
+            }
+
+            // Prendre les N premiers (ou tout si N > total)
+            const targets = new Set(allWords.slice(0, count).map(w => `${w.section}-${w.tokenIndex}`));
+
+            // 3. Reconstruire le HTML
+            const buildHTML = (text, sectionId) => {
+                const tokens = tokenize(text);
+                return tokens.map((token, idx) => {
+                    const key = `${sectionId}-${idx}`;
+                    if (targets.has(key)) {
+                        const cleanWord = token.trim();
+                        const width = Math.max(30, cleanWord.length * 11);
+                        return `<span class="word-wrapper"><input type="text" class="blank-input" data-answer="${cleanWord}" style="width:${width}px" autocomplete="off"></span>${token.replace(cleanWord, '')}`; 
+                        // token.replace hack remet les espaces/ponctuation collée si besoin, mais ici token est split
+                    }
+                    return token;
+                }).join('');
+            };
+
+            let html = `<div class="letter-date">${buildHTML(fullTextObj.date, 'date')}</div>
+                        <div><p>${buildHTML(fullTextObj.salutation, 'salutation')}</p>`;
+            
+            fullTextObj.paragraphs.forEach((p, i) => {
+                html += `<p>${buildHTML(p, 'p'+i)}</p>`;
+            });
+
+            html += `<div class="letter-sign">${buildHTML(fullTextObj.signature, 'signature')}</div></div>`;
+
+            container.innerHTML = html;
+
+             // Focus sur le premier champ
+             const firstInput = document.querySelector('input');
+            if(firstInput) firstInput.focus();
+        }
+
+        function checkAnswers() {
+            const inputs = document.querySelectorAll('.blank-input');
+            
+            inputs.forEach(input => {
+                const userAnswer = input.value.trim();
+                const correctAnswer = input.dataset.answer;
+                const wrapper = input.parentElement;
+
+                // Reset
+                input.classList.remove('correct', 'incorrect');
+                const existingBubble = wrapper.querySelector('.correction-bubble');
+                if(existingBubble) existingBubble.remove();
+
+                if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                    input.classList.add('correct');
+                    input.value = correctAnswer; // Met la bonne casse
+                } else {
+                    input.classList.add('incorrect');
+                    
+                    // Créer la bulle flottante
+                    const bubble = document.createElement('div');
+                    bubble.className = 'correction-bubble';
+                    bubble.innerText = correctAnswer;
+                    wrapper.appendChild(bubble);
+                }
+            });
+        }
+
+        // Init
+        showFullText();
+    </script>
+</body>
+</html>
