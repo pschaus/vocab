@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice Homophones</title>
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --success-color: #27ae60;
+            --error-color: #c0392b;
+            --bg-color: #f4f6f7;
+            --card-bg: #ffffff;
+            --accent-color: #e67e22;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: #333;
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .instruction {
+            text-align: center;
+            font-style: italic;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .question-block {
+            margin-bottom: 15px;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            background-color: #fff;
+            margin: 5px 2px;
+            color: #2c3e50;
+            font-weight: 500;
+            cursor: pointer;
+            max-width: 100%;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        /* Styles de correction */
+        .correct-answer {
+            border-color: var(--success-color) !important;
+            background-color: #e8f5e9 !important;
+            color: var(--success-color) !important;
+        }
+
+        .wrong-answer {
+            border-color: var(--error-color) !important;
+            background-color: #fce4ec !important;
+            color: var(--error-color) !important;
+        }
+
+        .correction-block {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+
+        .correction-text {
+            color: var(--error-color);
+            font-weight: bold;
+        }
+
+        .rule-text {
+            display: block;
+            color: #555;
+            font-size: 0.85rem;
+            margin-top: 2px;
+            font-style: italic;
+            background-color: #eee;
+            padding: 5px;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        #btn-check { background-color: var(--primary-color); }
+        #btn-retry { background-color: var(--accent-color); display: none; }
+
+        #result-area {
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✍️ Orthographe & Grammaire</h1>
+    <p class="instruction">Sélectionne le bon homophone dans la liste.</p>
+
+    <div id="quiz-container"></div>
+
+    <div id="result-area">
+        <div>Ton score :</div>
+        <span class="score" id="score-display">0/10</span>
+        <div id="feedback-message"></div>
+    </div>
+
+    <button id="btn-check" class="btn" onclick="checkAnswers()">Vérifier mes réponses</button>
+    <button id="btn-retry" class="btn" onclick="initQuiz()">Nouvel exercice</button>
+</div>
+
+<script>
+    // Règles pour les explications
+    const R_A = "Astuce : 'a' est le verbe avoir (remplaçable par 'avait'). 'à' est une préposition (non remplaçable).";
+    const R_ON = "Astuce : 'ont' = verbe avoir (ils avaient). 'on' = sujet (il). 'on n'' = négation (on ne... pas).";
+    const R_SON = "Astuce : 'sont' = verbe être (ils étaient). 'son' = le sien (mon/ton/son).";
+    const R_CE = "Astuce : 'se' se met devant un verbe. 'ce' devant un nom ou 'qui/que'.";
+    const R_OU = "Astuce : 'ou' = ou bien (choix). 'où' indique un lieu ou un temps.";
+    const R_LA = "Astuce : 'la' = article (une). 'là' = ici (lieu).";
+
+    const allQuestions = [
+        // --- A / À ---
+        { parts: ["À Bernissart, en Belgique, on", "découvert des ossements d’iguanodons."], options: ["a", "à"], answer: "a", rule: R_A },
+        { parts: ["Ma sœur a participé", "un jeu télévisé."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Elle", "gagné un séjour à Rome."], options: ["a", "à"], answer: "a", rule: R_A },
+        { parts: ["La victime a téléphoné", "son avocat."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Ma tante", "réussi à perdre huit kilos."], options: ["a", "à"], answer: "a", rule: R_A },
+        { parts: ["Il y", "longtemps que je n'ai plus joué."], options: ["a", "à"], answer: "a", rule: R_A },
+        { parts: ["Je n'ai plus joué", "la marelle."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Mon grand-père,", "son âge, a des difficultés."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Hier soir,", "20 h, elle a regardé la télé."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Le journaliste", "annoncé un tremblement de terre."], options: ["a", "à"], answer: "a", rule: R_A },
+        { parts: ["Il a été ressenti jusqu'", "Rome."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Pourquoi", "-t-il trahi notre confiance ?"], options: ["a", "à"], answer: "a", rule: R_A },
+        { parts: ["Une personne suspecte a été arrêtée", "l’aéroport."], options: ["a", "à"], answer: "à", rule: R_A },
+        { parts: ["Elle s'apprêtait", "embarquer."], options: ["a", "à"], answer: "à", rule: R_A },
+
+        // --- ON / ONT / ON N' ---
+        { parts: ["Voilà bientôt 48 heures qu'", "a plus de nouvelles."], options: ["on", "ont", "on n'"], answer: "on n'", rule: R_ON },
+        { parts: ["Il existe des écritures que l'", "a pas pu déchiffrer."], options: ["on", "ont", "on n'"], answer: "on n'", rule: R_ON },
+        { parts: ["Dans la presse,", "a fait allusion aux élections."], options: ["on", "ont", "on n'"], answer: "on", rule: R_ON },
+        { parts: ["", "a pas compris pourquoi la porte était fermée."], options: ["On", "Ont", "On n'"], answer: "On n'", rule: R_ON },
+        { parts: ["", "a que vingt minutes pour la bombe."], options: ["On", "Ont", "On n'"], answer: "On n'", rule: R_ON },
+        { parts: ["On a tout essayé, mais", "y est pas arrivé."], options: ["on", "ont", "on n'"], answer: "on n'", rule: R_ON },
+        { parts: ["", "a cru longtemps que la Terre était plate."], options: ["On", "Ont", "On n'"], answer: "On", rule: R_ON },
+        { parts: ["", "a pas très bien compris cet exercice !"], options: ["On", "Ont", "On n'"], answer: "On n'", rule: R_ON },
+        { parts: ["Ce n’est pas parce qu’", "crie fort qu’on a raison !"], options: ["on", "ont", "on n'"], answer: "on", rule: R_ON },
+        { parts: ["On a eu très peur,", "y retournera pas !"], options: ["on", "ont", "on n'"], answer: "on n'", rule: R_ON },
+        { parts: ["Les Mayas", "bâti des monuments."], options: ["on", "ont", "on n'"], answer: "ont", rule: R_ON },
+        { parts: ["De nombreux touristes", "décidé d’écourter leurs vacances."], options: ["on", "ont", "on n'"], answer: "ont", rule: R_ON },
+        { parts: ["Les scientifiques", "enfin pu observer Jupiter."], options: ["on", "ont", "on n'"], answer: "ont", rule: R_ON },
+        { parts: ["Ils en", "pris de nombreuses photos."], options: ["on", "ont", "on n'"], answer: "ont", rule: R_ON },
+        { parts: ["Les enquêteurs", "emporté la lettre."], options: ["on", "ont", "on n'"], answer: "ont", rule: R_ON },
+        { parts: ["", "ignore ce qu’ils ont pu faire."], options: ["On", "Ont", "On n'"], answer: "On", rule: R_ON },
+        { parts: ["", "a compris trop tard qu’on s’était trompé."], options: ["On", "Ont", "On n'"], answer: "On", rule: R_ON },
+        { parts: ["", "a participé à ce tournoi."], options: ["On", "Ont", "On n'"], answer: "On", rule: R_ON },
+        { parts: ["Même si", "a pas gagné, on s'est amusés."], options: ["on", "ont", "on n'"], answer: "on n'", rule: R_ON },
+
+        // --- SON / SONT ---
+        { parts: ["Aujourd’hui, c’est", "anniversaire."], options: ["son", "sont"], answer: "son", rule: R_SON },
+        { parts: ["Ses amis", "réunis pour une surprise."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["Les euros finlandais", "les plus difficiles à trouver."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["Ses bagages se", "égarés."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["On lui a volé", "passeport."], options: ["son", "sont"], answer: "son", rule: R_SON },
+        { parts: ["Communiquez-moi", "adresse."], options: ["son", "sont"], answer: "son", rule: R_SON },
+        { parts: ["", "oncle l’a emmené visiter une exposition."], options: ["Son", "Sont"], answer: "Son", rule: R_SON },
+        { parts: ["C'est là qu'y", "rassemblées les toiles."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["Les volcans", "dangereux."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["Les terres y", "fertiles."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["Il a oublié", "rendez-vous."], options: ["son", "sont"], answer: "son", rule: R_SON },
+        { parts: ["Les témoins", "incapables de se souvenir."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["Ils ne se souviennent pas de", "visage."], options: ["son", "sont"], answer: "son", rule: R_SON },
+        { parts: ["Ils se", "rencontrés à plusieurs reprises."], options: ["son", "sont"], answer: "sont", rule: R_SON },
+        { parts: ["C'était durant", "stage dans l’école."], options: ["son", "sont"], answer: "son", rule: R_SON },
+
+        // --- CE / SE ---
+        { parts: ["Cette personne : communiquez-moi", "numéro."], options: ["son", "sont"], answer: "son", rule: R_SON },
+        { parts: ["Ses bagages", "sont égarés."], options: ["ce", "se"], answer: "se", rule: R_CE },
+        { parts: ["Les gens", "s'installent sur leurs flancs."], options: ["ce", "se"], answer: "se", rule: R_CE },
+        { parts: ["On lui demandait", "nom."], options: ["son", "sont"], answer: "son", rule: R_SON },
+
+        // --- OU / OÙ ---
+        { parts: ["Une exposition", "sont rassemblées les toiles."], options: ["ou", "où"], answer: "où", rule: R_OU },
+        { parts: ["C'est blanc", "noir."], options: ["ou", "où"], answer: "ou", rule: R_OU },
+
+        // --- LA / LÀ ---
+        { parts: ["Il a joué à", "marelle."], options: ["la", "là"], answer: "la", rule: R_LA },
+        { parts: ["On ne peut plus rester", "."], options: ["la", "là"], answer: "là", rule: R_LA }
+    ];
+
+    let currentQuestions = [];
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function initQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        
+        document.getElementById('result-area').style.display = 'none';
+        document.getElementById('btn-check').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        window.scrollTo(0,0);
+
+        // Mélange et sélection de 10 phrases
+        const shuffled = shuffleArray([...allQuestions]);
+        currentQuestions = shuffled.slice(0, 10);
+
+        currentQuestions.forEach((q, index) => {
+            const block = document.createElement('div');
+            block.className = 'question-block';
+            
+            let selectHtml = `<select id="q-${index}">
+                <option value="" disabled selected>...</option>`;
+            q.options.forEach(opt => {
+                selectHtml += `<option value="${opt}">${opt}</option>`;
+            });
+            selectHtml += `</select>`;
+
+            block.innerHTML = `
+                <div>
+                    ${index + 1}. ${q.parts[0]} ${selectHtml} ${q.parts[1]}
+                </div>
+                <div id="fb-${index}" class="correction-block"></div>
+            `;
+            
+            container.appendChild(block);
+        });
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        // Vérification que tout est rempli
+        for(let i=0; i<currentQuestions.length; i++) {
+            const select = document.getElementById(`q-${i}`);
+            if(select.value === "") {
+                alert("Oups ! Il manque une réponse à la question " + (i+1));
+                return;
+            }
+        }
+
+        currentQuestions.forEach((q, index) => {
+            const select = document.getElementById(`q-${index}`);
+            const feedback = document.getElementById(`fb-${index}`);
+            const userAnswer = select.value;
+
+            select.disabled = true;
+
+            if (userAnswer === q.answer) {
+                score++;
+                select.classList.add('correct-answer');
+            } else {
+                select.classList.add('wrong-answer');
+                // Affichage de la correction et de la règle
+                feedback.innerHTML = `
+                    <span class="correction-text">Correction : ${q.answer}</span>
+                    <span class="rule-text">${q.rule}</span>
+                `;
+            }
+        });
+
+        const resultArea = document.getElementById('result-area');
+        const scoreDisplay = document.getElementById('score-display');
+        const feedbackMsg = document.getElementById('feedback-message');
+        const btnCheck = document.getElementById('btn-check');
+        const btnRetry = document.getElementById('btn-retry');
+
+        scoreDisplay.textContent = `${score} / 10`;
+        
+        if(score === 10) {
+            resultArea.style.backgroundColor = "#e8f5e9";
+            resultArea.style.color = "#27ae60";
+            feedbackMsg.innerHTML = "<strong>Excellent !</strong> Aucune faute.";
+        } else if (score >= 7) {
+            resultArea.style.backgroundColor = "#fff3e0";
+            resultArea.style.color = "#e67e22";
+            feedbackMsg.innerHTML = "<strong>Bien joué !</strong> Lis bien les astuces pour faire un sans-faute la prochaine fois.";
+        } else {
+            resultArea.style.backgroundColor = "#ffebee";
+            resultArea.style.color = "#c0392b";
+            feedbackMsg.innerHTML = "<strong>Courage !</strong> Regarde bien les règles ci-dessous pour comprendre tes erreurs.";
+        }
+
+        resultArea.style.display = 'block';
+        btnCheck.style.display = 'none';
+        btnRetry.style.display = 'block';
+
+        resultArea.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Lancement
+    initQuiz();
+
+</script>
+
+</body>
+</html>
