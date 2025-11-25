@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Vocabulaire - Texte à trous</title>
+    <title>Quiz Vocabulaire - Texte à trous + Audio</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -97,21 +97,38 @@
             color: #c0392b;
         }
 
-        .btn-hint {
-            background-color: #f1c40f;
-            color: #fff;
+        /* Boutons indices */
+        .hint-btn-group {
+            display: inline-flex;
+            gap: 5px;
+            margin-left: 10px;
+        }
+
+        .btn-mini {
             border: none;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             font-size: 14px;
             cursor: pointer;
-            margin-left: 10px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            transition: transform 0.1s;
         }
-        .btn-hint:hover { background-color: #f39c12; }
+        .btn-mini:active { transform: scale(0.9); }
+
+        .btn-scramble {
+            background-color: #f1c40f;
+            color: #fff;
+        }
+        .btn-scramble:hover { background-color: #f39c12; }
+
+        .btn-audio {
+            background-color: #3498db;
+            color: #fff;
+        }
+        .btn-audio:hover { background-color: #2980b9; }
 
         .hint-text {
             font-size: 0.8em;
@@ -158,7 +175,7 @@
 
     <div class="card">
         <div class="instructions">
-            <strong>Consigne :</strong> Complétez la phrase anglaise avec le mot manquant correspondant à la traduction française.
+            <strong>Consigne :</strong> Complétez la phrase. Utilisez 🔊 pour écouter le mot manquant ou ❓ pour mélanger les lettres.
         </div>
 
         <div id="quiz-container">
@@ -171,11 +188,6 @@
     </div>
 
 <script>
-    // Structure : 
-    // fr: Le mot en français (l'indice contextuel)
-    // pre: Ce qui vient avant le trou en anglais
-    // post: Ce qui vient après le trou en anglais
-    // ans: Le mot attendu (la réponse)
     const vocabulary = [
         { fr: "temps de midi", pre: "", post: "", ans: "lunchtime" },
         { fr: "à la cantine", pre: "in the", post: "", ans: "canteen" },
@@ -194,11 +206,11 @@
         { fr: "quel âge as-tu ?", pre: "how", post: "are you?", ans: "old" },
         { fr: "j'ai... ans", pre: "I'm... years", post: "", ans: "old" },
         { fr: "c'est bon à savoir", pre: "that's good to", post: "", ans: "know" },
-        { fr: "et toi? et vous?", pre: "what", post: "you?", ans: "about" }, // "about" est le mot clé de l'expression
+        { fr: "et toi? et vous?", pre: "what", post: "you?", ans: "about" }, 
         { fr: "pas de chance !", pre: "hard", post: "!", ans: "luck" },
         { fr: "c'est génial !", pre: "it", post: "!", ans: "rocks" },
         { fr: "chez moi", pre: "at my", post: "", ans: "place" },
-        { fr: "pendant les vacances", pre: "during the", post: "", ans: "holiday" }, // ou holidays, mais l'image disait "holiday"
+        { fr: "pendant les vacances", pre: "during the", post: "", ans: "holiday" },
         { fr: "le jour de la Saint Patrick", pre: "on St Patrick's", post: "", ans: "day" },
         { fr: "le 17 mars", pre: "on 17th", post: "", ans: "March" },
         { fr: "en mars", pre: "in", post: "", ans: "March" }
@@ -214,7 +226,6 @@
         return array;
     }
 
-    // Mélange uniquement le mot réponse pour l'indice
     function scrambleWord(word) {
         const arr = word.split('');
         for (let i = arr.length - 1; i > 0; i--) {
@@ -224,6 +235,18 @@
         return arr.join(' ');
     }
 
+    // Fonction de synthèse vocale
+    function pronounceWord(text) {
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB'; // Force l'anglais (GB ou US selon dispo)
+            utterance.rate = 0.9; // Légèrement plus lent pour bien entendre
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Votre navigateur ne supporte pas l'audio.");
+        }
+    }
+
     function initQuiz() {
         const container = document.getElementById('quiz-container');
         container.innerHTML = '';
@@ -231,7 +254,6 @@
         document.getElementById('btn-action').style.display = 'block';
         document.getElementById('btn-restart').style.display = 'none';
 
-        // Sélectionner 10 questions
         const shuffled = shuffleArray([...vocabulary]);
         currentQuestions = shuffled.slice(0, 10);
 
@@ -239,57 +261,66 @@
             const row = document.createElement('div');
             row.className = 'question-row';
 
-            // 1. Le terme français en haut
             const frLabel = document.createElement('div');
             frLabel.className = 'french-term';
             frLabel.textContent = item.fr;
 
-            // 2. La phrase à trous anglaise
             const enSentence = document.createElement('div');
             enSentence.className = 'english-sentence';
 
-            // Partie avant le trou
             if (item.pre) {
                 const preSpan = document.createElement('span');
                 preSpan.textContent = item.pre;
                 enSentence.appendChild(preSpan);
             }
 
-            // Le champ INPUT
             const input = document.createElement('input');
             input.type = 'text';
             input.id = `q-${index}`;
             input.autocomplete = 'off';
-            input.dataset.answer = item.ans; // Stockage de la réponse pour vérification facile
+            input.dataset.answer = item.ans;
             enSentence.appendChild(input);
 
-            // Partie après le trou
             if (item.post) {
                 const postSpan = document.createElement('span');
                 postSpan.textContent = item.post;
                 enSentence.appendChild(postSpan);
             }
 
-            // Bouton indice
-            const hintBtn = document.createElement('button');
-            hintBtn.className = 'btn-hint';
-            hintBtn.textContent = '?';
-            hintBtn.title = "Mélanger les lettres";
-            hintBtn.onclick = function() {
+            // Groupe de boutons d'indices
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'hint-btn-group';
+
+            // Bouton Audio
+            const audioBtn = document.createElement('button');
+            audioBtn.className = 'btn-mini btn-audio';
+            audioBtn.innerHTML = '🔊'; // Emoji speaker
+            audioBtn.title = "Écouter le mot";
+            audioBtn.onclick = function() {
+                pronounceWord(item.ans);
+            };
+
+            // Bouton Scramble
+            const scrambleBtn = document.createElement('button');
+            scrambleBtn.className = 'btn-mini btn-scramble';
+            scrambleBtn.innerHTML = '❓';
+            scrambleBtn.title = "Mélanger les lettres";
+            scrambleBtn.onclick = function() {
                 const hintTarget = document.getElementById(`hint-txt-${index}`);
                 if(hintTarget.innerText === "") {
                     hintTarget.innerText = `(${scrambleWord(item.ans)})`;
                 }
             };
-            enSentence.appendChild(hintBtn);
 
-            // Texte de l'indice
+            btnGroup.appendChild(audioBtn);
+            btnGroup.appendChild(scrambleBtn);
+            enSentence.appendChild(btnGroup);
+
             const hintTxt = document.createElement('span');
             hintTxt.id = `hint-txt-${index}`;
             hintTxt.className = 'hint-text';
             enSentence.appendChild(hintTxt);
 
-            // Zone de feedback (cachée au début)
             const feedback = document.createElement('div');
             feedback.id = `fb-${index}`;
             feedback.className = 'feedback-msg';
@@ -311,7 +342,6 @@
             const userVal = input.value.trim().toLowerCase();
             const correctVal = item.ans.toLowerCase();
 
-            // Comparaison simple
             if (userVal === correctVal) {
                 input.className = 'correct';
                 score++;
@@ -333,7 +363,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Démarrage
     initQuiz();
 
 </script>
