@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice de Conjugaison - Avoir et Être</title>
+    <style>
+        /* Styles CSS pour l'apparence */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f4f7f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .question {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ecf0f1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+        }
+        .question p {
+            margin: 0;
+            flex-grow: 1;
+        }
+        .verb-info {
+            font-style: italic;
+            color: #888;
+            margin-left: 10px;
+            min-width: 150px;
+        }
+        .input-field {
+            width: 150px;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            margin: 0 10px;
+            text-align: center;
+        }
+        .correction {
+            margin-left: 10px;
+            font-weight: bold;
+            display: none; /* Caché initiallement */
+        }
+        .score-box {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #e9eff3;
+            border: 1px solid #3498db;
+        }
+        .btn-check {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-check:hover {
+            background-color: #2980b9;
+        }
+        .correct { color: #27ae60; }
+        .incorrect { color: #e74c3c; }
+        .explanation {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 Exercice de Conjugaison : Avoir et Être</h1>
+
+    <div id="quiz-container">
+        </div>
+
+    <div id="score-box" class="score-box" style="display: none;"></div>
+
+    <button id="check-btn" class="btn-check" onclick="handleButtonClick()">Vérifier les réponses</button>
+</div>
+
+<script>
+    // --- Dictionnaire des Conjugaisons ---
+    const conjugations = {
+        // Temps : { Pronom : { Avoir : '...', Être : '...' } }
+        "présent": {
+            "Je/J'": { "avoir": "ai", "être": "suis" },
+            "Tu": { "avoir": "as", "être": "es" },
+            "Il/elle": { "avoir": "a", "être": "est" },
+            "Nous": { "avoir": "avons", "être": "sommes" },
+            "Vous": { "avoir": "avez", "être": "êtes" },
+            "Ils/elles": { "avoir": "ont", "être": "sont" }
+        },
+        "imparfait": {
+            "Je/J'": { "avoir": "avais", "être": "étais" },
+            "Tu": { "avoir": "avais", "être": "étais" },
+            "Il/elle": { "avoir": "avait", "être": "était" },
+            "Nous": { "avoir": "avions", "être": "étions" },
+            "Vous": { "avoir": "aviez", "être": "étiez" },
+            "Ils/elles": { "avoir": "avaient", "être": "étaient" }
+        },
+        "passé simple": {
+            "Je/J'": { "avoir": "eus", "être": "fus" },
+            "Tu": { "avoir": "eus", "être": "fus" },
+            "Il/elle": { "avoir": "eut", "être": "fut" },
+            "Nous": { "avoir": "eûmes", "être": "fûmes" },
+            "Vous": { "avoir": "eûtes", "être": "fûtes" },
+            "Ils/elles": { "avoir": "eurent", "être": "furent" }
+        },
+        "futur simple": {
+            "Je/J'": { "avoir": "aurai", "être": "serai" },
+            "Tu": { "avoir": "auras", "être": "seras" },
+            "Il/elle": { "avoir": "aura", "être": "sera" },
+            "Nous": { "avoir": "aurons", "être": "serons" },
+            "Vous": { "avoir": "aurez", "être": "serez" },
+            "Ils/elles": { "avoir": "auront", "être": "seront" }
+        },
+        "cond. présent": {
+            "Je/J'": { "avoir": "aurais", "être": "serais" },
+            "Tu": { "avoir": "aurais", "être": "serais" },
+            "Il/elle": { "avoir": "aurait", "être": "serait" },
+            "Nous": { "avoir": "aurions", "être": "serions" },
+            "Vous": { "avoir": "auriez", "être": "seriez" },
+            "Ils/elles": { "avoir": "auraient", "être": "seraient" }
+        }
+    };
+
+    // Liste des pronoms pour le générateur de phrases
+    const pronoms = ["Je/J'", "Tu", "Il/elle", "Nous", "Vous", "Ils/elles"];
+    // Liste des verbes
+    const verbes = ["avoir", "être"];
+    // Liste des temps
+    const temps = ["présent", "imparfait", "passé simple", "futur simple", "cond. présent"];
+
+    let isChecking = true; // État initial du bouton: Vérifier
+
+    // --- Fonctions Utilitaires ---
+
+    /**
+     * Sélectionne un élément aléatoire dans un tableau.
+     * @param {Array} arr - Le tableau d'éléments.
+     * @returns {*} L'élément aléatoire.
+     */
+    function getRandomElement(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    /**
+     * Génère 10 questions aléatoires uniques.
+     * @returns {Array<Object>} Un tableau de 10 objets question.
+     */
+    function generateQuiz() {
+        const quiz = [];
+        const usedQuestions = new Set();
+        const numQuestions = 10;
+
+        while (quiz.length < numQuestions) {
+            const pronom = getRandomElement(pronoms);
+            const verbe = getRandomElement(verbes);
+            const temps_conjug = getRandomElement(temps);
+
+            // Clé unique pour éviter les doublons (Pronom-Verbe-Temps)
+            const uniqueKey = `${pronom}-${verbe}-${temps_conjug}`;
+
+            if (!usedQuestions.has(uniqueKey)) {
+                usedQuestions.add(uniqueKey);
+
+                // Récupérer la conjugaison correcte
+                const correctConjugation = conjugations[temps_conjug][pronom][verbe];
+
+                // Générer la phrase (ex: Nous (...) un gâteau.)
+                let phrase = pronom;
+                if (pronom.includes("J'")) {
+                     // Petite astuce pour que l'apostrophe soit correcte
+                    phrase = pronom.replace("/", ""); 
+                } else if (pronom.includes("Il/elle")) {
+                    phrase = "Il/elle";
+                } else if (pronom.includes("Ils/elles")) {
+                    phrase = "Ils/elles";
+                }
+
+                // Pour "avoir", on utilise souvent "un(e) [nom]"
+                // Pour "être", on utilise souvent "très [adjectif]"
+                const complement = (verbe === "avoir") ? " un cadeau." : " très heureux.";
+                
+                phrase += ' (...) ' + complement;
+
+
+                quiz.push({
+                    id: quiz.length,
+                    pronom: pronom,
+                    verbe: verbe,
+                    temps: temps_conjug,
+                    phrase: phrase,
+                    correctAnswer: correctConjugation
+                });
+            }
+        }
+        return quiz;
+    }
+
+    /**
+     * Affiche le quiz sur la page HTML.
+     * @param {Array<Object>} quiz - Le tableau de questions.
+     */
+    function renderQuiz(quiz) {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = ''; // Nettoyer le conteneur
+
+        quiz.forEach(q => {
+            const questionElement = document.createElement('div');
+            questionElement.className = 'question';
+            questionElement.innerHTML = `
+                <p>
+                    ${q.phrase.split(' (...) ')[0]}
+                    <input type="text" id="q-${q.id}" class="input-field" data-answer="${q.correctAnswer}" aria-label="Conjugaison de ${q.verbe} au ${q.temps}">
+                    ${q.phrase.split(' (...) ')[1]}
+                </p>
+                <span class="verb-info">(${q.verbe}, ${q.temps})</span>
+                <span id="corr-${q.id}" class="correction"></span>
+            `;
+            container.appendChild(questionElement);
+        });
+
+        // Cacher le score et remettre le bouton en mode "Vérifier"
+        document.getElementById('score-box').style.display = 'none';
+        document.getElementById('check-btn').textContent = "Vérifier les réponses";
+        isChecking = true;
+    }
+
+    /**
+     * Vérifie les réponses de l'utilisateur.
+     */
+    function checkAnswers() {
+        let score = 0;
+        const inputs = document.querySelectorAll('.input-field');
+        const scoreBox = document.getElementById('score-box');
+
+        inputs.forEach((input, index) => {
+            const userAnswer = input.value.toLowerCase().trim();
+            const correctAnswer = input.getAttribute('data-answer').toLowerCase().trim();
+            const correctionSpan = document.getElementById(`corr-${index}`);
+            
+            // Afficher la correction
+            correctionSpan.style.display = 'inline';
+            input.disabled = true; // Désactiver l'édition après vérification
+
+            if (userAnswer === correctAnswer) {
+                score++;
+                correctionSpan.className = 'correction correct';
+                correctionSpan.textContent = '✅ Correct';
+            } else {
+                correctionSpan.className = 'correction incorrect';
+                correctionSpan.textContent = `❌ Faux (Réponse: ${correctAnswer})`;
+            }
+        });
+
+        // Afficher le score
+        scoreBox.innerHTML = `Votre score : ${score} / ${inputs.length}`;
+        scoreBox.style.display = 'block';
+
+        // Changer l'état du bouton
+        document.getElementById('check-btn').textContent = "Générer un nouveau quiz";
+        isChecking = false;
+    }
+
+    /**
+     * Gère le clic sur le bouton "Vérifier" / "Générer un nouveau quiz".
+     */
+    function handleButtonClick() {
+        if (isChecking) {
+            checkAnswers();
+        } else {
+            // Générer un nouveau quiz
+            const newQuiz = generateQuiz();
+            renderQuiz(newQuiz);
+        }
+    }
+
+    // --- Initialisation au chargement de la page ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const initialQuiz = generateQuiz();
+        renderQuiz(initialQuiz);
+    });
+
+</script>
+
+</body>
+</html>
