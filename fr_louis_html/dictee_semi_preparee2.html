@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictée Spéciale : Accords et Vocabulaire</title>
+    <style>
+        :root {
+            --primary: #2980b9;
+            --success: #27ae60;
+            --error: #c0392b;
+            --bg: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: white;
+            max-width: 850px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        h1 { text-align: center; color: var(--primary); margin-bottom: 30px; }
+
+        .instruction {
+            background: #e1f5fe;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .sentence-block {
+            font-size: 1.2rem;
+            line-height: 2.2;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 10px;
+        }
+
+        .word-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            vertical-align: middle;
+            margin: 0 5px;
+        }
+
+        input[type="text"] {
+            border: none;
+            border-bottom: 2px solid #bdc3c7;
+            padding: 2px 8px;
+            font-size: 1.1rem;
+            width: 140px;
+            text-align: center;
+            transition: all 0.3s;
+            outline: none;
+            background: #fffbe6;
+            border-radius: 4px;
+        }
+
+        input[type="text"]:focus {
+            border-bottom-color: var(--primary);
+            background: #fff;
+        }
+
+        .audio-inline {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .correct { background-color: #d4edda !important; border-bottom-color: var(--success) !important; color: var(--success); }
+        .wrong { background-color: #f8d7da !important; border-bottom-color: var(--error) !important; color: var(--error); }
+
+        .btn-container { text-align: center; margin-top: 30px; display: flex; flex-direction: column; gap: 15px; }
+
+        .main-btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            color: white;
+        }
+
+        #check-btn { background: var(--primary); }
+        #reset-btn { background: var(--success); display: none; }
+
+        #score-display { font-size: 1.5rem; font-weight: bold; }
+        .correction-text { font-size: 0.8rem; display: block; color: var(--error); margin-top: -10px; font-weight: normal;}
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Dictée 6 : Phrases d'entraînement</h1>
+
+    <div class="instruction">
+        <strong>Mode d'emploi :</strong> Lisez la phrase. Pour chaque trou, cliquez sur le bouton 🔊 pour écouter le mot (ou le groupe de mots) à écrire. Attention aux accords !
+    </div>
+
+    <div id="exercise-content">
+        </div>
+
+    <div class="btn-container">
+        <div id="score-display"></div>
+        <button id="check-btn" class="main-btn" onclick="checkAnswers()">Corriger et évaluer mon score</button>
+        <button id="reset-btn" class="main-btn" onclick="initTest()">Nouveau test (Mélanger)</button>
+    </div>
+</div>
+
+<script>
+    // Configuration des phrases
+    // [0] = Texte avant le trou, [1] = Bonne réponse, [2] = Texte après
+    const testData = [
+        {
+            parts: [
+                "Depuis ", "quelque temps", ", je ", "vois", " une ", "pirogue bleue", " sur la mer."
+            ]
+        },
+        {
+            parts: [
+                "L' ", "eau transparente", " tourne ", "autour de", " ce ", "requin inquiétant", "."
+            ]
+        },
+        {
+            parts: [
+                "Nous ", "suivons", " des ", "poissons rouges", " et des ", "ballons ronds", "."
+            ]
+        },
+        {
+            parts: [
+                "Il ", "comprend", " ", "tout de suite", " que cette ", "danse joyeuse", " va ", "suffire", "."
+            ]
+        },
+        {
+            parts: [
+                "Les ", "bandes noires", " ", "se multiplient", " sur les ", "vitres plates", "."
+            ]
+        },
+        {
+            parts: [
+                "Cet ", "après-midi", ", le ", "festival violet", " attire des ", "couleurs claires", "."
+            ]
+        }
+    ];
+
+    function playAudio(text) {
+        const synth = window.speechSynthesis;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.85;
+        synth.speak(utterance);
+    }
+
+    function initTest() {
+        const container = document.getElementById('exercise-content');
+        const scoreDisplay = document.getElementById('score-display');
+        const checkBtn = document.getElementById('check-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        container.innerHTML = '';
+        scoreDisplay.innerHTML = '';
+        checkBtn.style.display = 'inline-block';
+        resetBtn.style.display = 'none';
+
+        // Mélanger les phrases pour le nouveau test
+        const shuffled = [...testData].sort(() => 0.5 - Math.random());
+
+        shuffled.forEach((sentence, sIdx) => {
+            const div = document.createElement('div');
+            div.className = 'sentence-block';
+            
+            let html = "";
+            sentence.parts.forEach((part, pIdx) => {
+                if (pIdx % 2 === 1) { // C'est un mot à deviner (index impair)
+                    html += `
+                        <span class="word-box">
+                            <button class="audio-inline" onclick="playAudio('${part}')">🔊</button>
+                            <input type="text" data-ans="${part}" placeholder="...">
+                        </span>`;
+                } else {
+                    html += part;
+                }
+            });
+            
+            div.innerHTML = html;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('input[type="text"]');
+        let score = 0;
+
+        inputs.forEach(input => {
+            const userVal = input.value.trim().toLowerCase();
+            const correctVal = input.getAttribute('data-ans').toLowerCase();
+
+            // Créer ou nettoyer le texte de correction
+            let correction = input.parentNode.querySelector('.correction-text');
+            if (correction) correction.remove();
+
+            if (userVal === correctVal) {
+                input.className = 'correct';
+                score++;
+            } else {
+                input.className = 'wrong';
+                const errorTip = document.createElement('span');
+                errorTip.className = 'correction-text';
+                errorTip.innerText = `Attendu : ${input.getAttribute('data-ans')}`;
+                input.parentNode.appendChild(errorTip);
+            }
+            input.disabled = true;
+        });
+
+        const scoreDisplay = document.getElementById('score-display');
+        const total = inputs.length;
+        const percent = Math.round((score / total) * 100);
+
+        scoreDisplay.innerHTML = `Résultat : ${score} / ${total} (${percent}%)`;
+        scoreDisplay.style.color = percent >= 75 ? 'var(--success)' : 'var(--error)';
+
+        document.getElementById('check-btn').style.display = 'none';
+        document.getElementById('reset-btn').style.display = 'inline-block';
+    }
+
+    window.onload = initTest;
+</script>
+
+</body>
+</html>
