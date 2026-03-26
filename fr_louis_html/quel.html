@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz : Quel(s), Quelle(s) ou Qu'elle(s)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .instructions {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .question-card {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 1.1em;
+        }
+        select {
+            font-size: 1em;
+            padding: 5px;
+            margin: 0 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+        .correct {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            border-left: 5px solid #dc3545;
+        }
+        .correction-text {
+            display: block;
+            font-size: 0.9em;
+            margin-top: 8px;
+            font-weight: bold;
+        }
+        .correction-text.vert { color: #28a745; }
+        .correction-text.rouge { color: #dc3545; }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #btn-nouveau {
+            background-color: #28a745;
+            display: none;
+        }
+        #btn-nouveau:hover {
+            background-color: #1e7e34;
+        }
+        #score-container {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Entraînement : Quel / Quelle / Qu'elle...</h1>
+    
+    <div class="instructions">
+        <strong>Rappel :</strong><br>
+        - <em>Quel/Quelle/Quels/Quelles</em> : accompagnent un nom (déterminant).<br>
+        - <em>Qu'elle/Qu'elles</em> : suivis d'un verbe. Astuce : remplace par <em>qu'il</em> ou <em>qu'ils</em>.
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+    <div id="score-container"></div>
+
+    <button id="btn-corriger" onclick="corriger()">Corriger</button>
+    <button id="btn-nouveau" onclick="genererQuiz()">Générer 10 nouvelles questions</button>
+
+    <script>
+        // La banque de questions (utilise le vocabulaire de la leçon)
+        const banqueQuestions = [
+            { debut: "", fin: " spectacle exceptionnel !", reponse: "Quel" },
+            { debut: "", fin: " belle attraction !", reponse: "Quelle" },
+            { debut: "", fin: " fantômes effrayants !", reponse: "Quels" },
+            { debut: "", fin: " permissions as-tu eues pour le lendemain ?", reponse: "Quelles" },
+            { debut: "Je crois ", fin: " va s'amuser à la foire.", reponse: "qu'elle" },
+            { debut: "Il faut ", fin: " choisissent un manège.", reponse: "qu'elles" },
+            { debut: "", fin: " joie de se rendre à cette foire !", reponse: "Quelle" },
+            { debut: "Sais-tu ", fin: " argent il va dépenser ?", reponse: "quel" },
+            { debut: "", fin: " frayeur dans ce train fantôme !", reponse: "Quelle" },
+            { debut: "Il annonce ", fin: " s'installera ici demain.", reponse: "qu'elle" },
+            { debut: "", fin: " voitures tamponneuses rapides !", reponse: "Quelles" },
+            { debut: "Penses-tu ", fin: " commenceront à l'heure ?", reponse: "qu'elles" },
+            { debut: "", fin: " fous ont créé cette attraction ?", reponse: "Quels" },
+            { debut: "On dit ", fin: " est complètement folle.", reponse: "qu'elle" },
+            { debut: "", fin: " imprudents sont montés dans ce train ?", reponse: "Quels" },
+            { debut: "Il espère ", fin: " se rendra vite au spectacle.", reponse: "qu'elle" },
+            { debut: "Je ne sais pas ", fin: " attraction choisir.", reponse: "quelle" },
+            { debut: "Il est certain ", fin: " dépenseront tout leur argent.", reponse: "qu'elles" },
+            { debut: "", fin: " imprudence de dépenser tout cela !", reponse: "Quelle" },
+            { debut: "", fin: " lendemain difficile après cette foire !", reponse: "Quel" }
+        ];
+
+        const options = ["Quel", "Quelle", "Quels", "Quelles", "qu'elle", "qu'elles"];
+        let questionsActuelles = [];
+
+        // Fonction pour mélanger un tableau (algorithme de Fisher-Yates)
+        function melanger(tableau) {
+            for (let i = tableau.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [tableau[i], tableau[j]] = [tableau[j], tableau[i]];
+            }
+            return tableau;
+        }
+
+        // Initialiser et afficher le quiz
+        function genererQuiz() {
+            const conteneur = document.getElementById('quiz-container');
+            conteneur.innerHTML = ''; // Vider le conteneur
+            document.getElementById('score-container').style.display = 'none';
+            document.getElementById('btn-corriger').style.display = 'block';
+            document.getElementById('btn-nouveau').style.display = 'none';
+
+            // Tirer 10 questions au hasard
+            let banqueMelangee = melanger([...banqueQuestions]);
+            questionsActuelles = banqueMelangee.slice(0, 10);
+
+            questionsActuelles.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question-card';
+                div.id = `question-${index}`;
+                
+                let selectHTML = `<select id="select-${index}">
+                                    <option value="" disabled selected>---</option>`;
+                options.forEach(opt => {
+                    selectHTML += `<option value="${opt}">${opt}</option>`;
+                });
+                selectHTML += `</select>`;
+
+                div.innerHTML = `<strong>${index + 1}.</strong> ${q.debut} ${selectHTML} ${q.fin}
+                                 <div id="correction-${index}" class="correction-text"></div>`;
+                conteneur.appendChild(div);
+            });
+        }
+
+        // Évaluer les réponses
+        function corriger() {
+            let score = 0;
+            let toutesRepondues = true;
+
+            // Vérifier si tout a été répondu
+            for (let i = 0; i < 10; i++) {
+                const select = document.getElementById(`select-${i}`);
+                if (select.value === "") {
+                    toutesRepondues = false;
+                    break;
+                }
+            }
+
+            if (!toutesRepondues) {
+                alert("Merci de répondre à toutes les questions avant de corriger !");
+                return;
+            }
+
+            // Calcul du score et affichage visuel
+            questionsActuelles.forEach((q, i) => {
+                const select = document.getElementById(`select-${i}`);
+                const carte = document.getElementById(`question-${i}`);
+                const divCorrection = document.getElementById(`correction-${i}`);
+                const reponseUtilisateur = select.value;
+
+                select.disabled = true; // Empêcher la modification après correction
+
+                if (reponseUtilisateur === q.reponse) {
+                    score++;
+                    carte.classList.add('correct');
+                    divCorrection.textContent = "Correct !";
+                    divCorrection.className = "correction-text vert";
+                } else {
+                    carte.classList.add('incorrect');
+                    divCorrection.textContent = `Faux. La bonne réponse était : "${q.reponse}".`;
+                    divCorrection.className = "correction-text rouge";
+                }
+            });
+
+            // Afficher le score final
+            const scoreDiv = document.getElementById('score-container');
+            scoreDiv.innerHTML = `Ton score : ${score} / 10`;
+            scoreDiv.style.display = 'block';
+            
+            if (score === 10) {
+                scoreDiv.style.backgroundColor = '#d4edda';
+                scoreDiv.style.color = '#155724';
+            } else if (score >= 5) {
+                scoreDiv.style.backgroundColor = '#fff3cd';
+                scoreDiv.style.color = '#856404';
+            } else {
+                scoreDiv.style.backgroundColor = '#f8d7da';
+                scoreDiv.style.color = '#721c24';
+            }
+
+            // Gérer l'affichage des boutons
+            document.getElementById('btn-corriger').style.display = 'none';
+            document.getElementById('btn-nouveau').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Lancer le premier quiz au chargement de la page
+        window.onload = genererQuiz;
+    </script>
+</body>
+</html>
