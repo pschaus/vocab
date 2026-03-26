@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Vocabulaire : Écoute, Accords et Conjugaison</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #34495e;
+        }
+        .instructions {
+            background-color: #ffffff;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .question-card {
+            background-color: #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        input[type="text"] {
+            font-size: 1em;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            background-color: #fafbfc;
+            flex-grow: 1;
+            min-width: 200px;
+        }
+        .btn-audio {
+            background-color: #9b59b6;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background 0.2s;
+        }
+        .btn-audio:hover {
+            background-color: #8e44ad;
+        }
+        .btn-audio:active {
+            transform: scale(0.95);
+        }
+        .correct {
+            background-color: #d1fae5;
+            border: 1px solid #34d399;
+        }
+        .incorrect {
+            background-color: #fee2e2;
+            border: 1px solid #f87171;
+        }
+        .correction-text {
+            width: 100%;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-weight: bold;
+        }
+        .correction-text.vert { color: #059669; }
+        .correction-text.rouge { color: #dc2626; }
+        
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            color: #fff;
+            background-color: #2980b9;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+        .action-btn:hover { background-color: #2471a3; }
+        #btn-nouveau {
+            background-color: #27ae60;
+            display: none;
+        }
+        #btn-nouveau:hover { background-color: #219150; }
+        
+        #score-container {
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Dictée, Accords et Conjugaison</h1>
+    
+    <div class="instructions">
+        <strong>Consignes :</strong><br>
+        🔊 <strong>Dictée :</strong> Clique sur "Écouter" et écris les mots exacts (n'oublie pas les déterminants "un", "une", "le", "la").<br>
+        ✍️ <strong>Grammaire :</strong> Accorde les adjectifs entre parenthèses et conjugue les verbes au <strong>présent de l'indicatif</strong>.
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+    <div id="score-container"></div>
+
+    <button id="btn-corriger" class="action-btn" onclick="corriger()">Corriger mon test</button>
+    <button id="btn-nouveau" class="action-btn" onclick="genererQuiz()">Recommencer avec 10 nouvelles questions</button>
+
+    <script>
+        // La banque de données avec tous les types d'exercices
+        const banqueQuestions = [
+            // Dictée Audio (Noms et adjectifs)
+            { type: "audio", texte: "la permission", reponse: "la permission" },
+            { type: "audio", texte: "un spectacle exceptionnel", reponse: "un spectacle exceptionnel" },
+            { type: "audio", texte: "le lendemain", reponse: "le lendemain" },
+            { type: "audio", texte: "une voiture tamponneuse", reponse: "une voiture tamponneuse" },
+            { type: "audio", texte: "un train fantôme", reponse: "un train fantôme" },
+            { type: "audio", texte: "une grande frayeur", reponse: "une grande frayeur" },
+            { type: "audio", texte: "l'argent", reponse: "l'argent" },
+            { type: "audio", texte: "la joie", reponse: "la joie" },
+            { type: "audio", texte: "une attraction", reponse: "une attraction" },
+            { type: "audio", texte: "une folle", reponse: "une folle" },
+
+            // Conjugaison (Présent)
+            { type: "texte", debut: "Je (choisir)", fin: "ce manège à sensations.", reponse: "choisis" },
+            { type: "texte", debut: "Nous (s'installer)", fin: "dans la voiture tamponneuse.", reponse: "nous installons" },
+            { type: "texte", debut: "Tu (dépenser)", fin: "tout ton argent de poche.", reponse: "dépenses" },
+            { type: "texte", debut: "Le directeur (annoncer)", fin: "l'ouverture de la foire.", reponse: "annonce" },
+            { type: "texte", debut: "Vous (s'amuser)", fin: "beaucoup dans ce train.", reponse: "vous amusez" },
+            { type: "texte", debut: "Ils (se rendre)", fin: "à la foire dès demain.", reponse: "se rendent" },
+            { type: "texte", debut: "Le spectacle (commencer)", fin: "dans dix minutes.", reponse: "commence" },
+            { type: "texte", debut: "Nous (commencer)", fin: "à avoir une belle frayeur !", reponse: "commençons" },
+
+            // Accords d'adjectifs
+            { type: "texte", debut: "Ces voitures tamponneuses sont (exceptionnel)", fin: ".", reponse: "exceptionnelles" },
+            { type: "texte", debut: "Les enfants ont été très (imprudent)", fin: ".", reponse: "imprudents" },
+            { type: "texte", debut: "Quelle (fou)", fin: "idée de faire cette attraction !", reponse: "folle" },
+            { type: "texte", debut: "C'est un spectacle (exceptionnel)", fin: ".", reponse: "exceptionnel" },
+            { type: "texte", debut: "Elle est vraiment (imprudent)", fin: "de monter là-dedans.", reponse: "imprudente" },
+            { type: "texte", debut: "Ces fantômes ont l'air (fou)", fin: ".", reponse: "fous" }
+        ];
+
+        let questionsActuelles = [];
+
+        // Fonction pour lire le texte à voix haute (TTS API)
+        function ecouter(texte) {
+            if ('speechSynthesis' in window) {
+                // Annule toute lecture en cours pour éviter les superpositions
+                window.speechSynthesis.cancel(); 
+                const utterance = new SpeechSynthesisUtterance(texte);
+                utterance.lang = 'fr-FR'; // Voix française
+                utterance.rate = 0.85; // Un peu plus lent pour une dictée
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Désolé, ton navigateur ne supporte pas la lecture audio.");
+            }
+        }
+
+        // Mélanger la banque de données
+        function melanger(tableau) {
+            let arr = [...tableau];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // Générer l'affichage du quiz
+        function genererQuiz() {
+            const conteneur = document.getElementById('quiz-container');
+            conteneur.innerHTML = ''; 
+            document.getElementById('score-container').style.display = 'none';
+            document.getElementById('btn-corriger').style.display = 'block';
+            document.getElementById('btn-nouveau').style.display = 'none';
+
+            // Prendre 10 questions au hasard
+            questionsActuelles = melanger(banqueQuestions).slice(0, 10);
+
+            questionsActuelles.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question-card';
+                div.id = `question-${index}`;
+                
+                const num = `<strong>${index + 1}.</strong>`;
+                
+                if (q.type === "audio") {
+                    div.innerHTML = `
+                        ${num} 
+                        <button class="btn-audio" onclick="ecouter('${q.texte}')" title="Écouter le mot">🔊 Écouter</button>
+                        <input type="text" id="input-${index}" placeholder="Écris ce que tu entends..." autocomplete="off">
+                        <div id="correction-${index}" class="correction-text"></div>
+                    `;
+                } else {
+                    div.innerHTML = `
+                        ${num} ${q.debut}
+                        <input type="text" id="input-${index}" placeholder="Ta réponse..." autocomplete="off">
+                        ${q.fin}
+                        <div id="correction-${index}" class="correction-text"></div>
+                    `;
+                }
+                conteneur.appendChild(div);
+            });
+        }
+
+        // Corriger et afficher le score
+        function corriger() {
+            let score = 0;
+            let toutesRepondues = true;
+
+            // Vérification de remplissage
+            for (let i = 0; i < questionsActuelles.length; i++) {
+                const input = document.getElementById(`input-${i}`);
+                if (input.value.trim() === "") {
+                    toutesRepondues = false;
+                    break;
+                }
+            }
+
+            if (!toutesRepondues) {
+                alert("Tu dois remplir toutes les cases avant de corriger !");
+                return;
+            }
+
+            // Évaluation
+            questionsActuelles.forEach((q, i) => {
+                const input = document.getElementById(`input-${i}`);
+                const carte = document.getElementById(`question-${i}`);
+                const divCorrection = document.getElementById(`correction-${i}`);
+                
+                // On nettoie la réponse (enlève les espaces en trop, passe en minuscules)
+                const reponseUtilisateur = input.value.trim().toLowerCase();
+                const bonneReponse = q.reponse.toLowerCase();
+
+                input.disabled = true;
+
+                if (reponseUtilisateur === bonneReponse) {
+                    score++;
+                    carte.classList.add('correct');
+                    divCorrection.textContent = "✔ Correct !";
+                    divCorrection.className = "correction-text vert";
+                } else {
+                    carte.classList.add('incorrect');
+                    divCorrection.textContent = `✘ Faux. La bonne réponse était : "${q.reponse}".`;
+                    divCorrection.className = "correction-text rouge";
+                }
+            });
+
+            // Affichage du score
+            const scoreDiv = document.getElementById('score-container');
+            scoreDiv.innerHTML = `Ton score : ${score} / 10`;
+            scoreDiv.style.display = 'block';
+            
+            if (score === 10) {
+                scoreDiv.style.backgroundColor = '#d1fae5'; scoreDiv.style.color = '#065f46';
+            } else if (score >= 5) {
+                scoreDiv.style.backgroundColor = '#fef3c7'; scoreDiv.style.color = '#92400e';
+            } else {
+                scoreDiv.style.backgroundColor = '#fee2e2'; scoreDiv.style.color = '#991b1b';
+            }
+
+            // Bascule des boutons
+            document.getElementById('btn-corriger').style.display = 'none';
+            document.getElementById('btn-nouveau').style.display = 'block';
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Démarrage initial
+        window.onload = genererQuiz;
+    </script>
+</body>
+</html>
