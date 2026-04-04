@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Vocabulaire - Anglais</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        p.description {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .quiz-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .question-block {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .question-block:last-child {
+            border-bottom: none;
+        }
+        .vocab-word {
+            font-weight: bold;
+            color: #34495e;
+            font-size: 1.1em;
+        }
+        .sentence-fr {
+            font-style: italic;
+            color: #7f8c8d;
+            margin: 5px 0 10px 0;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+        input[type="text"] {
+            padding: 8px 12px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            border-radius: 6px;
+            flex: 1;
+            min-width: 200px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #3498db;
+        }
+        input.correct {
+            border-color: #27ae60;
+            background-color: #eafaf1;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        input.incorrect {
+            border-color: #e74c3c;
+            background-color: #fdedec;
+            color: #e74c3c;
+        }
+        .correction-text {
+            color: #27ae60;
+            font-weight: bold;
+            display: none;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        #score-container {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .score-good { background-color: #eafaf1; color: #27ae60; }
+        .score-medium { background-color: #fcf3cf; color: #f1c40f; }
+        .score-bad { background-color: #fdedec; color: #e74c3c; }
+    </style>
+</head>
+<body>
+
+    <h1>Quiz d'Anglais</h1>
+    <p class="description">Traduis la partie manquante de la phrase au présent.</p>
+
+    <div class="quiz-container">
+        <div id="quiz-body"></div>
+        <div id="score-container"></div>
+        <button id="action-btn" class="btn" onclick="handleAction()">Corriger le quiz</button>
+    </div>
+
+    <script>
+        const vocabulary = [
+            { fr: "Conduire des voitures rapides", sentenceFr: "Il conduit des voitures rapides.", prefix: "He ", expected: "drives fast cars" },
+            { fr: "Monter à cheval", sentenceFr: "Elle monte à cheval.", prefix: "She ", expected: "rides a horse" },
+            { fr: "Jongler", sentenceFr: "Je jongle.", prefix: "I ", expected: "juggle" },
+            { fr: "Utiliser un ordinateur", sentenceFr: "Nous utilisons un ordinateur.", prefix: "We ", expected: "use a computer" },
+            { fr: "Cuisiner", sentenceFr: "Tu cuisines.", prefix: "You ", expected: "cook" },
+            { fr: "Nager", sentenceFr: "Ils nagent.", prefix: "They ", expected: "swim" },
+            { fr: "Jouer du hockey sur glace", sentenceFr: "Nous jouons au hockey sur glace.", prefix: "We ", expected: "play ice hockey" },
+            { fr: "Jouer au football", sentenceFr: "Il joue au football.", prefix: "He ", expected: "plays football" },
+            { fr: "Coudre", sentenceFr: "Elle coud.", prefix: "She ", expected: "sews" },
+            { fr: "Tricoter", sentenceFr: "Je tricote.", prefix: "I ", expected: "knit" },
+            { fr: "Parler chinois", sentenceFr: "Tu parles chinois.", prefix: "You ", expected: "speak chinese" },
+            { fr: "Lire du néerlandais", sentenceFr: "Ils lisent du néerlandais.", prefix: "They ", expected: "read dutch" },
+            { fr: "Sauter", sentenceFr: "Nous sautons.", prefix: "We ", expected: "jump" },
+            { fr: "Plonger", sentenceFr: "Elle plonge.", prefix: "She ", expected: "dives" },
+            { fr: "Danser", sentenceFr: "Ils dansent.", prefix: "They ", expected: "dance" },
+            { fr: "Soulever des poids", sentenceFr: "Il soulève des poids.", prefix: "He ", expected: "lifts weights" },
+            { fr: "Apprendre des langues", sentenceFr: "Nous apprenons des langues.", prefix: "We ", expected: "learn languages" },
+            { fr: "Voler", sentenceFr: "Les oiseaux volent.", prefix: "Birds ", expected: "fly" },
+            { fr: "Regarder la tv", sentenceFr: "Je regarde la tv.", prefix: "I ", expected: "watch tv" },
+            { fr: "Chater, parler en ligne", sentenceFr: "Vous chatez en ligne.", prefix: "You ", expected: "chat online" }
+        ];
+
+        let currentQuestions = [];
+        let isCorrected = false;
+
+        function shuffleArray(array) {
+            let shuffled = array.slice();
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function initQuiz() {
+            currentQuestions = shuffleArray(vocabulary).slice(0, 10);
+            const quizBody = document.getElementById('quiz-body');
+            quizBody.innerHTML = '';
+            
+            currentQuestions.forEach((q, index) => {
+                const block = document.createElement('div');
+                block.className = 'question-block';
+                block.innerHTML = `
+                    <div class="vocab-word">Vocabulaire : ${q.fr}</div>
+                    <div class="sentence-fr">Phrase : ${q.sentenceFr}</div>
+                    <div class="input-group">
+                        <span>${q.prefix}</span>
+                        <input type="text" id="answer-${index}" autocomplete="off" placeholder="...">
+                    </div>
+                    <div class="correction-text" id="correction-${index}">Correction : ${q.expected}</div>
+                `;
+                quizBody.appendChild(block);
+            });
+
+            document.getElementById('score-container').style.display = 'none';
+            document.getElementById('action-btn').textContent = "Corriger le quiz";
+            isCorrected = false;
+        }
+
+        function cleanString(str) {
+            return str.trim().toLowerCase().replace(/[.,!?]/g, "");
+        }
+
+        function handleAction() {
+            if (isCorrected) {
+                initQuiz();
+            } else {
+                correctQuiz();
+            }
+        }
+
+        function correctQuiz() {
+            let score = 0;
+
+            currentQuestions.forEach((q, index) => {
+                const inputEl = document.getElementById(`answer-${index}`);
+                const correctionEl = document.getElementById(`correction-${index}`);
+                const userAnswer = cleanString(inputEl.value);
+                const expectedAnswer = cleanString(q.expected);
+
+                inputEl.disabled = true;
+
+                if (userAnswer === expectedAnswer) {
+                    inputEl.classList.add('correct');
+                    score++;
+                } else {
+                    inputEl.classList.add('incorrect');
+                    correctionEl.style.display = 'block';
+                }
+            });
+
+            const scoreContainer = document.getElementById('score-container');
+            scoreContainer.style.display = 'block';
+            scoreContainer.textContent = `Votre score : ${score} / 10`;
+            
+            scoreContainer.className = '';
+            if(score >= 8) scoreContainer.classList.add('score-good');
+            else if(score >= 5) scoreContainer.classList.add('score-medium');
+            else scoreContainer.classList.add('score-bad');
+
+            document.getElementById('action-btn').textContent = "Nouveau Quiz";
+            isCorrected = true;
+            
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        // Démarrer le quiz au chargement de la page
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
