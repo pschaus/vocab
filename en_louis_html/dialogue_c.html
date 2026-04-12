@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz d'Anglais - Unité 5 (Défi "Will")</title>
+    <style>
+        :root {
+            --primary: #4A90E2;
+            --success: #2ECC71;
+            --danger: #E74C3C;
+            --warning: #F39C12;
+            --background: #F5F7FA;
+            --card: #FFFFFF;
+            --text: #333333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .quiz-container {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-block {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .question-block.challenge {
+            background-color: #fffaf0;
+            padding: 15px;
+            border: 2px solid var(--warning);
+            border-radius: 8px;
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+
+        .challenge-badge {
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background-color: var(--warning);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .question-block:last-child {
+            border-bottom: none;
+        }
+
+        .fr-text {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        input.correct {
+            border-color: var(--success);
+            background-color: #f0fdf4;
+        }
+
+        input.wrong {
+            border-color: var(--danger);
+            background-color: #fef2f2;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            font-weight: bold;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-help {
+            background-color: #f1c40f;
+            color: #333;
+            padding: 10px 15px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .btn-help:hover {
+            background-color: #f39c12;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background-color: #357ABD;
+        }
+
+        .feedback {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .feedback.correct-text { color: var(--success); }
+        .feedback.wrong-text { color: var(--danger); }
+
+        #results-area {
+            text-align: center;
+            margin-top: 25px;
+            display: none;
+        }
+
+        .score {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>📝 Mon Quiz d'Anglais</h1>
+    
+    <div class="quiz-container">
+        <div id="quiz-content"></div>
+        
+        <button id="btn-submit" class="btn-primary" onclick="checkAnswers()">Corriger mon quiz</button>
+        
+        <div id="results-area">
+            <div class="score" id="score-display"></div>
+            <button class="btn-primary" style="background-color: var(--success);" onclick="generateQuiz()">Lancer un nouveau quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Base de données du vocabulaire classique
+        const vocabList = [
+            { fr: "un lieu, un endroit", en: ["a place", "place"] },
+            { fr: "un vélo", en: ["a bike", "bike"] },
+            { fr: "les poids, les haltères", en: ["weights", "the weights"] },
+            { fr: "une chose", en: ["a thing", "thing"] },
+            { fr: "un exercice", en: ["an exercise", "exercise"] },
+            { fr: "un engin, une machine", en: ["a machine", "machine"] },
+            { fr: "un tapis de course", en: ["a running machine", "running machine"] },
+            { fr: "raconter, dire", en: ["to tell", "tell"] },
+            { fr: "Raconte-moi !", en: ["tell me!", "tell me"] },
+            { fr: "montrer", en: ["to show", "show"] },
+            { fr: "utiliser", en: ["to use", "use"] },
+            { fr: "vouloir (faire qqch)", en: ["to want", "to want to", "want"] },
+            { fr: "essayer", en: ["to try", "try"] },
+            { fr: "s’inquiéter, se tracasser", en: ["to worry", "worry"] },
+            { fr: "Ne te tracasse pas !", en: ["don't worry!", "don't worry", "do not worry"] },
+            { fr: "commencer (par)", en: ["to start", "to start with", "start", "start with"] },
+            { fr: "aider", en: ["to help", "help"] },
+            { fr: "faire", en: ["to do", "do"] },
+            { fr: "changer", en: ["to change", "change"] },
+            { fr: "avoir, éprouver des difficultés", en: ["to be in trouble", "be in trouble"] },
+            { fr: "merveilleux", en: ["wonderful"] },
+            { fr: "rapide, vite – rapidement", en: ["fast"] },
+            { fr: "Pas trop vite.", en: ["not too fast.", "not too fast"] },
+            { fr: "beau, charmant", en: ["good-looking", "good looking", "handsome"] },
+            { fr: "habituellement, d’habitude", en: ["usually"] },
+            { fr: "toujours", en: ["always"] },
+            { fr: "premièrement, d’abord", en: ["first"] },
+            { fr: "pendant longtemps", en: ["for a long time"] },
+            { fr: "plein de", en: ["plenty of"] },
+            { fr: "donc, ainsi", en: ["so"] },
+            { fr: "si", en: ["if"] },
+            { fr: "Faisons-le !", en: ["let's do it!", "let's do it", "lets do it"] },
+            { fr: "Quel endroit merveilleux !", en: ["what a wonderful place!", "what a wonderful place"] }
+        ];
+
+        // Le verbe "aller" est maintenant conjugué avec chaque sujet
+        const subjects = [
+            { fr: "Je vais", en: ["I", "I'll", "I will"] },
+            { fr: "Tu vas", en: ["You", "You'll", "You will"] },
+            { fr: "Il va", en: ["He", "He'll", "He will"] },
+            { fr: "Elle va", en: ["She", "She'll", "She will"] },
+            { fr: "Nous allons", en: ["We", "We'll", "We will"] },
+            { fr: "Ils vont", en: ["They", "They'll", "They will"] },
+            { fr: "Elles vont", en: ["They", "They'll", "They will"] }
+        ];
+
+        // L'action seule (à l'infinitif)
+        const actionPhrases = [
+            { fr: "utiliser un vélo", enBase: "use a bike" },
+            { fr: "essayer la machine", enBase: "try the machine" },
+            { fr: "commencer par un exercice", enBase: "start with an exercise" },
+            { fr: "montrer le lieu", enBase: "show the place" },
+            { fr: "changer les poids", enBase: "change the weights" },
+            { fr: "raconter une chose merveilleuse", enBase: "tell a wonderful thing" },
+            { fr: "aider rapidement", enBase: "help fast" }
+        ];
+
+        let currentQuestions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function normalizeText(text) {
+            return text.toLowerCase()
+                       .replace(/[.,!?;()]/g, "")
+                       .replace(/’/g, "'") 
+                       .replace(/\s+/g, " ")
+                       .trim();
+        }
+
+        function speakWord(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-GB';
+            utterance.rate = 0.85;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function generateChallengeQuestion() {
+            const subject = subjects[Math.floor(Math.random() * subjects.length)];
+            const action = actionPhrases[Math.floor(Math.random() * actionPhrases.length)];
+            
+            const frSentence = `${subject.fr} ${action.fr}.`;
+            
+            const acceptedAnswers = [
+                `${subject.en[2]} ${action.enBase}`, // Ex: I will use a bike
+                `${subject.en[1]} ${action.enBase}`  // Ex: I'll use a bike
+            ];
+
+            return {
+                fr: frSentence,
+                en: acceptedAnswers,
+                isChallenge: true,
+                displayEn: acceptedAnswers[0]
+            };
+        }
+
+        function generateQuiz() {
+            const quizContent = document.getElementById('quiz-content');
+            quizContent.innerHTML = '';
+            document.getElementById('results-area').style.display = 'none';
+            document.getElementById('btn-submit').style.display = 'block';
+            window.scrollTo(0, 0);
+
+            const challengeQuestion = generateChallengeQuestion();
+            const randomVocab = shuffleArray([...vocabList]).slice(0, 9);
+            currentQuestions = shuffleArray([challengeQuestion, ...randomVocab]);
+
+            currentQuestions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = `question-block ${q.isChallenge ? 'challenge' : ''}`;
+                
+                let badgeHTML = q.isChallenge ? `<div class="challenge-badge">Défi "Will" (Phrase complète)</div>` : '';
+                let hintText = q.isChallenge ? q.displayEn : q.en[0];
+
+                div.innerHTML = `
+                    ${badgeHTML}
+                    <div class="fr-text" style="${q.isChallenge ? 'margin-top: 5px;' : ''}">
+                        <span>${index + 1}. ${q.fr}</span>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="answer-${index}" placeholder="${q.isChallenge ? 'Traduis la phrase entière...' : 'Traduction en anglais...'}" autocomplete="off">
+                        <button class="btn-help" title="Écouter un indice (Prononciation)" onclick="speakWord('${hintText.replace(/'/g, "\\'")}')">🔊</button>
+                    </div>
+                    <span id="feedback-${index}" class="feedback"></span>
+                `;
+                quizContent.appendChild(div);
+            });
+        }
+
+        function checkAnswers() {
+            let score = 0;
+
+            currentQuestions.forEach((q, index) => {
+                const inputField = document.getElementById(`answer-${index}`);
+                const feedbackField = document.getElementById(`feedback-${index}`);
+                const userAnswer = normalizeText(inputField.value);
+                
+                const isCorrect = q.en.some(correctAnswer => normalizeText(correctAnswer) === userAnswer);
+
+                inputField.classList.remove('correct', 'wrong');
+                
+                if (isCorrect) {
+                    score++;
+                    inputField.classList.add('correct');
+                    feedbackField.innerHTML = "✅ Correct !";
+                    feedbackField.className = "feedback correct-text";
+                } else {
+                    inputField.classList.add('wrong');
+                    let displayCorrect = q.isChallenge ? q.displayEn : q.en[0];
+                    feedbackField.innerHTML = `❌ Faux. La bonne réponse était : <strong>${displayCorrect}</strong>`;
+                    feedbackField.className = "feedback wrong-text";
+                }
+                
+                inputField.disabled = true;
+            });
+
+            document.getElementById('btn-submit').style.display = 'none';
+            const resultsArea = document.getElementById('results-area');
+            resultsArea.style.display = 'block';
+            
+            let message = "";
+            if(score === 10) message = "Parfait ! 🎉";
+            else if(score >= 7) message = "Très bien joué ! 👍";
+            else if(score >= 5) message = "Pas mal, encore un petit effort ! 💪";
+            else message = "Il faut encore réviser, courage ! 📚";
+
+            document.getElementById('score-display').innerHTML = `Ton score : ${score} / 10<br><span style="font-size: 0.7em; color: #666;">${message}</span>`;
+        }
+
+        window.onload = generateQuiz;
+
+    </script>
+</body>
+</html>
