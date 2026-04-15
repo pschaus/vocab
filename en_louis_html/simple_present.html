@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercice : Simple Present</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --success: #2ecc71;
+            --error: #e74c3c;
+            --bg: #f4f7f6;
+            --text: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #7f8c8d;
+        }
+
+        .quiz-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            line-height: 1.6;
+        }
+
+        input[type="text"] {
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 16px;
+            width: 120px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        button:active { transform: scale(0.98); }
+
+        .btn-correct { background-color: var(--success); color: white; }
+        .btn-new { background-color: var(--primary); color: white; }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .correct-ans { color: var(--success); font-weight: bold; }
+        .wrong-ans { color: var(--error); text-decoration: line-through; }
+        .feedback { font-size: 14px; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simple Present Practice</h1>
+    <p class="instructions">Complete the sentences with the correct form of the verb in brackets.</p>
+    
+    <div id="quiz-container">
+        </div>
+
+    <div id="result"></div>
+
+    <div class="controls">
+        <button class="btn-correct" onclick="checkAnswers()">Corriger</button>
+        <button class="btn-new" onclick="initQuiz()">Nouvelles phrases</button>
+    </div>
+</div>
+
+<script>
+    const database = [
+        { q: "I ___ (to play) the piano every evening.", a: "play" },
+        { q: "She ___ (to watch) TV at night.", a: "watches" },
+        { q: "He ___ (to go) to school on foot.", a: "goes" },
+        { q: "You ___ (to run) with your father once a week.", a: "run" },
+        { q: "Victoria and her mother ___ (to drink) tea in the afternoon.", a: "drink" },
+        { q: "She ___ (to finish) her homework around 5 o'clock.", a: "finishes" },
+        { q: "It ___ (to rain) a lot in Scotland.", a: "rains" },
+        { q: "I ___ (to live) in London.", a: "live" },
+        { q: "Victoria ___ (to hang around) with her friends after school.", a: "hangs around" },
+        { q: "They ___ (to like) playing golf on Sundays.", a: "like" },
+        { q: "You ___ (to write) a letter to your brother every week.", a: "write" },
+        { q: "He ___ (to get up) at 7 o'clock every day.", a: "gets up" },
+        { q: "The dog ___ (to eat) twice a day.", a: "eats" },
+        { q: "She ___ (to go) to bed at 10 o'clock every night.", a: "goes" },
+        { q: "He always ___ (to buy) a lot of clothes in the sales.", a: "buys" },
+        { q: "She never ___ (to kiss) anyone.", a: "kisses" },
+        { q: "Victoria ___ (to dance) with her friends after school.", a: "dances" },
+        { q: "He ___ (to study) at 6 o'clock every day.", a: "studies" },
+        { q: "She never ___ (to relax)!", a: "relaxes" },
+        { q: "We ___ (to speak) English very well.", a: "speak" }
+    ];
+
+    let currentQuestions = [];
+
+    function initQuiz() {
+        // Reset
+        document.getElementById('result').innerHTML = "";
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = "";
+        
+        // Mélanger et prendre 10 questions
+        const shuffled = [...database].sort(() => 0.5 - Math.random());
+        currentQuestions = shuffled.slice(0, 10);
+
+        currentQuestions.forEach((item, index) => {
+            const parts = item.q.split("___");
+            const div = document.createElement('div');
+            div.className = 'quiz-item';
+            div.innerHTML = `
+                ${index + 1}. ${parts[0]}
+                <input type="text" id="input-${index}" autocomplete="off">
+                ${parts[1]}
+                <span id="feedback-${index}" class="feedback"></span>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        currentQuestions.forEach((item, index) => {
+            const userInput = document.getElementById(`input-${index}`).value.trim().toLowerCase();
+            const feedback = document.getElementById(`feedback-${index}`);
+            const inputField = document.getElementById(`input-${index}`);
+
+            if (userInput === item.a.toLowerCase()) {
+                score++;
+                feedback.innerHTML = `<span class="correct-ans">✓ Correct</span>`;
+                inputField.style.borderColor = "var(--success)";
+            } else {
+                feedback.innerHTML = `<span class="wrong-ans">${userInput || '...'}</span> <span class="correct-ans">➔ ${item.a}</span>`;
+                inputField.style.borderColor = "var(--error)";
+            }
+        });
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `Ton score : ${score} / 10`;
+        
+        if (score === 10) resultDiv.style.color = "var(--success)";
+        else if (score >= 7) resultDiv.style.color = "var(--primary)";
+        else resultDiv.style.color = "var(--error)";
+    }
+
+    // Lancer le quiz au chargement
+    initQuiz();
+</script>
+
+</body>
+</html>
