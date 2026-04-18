@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictée Audio - Leur & Vocabulaire</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; background-color: #f0f4f8; color: #333; max-width: 850px; margin: 20px auto; padding: 20px; }
+        .card { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; border-bottom: 3px solid #3498db; padding-bottom: 10px; text-align: center; }
+        .rule { background: #fff9db; padding: 15px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #f1c40f; font-size: 0.9em; }
+        .question { margin-bottom: 18px; padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .question input { padding: 8px; border: 2px solid #ddd; border-radius: 6px; font-size: 1em; width: 150px; }
+        
+        /* Bouton Audio */
+        .audio-btn { background: #9b59b6; color: white; border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2em; transition: 0.2s; }
+        .audio-btn:hover { background: #8e44ad; transform: scale(1.1); }
+        .audio-btn:active { transform: scale(0.9); }
+
+        .btn-container { margin-top: 30px; display: flex; gap: 15px; justify-content: center; }
+        button.action-btn { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1em; transition: 0.3s; }
+        #check-btn { background-color: #27ae60; color: white; }
+        #new-btn { background-color: #3498db; color: white; }
+        button:disabled { background-color: #bdc3c7; cursor: not-allowed; }
+
+        #result { margin-top: 25px; font-weight: bold; font-size: 1.4em; text-align: center; color: #2c3e50; }
+        .correct { border-color: #27ae60 !important; background-color: #e8f5e9; }
+        .wrong { border-color: #e74c3c !important; background-color: #ffebee; }
+        .correction-text { color: #27ae60; font-weight: bold; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🎧 Dictée Interactive 9</h1>
+    
+    <div class="rule">
+        <strong>Aide :</strong> Clique sur le bouton <b>🟣 🔊</b> pour entendre le mot à écrire dans la case.
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <div class="btn-container">
+        <button id="check-btn" class="action-btn" onclick="checkAnswers()">Corriger</button>
+        <button id="new-btn" class="action-btn" onclick="generateQuiz()">10 nouvelles questions</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    const pool = [
+        // LEUR / LEURS
+        { q: "Elles ___ ont annoncé la nouvelle.", a: "leur" },
+        { q: "Les enfants ont quitté ___ voisins.", a: "leurs" },
+        { q: "Je ___ ai laissé un message.", a: "leur" },
+        { q: "Les objets appartiennent à ___ propriétaires.", a: "leurs" },
+        { q: "Ce moment ___ appartient.", a: "leur" },
+        { q: "Ce nouveau projet est le ___.", a: "leur" },
+        { q: "Ils aiment beaucoup ___ environnement.", a: "leur" },
+        { q: "Ils ___ ont compris la leçon.", a: "leur" },
+        { q: "Ces souvenirs sont les ___.", a: "leurs" },
+        { q: "Ils ___ ont donné un dernier souvenir.", a: "leur" },
+        { q: "L'image reste gravée dans ___ esprit.", a: "leur" },
+        { q: "Les voisins ___ ont dit bonjour.", a: "leur" },
+        { q: "Les filles ont retrouvé ___ image préférée.", a: "leur" },
+        { q: "Il faut ___ laisser une chance.", a: "leur" },
+        { q: "Ils se précipitent vers ___ nouveaux amis.", a: "leurs" },
+        { q: "Elle redoute ___ réaction.", a: "leur" },
+        { q: "Il ___ a montré une image.", a: "leur" },
+        { q: "Ils ont laissé ___ affaires derrière eux.", a: "leurs" },
+        { q: "Comprendre ___ esprit est difficile.", a: "leur" },
+        { q: "Rendons-___ ce qui est à eux.", a: "leur" },
+        
+        // VOCABULAIRE & ADJECTIFS
+        { q: "C'est la ___ semaine de vacances.", a: "dernière" },
+        { q: "Il redoute le ___ pas dans cette maison.", a: "premier" },
+        { q: "Une ___ de souvenirs l'envahit.", a: "multitude" },
+        { q: "Elle semble totalement ___ par ce lieu.", a: "bouleversée" },
+        { q: "Ils se sont précipités ___ la porte.", a: "derrière" },
+        { q: "Il y a ___ images sur la table.", a: "deux" },
+        { q: "Ils ont rangé leurs affaires ___.", a: "pêle-mêle" },
+        { q: "Ils partiront ___ pour le voyage.", a: "bientôt" },
+        { q: "___ il est arrivé, tout a changé.", a: "Lorsqu'" },
+        { q: "Les filles sont très ___ aujourd'hui.", a: "heureuses" },
+        { q: "Il a fait ses ___ pas hier.", a: "premiers" },
+        { q: "Elle a rangé les souvenirs ___.", a: "pêle-mêle" },
+        { q: "C'est le ___ moment pour partir.", a: "dernier" },
+        { q: "Une ___ de filles se sont présentées.", a: "multitude" },
+        { q: "Le voisin est un ___ venu.", a: "nouveau" },
+        { q: "Les deux ___ semaines furent rudes.", a: "premières" },
+        { q: "Les garçons sont ___ de ce changement.", a: "heureux" },
+        { q: "Elle est ___ par son environnement.", a: "bouleversée" },
+        { q: "___, nous serons voisins.", a: "Bientôt" },
+        { q: "Les voisins sont ___ de vous voir.", a: "heureux" },
+        { q: "___ semaines se sont écoulées.", a: "Deux" },
+        { q: "Ce sont les ___ souvenirs d'enfance.", a: "premiers" },
+        { q: "L'esprit ___ de cette fille m'étonne.", a: "nouveau" },
+        { q: "Ils sont ___ de quitter leur ville.", a: "heureux" },
+        { q: "Cette ___ semble perdue.", a: "fille" },
+        { q: "Mon ___ est très sympathique.", a: "voisin" },
+        { q: "Il a un drôle d'___ ce matin.", a: "esprit" },
+        { q: "C'est un beau ___ à partager.", a: "souvenir" },
+        { q: "Elle fait un ___ vers l'avant.", a: "pas" },
+        { q: "Je vais ___ la nouvelle.", a: "annoncer" }
+    ];
+
+    let currentQuestions = [];
+
+    // Fonction de lecture vocale
+    function playWord(word) {
+        // On nettoie le mot des caractères spéciaux pour la prononciation
+        const cleanWord = word.replace("'", "e "); 
+        const utterance = new SpeechSynthesisUtterance(cleanWord);
+        utterance.lang = 'fr-FR';
+        utterance.rate = 0.9; // Un peu plus lent pour bien entendre
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function generateQuiz() {
+        const container = document.getElementById('quiz-container');
+        const resultDiv = document.getElementById('result');
+        container.innerHTML = '';
+        resultDiv.innerHTML = '';
+        document.getElementById('check-btn').disabled = false;
+        
+        const shuffled = [...pool].sort(() => 0.5 - Math.random());
+        currentQuestions = shuffled.slice(0, 10);
+
+        currentQuestions.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'question';
+            const parts = item.q.split('___');
+            
+            div.innerHTML = `
+                <span>${index + 1}. ${parts[0]}</span>
+                <input type="text" id="q${index}" autocomplete="off">
+                <button class="audio-btn" onclick="playWord('${item.a}')" title="Écouter le mot">🔊</button>
+                <span>${parts[1]}</span>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        currentQuestions.forEach((item, index) => {
+            const input = document.getElementById(`q${index}`);
+            const userAnswer = input.value.trim().toLowerCase().replace("’", "'");
+            const correctAnswer = item.a.toLowerCase().replace("’", "'");
+            
+            // Validation (tolérance sur l'apostrophe finale de lorsqu')
+            const isCorrect = (userAnswer === correctAnswer) || (correctAnswer === "lorsqu'" && userAnswer === "lorsqu");
+
+            if (isCorrect) {
+                score++;
+                input.className = 'correct';
+            } else {
+                input.className = 'wrong';
+                const correction = document.createElement('span');
+                correction.className = 'correction-text';
+                correction.innerText = `➔ ${item.a}`;
+                input.parentNode.appendChild(correction);
+            }
+            input.disabled = true;
+        });
+
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = `Note : ${score} / 10`;
+        document.getElementById('check-btn').disabled = true;
+    }
+
+    // Lancement au chargement
+    generateQuiz();
+</script>
+
+</body>
+</html>
