@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz : Adverbes de Fréquence Anglais</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .rule-box { background: #e8f4fd; border-left: 5px solid #3498db; padding: 15px; margin-bottom: 20px; font-size: 0.9em; }
+        .question { margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 8px; }
+        .prompt { font-weight: bold; margin-bottom: 10px; color: #444; }
+        input[type="text"] { width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 4px; font-size: 1em; transition: border-color 0.3s; }
+        input[type="text"]:focus { border-color: #3498db; outline: none; }
+        .feedback { margin-top: 10px; padding: 10px; border-radius: 4px; display: none; font-size: 0.9em; }
+        .correct { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .controls { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
+        button { padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; font-weight: bold; transition: transform 0.1s; }
+        #check-btn { background-color: #27ae60; color: white; }
+        #new-btn { background-color: #3498db; color: white; }
+        button:active { transform: scale(0.98); }
+        .score { text-align: center; font-weight: bold; font-size: 1.2em; margin-bottom: 20px; color: #2980b9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>English Adverbs of Frequency</h1>
+    
+    <div class="rule-box">
+        <strong>Rappel de la règle :</strong><br>
+        1. <strong>Sujet + Adverbe + Verbe</strong> (ex: I <em>often</em> play tennis).<br>
+        2. <strong>Sujet + BE + Adverbe</strong> (ex: He is <em>always</em> late).<br>
+        3. Dans les questions : <strong>Auxiliaire + Sujet + Adverbe + Verbe</strong> ?
+    </div>
+
+    <div id="score-display" class="score"></div>
+    <div id="quiz-area"></div>
+
+    <div class="controls">
+        <button id="check-btn" onclick="checkAnswers()">Corriger</button>
+        <button id="new-btn" onclick="generateQuiz()">Nouveau Quiz</button>
+    </div>
+</div>
+
+<script>
+// Pool de données basé sur vos exercices et enrichi pour atteindre >100 variations
+const subjects = ["Victoria", "My father", "The dog", "My parents", "Jane and her friends", "I", "You", "She", "He", "They", "We"];
+const adverbs = [
+    {en: "always", fr: "toujours"},
+    {en: "usually", fr: "habituellement"},
+    {en: "generally", fr: "généralement"},
+    {en: "often", fr: "souvent"},
+    {en: "sometimes", fr: "parfois"},
+    {en: "never", fr: "jamais"}
+];
+
+const verbsNormal = [
+    {base: "run", s: "runs", rest: "in Central Park"},
+    {base: "play", s: "plays", rest: "tennis on Sundays"},
+    {base: "go", s: "goes", rest: "to bed at 10 o'clock"},
+    {base: "eat", s: "eats", rest: "sweets every week"},
+    {base: "watch", s: "watches", rest: "TV at night"},
+    {base: "work", s: "works", rest: "from 7 to 5"},
+    {base: "speak", s: "speaks", rest: "English and Spanish"},
+    {base: "buy", s: "buys", rest: "clothes in the sales"},
+    {base: "finish", s: "finishes", rest: "homework at 5 pm"},
+    {base: "drink", s: "drinks", rest: "tea in the afternoon"}
+];
+
+const verbsBe = [
+    {i: "am", heshe: "is", plural: "are", rest: "late for school"},
+    {i: "am", heshe: "is", plural: "are", rest: "happy"},
+    {i: "am", heshe: "is", plural: "are", rest: "at the matches"},
+    {i: "am", heshe: "is", plural: "are", rest: "tired on Monday"}
+];
+
+let currentQuestions = [];
+
+function generateQuiz() {
+    const quizArea = document.getElementById('quiz-area');
+    quizArea.innerHTML = '';
+    document.getElementById('score-display').innerHTML = '';
+    currentQuestions = [];
+
+    for (let i = 0; i < 10; i++) {
+        const type = Math.random() > 0.3 ? 'normal' : 'be';
+        const sub = subjects[Math.floor(Math.random() * subjects.length)];
+        const adv = adverbs[Math.floor(Math.random() * adverbs.length)];
+        let prompt, answer, rule;
+
+        if (type === 'normal') {
+            const v = verbsNormal[Math.floor(Math.random() * verbsNormal.length)];
+            const isThirdPerson = ["Victoria", "My father", "The dog", "Jane", "She", "He"].includes(sub);
+            const verbForm = isThirdPerson ? v.s : v.base;
+            prompt = `${sub} / ${v.base} / ${v.rest} (${adv.fr})`;
+            answer = `${sub} ${adv.en} ${verbForm} ${v.rest}`;
+            rule = `Avec un verbe normal (${verbForm}), l'adverbe '${adv.en}' se place AVANT le verbe.`;
+        } else {
+            const v = verbsBe[Math.floor(Math.random() * verbsBe.length)];
+            let beForm = "are";
+            if (sub === "I") beForm = "am";
+            else if (["Victoria", "My father", "The dog", "She", "He"].includes(sub)) beForm = "is";
+            prompt = `${sub} / be / ${v.rest} (${adv.fr})`;
+            answer = `${sub} ${beForm} ${adv.en} ${v.rest}`;
+            rule = `Avec le verbe TO BE (${beForm}), l'adverbe '${adv.en}' se place APRES le verbe.`;
+        }
+
+        currentQuestions.push({ answer: answer.toLowerCase().trim(), rule: rule });
+
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question';
+        qDiv.innerHTML = `
+            <div class="prompt">${i + 1}. Remets dans l'ordre : <em>${prompt}</em></div>
+            <input type="text" id="q${i}" placeholder="Tape ta phrase ici...">
+            <div id="feedback${i}" class="feedback"></div>
+        `;
+        quizArea.appendChild(qDiv);
+    }
+}
+
+function checkAnswers() {
+    let score = 0;
+    currentQuestions.forEach((q, i) => {
+        const userInput = document.getElementById(`q${i}`).value.toLowerCase().trim().replace(/[.,!]$/, "");
+        const cleanAnswer = q.answer.replace(/[.,!]$/, "");
+        const feedback = document.getElementById(`feedback${i}`);
+        
+        feedback.style.display = 'block';
+        if (userInput === cleanAnswer) {
+            feedback.className = 'feedback correct';
+            feedback.innerHTML = `Bravo ! Correct.`;
+            score++;
+        } else {
+            feedback.className = 'feedback incorrect';
+            feedback.innerHTML = `Faux. La réponse était : <strong>${q.answer}</strong>.<br><small>${q.rule}</small>`;
+        }
+    });
+    document.getElementById('score-display').innerHTML = `Score : ${score} / 10`;
+}
+
+// Initialiser le premier quiz
+generateQuiz();
+</script>
+
+</body>
+</html>
