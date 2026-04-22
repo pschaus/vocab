@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Dérivées - Niveau EXPERT</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background: #2c3e50; color: #ecf0f1; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: #34495e; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        h1 { text-align: center; color: #3498db; text-transform: uppercase; letter-spacing: 2px; }
+        .question { background: #2c3e50; margin-bottom: 20px; padding: 20px; border-radius: 10px; border-left: 5px solid #e74c3c; }
+        .options label { display: block; margin: 10px 0; padding: 10px; background: #3d566e; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .options label:hover { background: #4e6a85; }
+        .btn { display: block; width: 100%; padding: 15px; background: #e74c3c; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1em; }
+        #result { display: none; margin-top: 20px; padding: 20px; text-align: center; border-radius: 10px; font-size: 1.3em; }
+        .feedback { display: none; margin-top: 10px; padding: 10px; border-radius: 5px; font-size: 0.9em; }
+        .correct-ans { background: #27ae60; color: white; }
+        .wrong-ans { background: #c0392b; color: white; }
+        .formula { display: block; color: #f1c40f; margin-top: 5px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Dérivées : Mode Expert</h1>
+    <div id="quiz"></div>
+    <button class="btn" onclick="evaluateQuiz()">Calculer mon score d'expert</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    const questions = [
+        { q: "Dérivée de f(x) = (3x² + 1)⁴", options: ["12x(3x² + 1)³", "24x(3x² + 1)³", "4(3x² + 1)³", "24x³"], correct: 1, f: "[(u)^n]' = n * u' * u^(n-1)" },
+        { q: "Dérivée de f(x) = sin(x³)", options: ["3x² cos(x³)", "cos(3x²)", "-3x² cos(x³)", "3x cos(x²)"], correct: 0, f: "[sin(u)]' = u' * cos(u)" },
+        { q: "Dérivée de f(x) = √(x² + 5)", options: ["1 / (2√(x²+5))", "x / √(x²+5)", "2x / √(x²+5)", "x / 2√(x²+5)"], correct: 1, f: "[√u]' = u' / (2√u)" },
+        { q: "Dérivée de f(x) = cos²(x)", options: ["-2 sin(x)", "2 cos(x)", "-2 sin(x)cos(x)", "sin²(x)"], correct: 2, f: "[u²]' = 2 * u' * u (Ici u = cos x)" },
+        { q: "Dérivée de f(x) = tan(2x + 1)", options: ["2 / cos²(2x + 1)", "1 / cos²(2x + 1)", "2 tan(2x + 1)", "sec²(x)"], correct: 0, f: "[tan(u)]' = u' * (1 + tan²u)" },
+        { q: "Dérivée de f(x) = 1 / (4x - 3)", options: ["4 / (4x - 3)²", "-4 / (4x - 3)²", "-1 / (4x - 3)²", "4"], correct: 1, f: "[1/u]' = -u' / u²" },
+        { q: "Dérivée de f(x) = x² sin(x)", options: ["2x cos(x)", "2x sin(x) + x² cos(x)", "2x sin(x) - x² cos(x)", "x² cos(x)"], correct: 1, f: "[uv]' = u'v + uv'" },
+        { q: "Dérivée de f(x) = sin(cos(x))", options: ["-sin(x) cos(cos(x))", "cos(cos(x))", "-sin(x) sin(cos(x))", "cos(sin(x))"], correct: 0, f: "Règle de la chaîne : u = cos(x)" }
+    ];
+
+    const container = document.getElementById('quiz');
+    questions.forEach((item, i) => {
+        let h = `<div class="question"><p><strong>${i+1}. ${item.q}</strong></p><div class="options">`;
+        item.options.forEach((opt, j) => {
+            h += `<label><input type="radio" name="q${i}" value="${j}"> ${opt}</label>`;
+        });
+        h += `</div><div id="fb${i}" class="feedback"></div></div>`;
+        container.innerHTML += h;
+    });
+
+    function evaluateQuiz() {
+        let score = 0;
+        questions.forEach((item, i) => {
+            const sel = document.querySelector(`input[name="q${i}"]:checked`);
+            const fb = document.getElementById(`fb${i}`);
+            fb.style.display = "block";
+            if (sel && sel.value == item.correct) {
+                score++;
+                fb.className = "feedback correct-ans";
+                fb.innerHTML = "Correct !";
+            } else {
+                fb.className = "feedback wrong-ans";
+                fb.innerHTML = `Faux. Réponse : ${item.options[item.correct]} <span class="formula">Formule : ${item.f}</span>`;
+            }
+        });
+        const r = document.getElementById('result');
+        r.style.display = "block";
+        r.innerHTML = `SCORE : ${score} / ${questions.length}`;
+        if(score === questions.length) r.innerHTML += " - MAÎTRE DES DÉRIVÉES !";
+    }
+</script>
+</body>
+</html>
