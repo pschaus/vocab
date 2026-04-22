@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Ultime : Matière & Énergie</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); max-width: 850px; width: 100%; }
+        h1, h2 { color: #2c3e50; text-align: center; }
+        .section { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 10px; }
+        
+        .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .row { display: flex; flex-direction: column; background: #fdfdfd; padding: 10px; border-radius: 8px; border-left: 5px solid #3498db; position: relative; }
+        .row.blue { border-left-color: #3498db; } 
+        .row.yellow { border-left-color: #f1c40f; } 
+        
+        label { font-size: 0.9em; font-weight: bold; margin-bottom: 5px; }
+        input, select { padding: 8px; border: 2px solid #ddd; border-radius: 4px; margin-bottom: 5px; font-size: 0.95em; }
+        
+        .feedback { color: #dc3545; font-size: 0.85em; font-weight: bold; margin-top: 2px; display: block; }
+
+        .def-text { line-height: 2.2; font-size: 1.05em; background: #fff; padding: 15px; }
+        .blank { width: 160px; border-bottom: 2px solid #34495e; border-top: none; border-left: none; border-right: none; text-align: center; font-weight: bold; }
+        .short-blank { width: 100px; }
+
+        .correct { background-color: #d4edda !important; border-color: #28a745 !important; }
+        .incorrect { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+
+        button { width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        button:hover { background: #34495e; }
+        #result { margin-top: 20px; text-align: center; font-size: 1.4em; font-weight: bold; display: none; padding: 15px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🔬 Interro : États, Énergie et Molécules</h1>
+
+    <div class="section">
+        <h2>1. Transitions et Énergie</h2>
+        <div class="quiz-grid">
+            <div class="row yellow">
+                <label>Solide ➔ Liquide</label>
+                <input type="text" class="q-item" data-ans="fusion" placeholder="Nom ?">
+                <select class="q-item" data-ans="apport">
+                    <option value="">-- Énergie ? --</option>
+                    <option value="apport">Apport d'énergie</option>
+                    <option value="perte">Perte d'énergie</option>
+                </select>
+            </div>
+            <div class="row blue">
+                <label>Liquide ➔ Solide</label>
+                <input type="text" class="q-item" data-ans="solidification" placeholder="Nom ?">
+                <select class="q-item" data-ans="perte">
+                    <option value="">-- Énergie ? --</option>
+                    <option value="apport">Apport d'énergie</option>
+                    <option value="perte">Perte d'énergie</option>
+                </select>
+            </div>
+            <div class="row yellow">
+                <label>Liquide ➔ Gaz</label>
+                <input type="text" class="q-item" data-ans="vaporisation" placeholder="Nom ?">
+                <select class="q-item" data-ans="apport">
+                    <option value="">-- Énergie ? --</option>
+                    <option value="apport">Apport d'énergie</option>
+                    <option value="perte">Perte d'énergie</option>
+                </select>
+            </div>
+            <div class="row blue">
+                <label>Gaz ➔ Liquide</label>
+                <input type="text" class="q-item" data-ans="condensation liquide" placeholder="Nom ?">
+                <select class="q-item" data-ans="perte">
+                    <option value="">-- Énergie ? --</option>
+                    <option value="apport">Apport d'énergie</option>
+                    <option value="perte">Perte d'énergie</option>
+                </select>
+            </div>
+            <div class="row yellow">
+                <label>Solide ➔ Gaz</label>
+                <input type="text" class="q-item" data-ans="sublimation" placeholder="Nom ?">
+                <select class="q-item" data-ans="apport">
+                    <option value="">-- Énergie ? --</option>
+                    <option value="apport">Apport d'énergie</option>
+                    <option value="perte">Perte d'énergie</option>
+                </select>
+            </div>
+            <div class="row blue">
+                <label>Gaz ➔ Solide</label>
+                <input type="text" class="q-item" data-ans="condensation" placeholder="Nom ?">
+                <select class="q-item" data-ans="perte">
+                    <option value="">-- Énergie ? --</option>
+                    <option value="apport">Apport d'énergie</option>
+                    <option value="perte">Perte d'énergie</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>2. Définitions à compléter</h2>
+        <div class="def-text">
+            <div style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+                Un changement d'état, c'est une 
+                <input type="text" class="q-item blank" data-ans="transformation physique"> 
+                au cours de laquelle l' <input type="text" class="q-item blank short-blank" data-ans="etat"> 
+                physique d'un corps <input type="text" class="q-item blank short-blank" data-ans="change">.
+            </div>
+
+            <div>
+                Un <strong>apport</strong> d'énergie thermique (chaleur) : la matière reçoit de l'énergie. 
+                Les <input type="text" class="q-item blank" data-ans="molecules"> 
+                s' <input type="text" class="q-item blank short-blank" data-ans="agitent"> davantage et peuvent changer d'état.
+            </div>
+
+            <div style="margin-top:15px;">
+                Une <strong>perte</strong> d'énergie thermique (chaleur) : la matière perd de l'énergie. 
+                Les <input type="text" class="q-item blank" data-ans="molecules"> 
+                s' <input type="text" class="q-item blank" data-ans="agitent moins">, 
+                elles se rapprochent et peuvent changer d'état.
+            </div>
+        </div>
+    </div>
+
+    <button onclick="corriger()">Corriger et voir les réponses</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    function corriger() {
+        const oldFeedback = document.querySelectorAll('.feedback');
+        oldFeedback.forEach(f => f.remove());
+
+        let score = 0;
+        const items = document.querySelectorAll('.q-item');
+        const total = items.length;
+
+        items.forEach(el => {
+            const userVal = el.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const correctVal = el.getAttribute('data-ans').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            if (userVal === correctVal && userVal !== "") {
+                el.classList.add('correct');
+                el.classList.remove('incorrect');
+                score++;
+            } else {
+                el.classList.add('incorrect');
+                el.classList.remove('correct');
+                
+                const answerSpan = document.createElement('span');
+                answerSpan.className = 'feedback';
+                answerSpan.innerHTML = "➜ Réponse : " + el.getAttribute('data-ans');
+                el.parentNode.insertBefore(answerSpan, el.nextSibling);
+            }
+        });
+
+        const resDiv = document.getElementById('result');
+        resDiv.style.display = 'block';
+        resDiv.innerHTML = `Ton score : ${score} / ${total}`;
+        
+        if(score === total) {
+            resDiv.style.background = "#d4edda";
+            resDiv.style.color = "#155724";
+            resDiv.innerHTML += " 🏆 Parfait ! Tu es prêt pour l'examen.";
+        } else {
+            resDiv.style.background = "#fff3cd";
+            resDiv.style.color = "#856404";
+            resDiv.innerHTML += " 📝 Regarde tes erreurs pour progresser.";
+        }
+        
+        resDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
