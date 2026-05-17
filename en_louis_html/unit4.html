@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Anglais - Unit 4: Have a nice day!</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --secondary: #ffa000;
+            --bg: #f1f8e9;
+            --card: #ffffff;
+            --correct: #4caf50;
+            --wrong: #f44336;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: var(--card);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .question-block {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .fr-text {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .feedback {
+            margin-top: 5px;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.1s;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #btn-check {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        #btn-next {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        #score-display {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: var(--primary);
+            display: none;
+        }
+
+        .correct-input {
+            border-color: var(--correct) !important;
+            background-color: #e8f5e9;
+        }
+
+        .wrong-input {
+            border-color: var(--wrong) !important;
+            background-color: #ffebee;
+        }
+
+        .correction-text {
+            color: var(--wrong);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Quiz de Vocabulaire</h1>
+    <p class="subtitle">Unit 4 : Have a nice day! (Français &rarr; Anglais)</p>
+
+    <div id="quiz-area"></div>
+
+    <div id="score-display"></div>
+
+    <div class="btn-group">
+        <button id="btn-check" onclick="checkAnswers()">Corriger</button>
+        <button id="btn-next" onclick="initQuiz()">10 Nouvelles Questions</button>
+    </div>
+</div>
+
+<script>
+    const vocabulary = [
+        { fr: "du jus", en: "(some) juice" },
+        { fr: "un bar", en: "a bar" },
+        { fr: "un bar à jus", en: "a juice bar" },
+        { fr: "un verre de (jus)", en: "a glass of (juice)" },
+        { fr: "une tomate", en: "a tomato" },
+        { fr: "une banane", en: "a banana" },
+        { fr: "un kiwi", en: "a kiwi" },
+        { fr: "une pastèque", en: "a watermelon" },
+        { fr: "un ananas", en: "a pineapple" },
+        { fr: "un bâton de céleri", en: "a celery stick" },
+        { fr: "une barre de céréales", en: "a granola bar" },
+        { fr: "du céleri", en: "(some) celery" },
+        { fr: "du jus de carotte", en: "(some) carrot juice" },
+        { fr: "du jus d'orange", en: "some orange juice" },
+        { fr: "de la mangue", en: "(some) mango" },
+        { fr: "un smoothie", en: "un smoothie" },
+        { fr: "un écran", en: "a screen" },
+        { fr: "une liste", en: "une liste" },
+        { fr: "du beurre de cacahuète", en: "(some) peanut butter" },
+        { fr: "une fraise", en: "a strawberry" },
+        { fr: "regarder", en: "to look at" },
+        { fr: "avec", en: "with" },
+        { fr: "au bar à jus", en: "at the juice bar" },
+        { fr: "après", en: "after" },
+        { fr: "d'habitude / habituellement", en: "usually" },
+        { fr: "aujourd'hui", en: "today" },
+        { fr: "Si c'est toi qui offres !", en: "If it's on you !" },
+        { fr: "Nous n'avons plus de mangue.", en: "We are out of mango." },
+        { fr: "Nous en avons d'habitude.", en: "We usually have some." },
+        { fr: "Désolé !", en: "Sorry !" },
+        { fr: "J'aimerais un smoothie.", en: "I'd like a smoothie" },
+        { fr: "Et pour toi ?", en: "And for you ?" },
+        { fr: "Qu'aimeriez-vous boire ?", en: "What would you like to drink ?" },
+        { fr: "C'est si bon pour la santé.", en: "(It's) so healthy !" },
+        { fr: "des bâtons de céleri", en: "some celery sticks" },
+        { fr: "Avez-vous du beurre de cacahuète ?", en: "Have you got any peanut butter ?" }
+    ];
+
+    let currentQuestions = [];
+
+    function shuffle(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    function initQuiz() {
+        const quizArea = document.getElementById('quiz-area');
+        const scoreDisplay = document.getElementById('score-display');
+        quizArea.innerHTML = '';
+        scoreDisplay.style.display = 'none';
+        
+        // Mélanger et prendre 10 questions
+        const shuffled = shuffle([...vocabulary]);
+        currentQuestions = shuffled.slice(0, 10);
+
+        currentQuestions.forEach((q, index) => {
+            const div = document.createElement('div');
+            div.className = 'question-block';
+            div.innerHTML = `
+                <label class="fr-text">${index + 1}. ${q.fr}</label>
+                <input type="text" id="q-${index}" placeholder="Traduction en anglais..." autocomplete="off">
+                <div id="fb-${index}" class="feedback"></div>
+            `;
+            quizArea.appendChild(div);
+        });
+        
+        document.getElementById('btn-check').disabled = false;
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        currentQuestions.forEach((q, index) => {
+            const input = document.getElementById(`q-${index}`);
+            const feedback = document.getElementById(`fb-${index}`);
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = q.en.toLowerCase();
+            
+            // On accepte la réponse si elle est identique (sans compter les parenthèses si besoin, mais ici on reste strict comme la feuille)
+            // Pour plus de souplesse, on enlève les ponctuations finales pour la comparaison
+            const cleanUser = userAnswer.replace(/[!?.]/g, "");
+            const cleanCorrect = correctAnswer.replace(/[!?.]/g, "");
+
+            feedback.style.display = 'block';
+            if (cleanUser === cleanCorrect || userAnswer === correctAnswer) {
+                score++;
+                input.className = 'correct-input';
+                feedback.innerHTML = '<span style="color: var(--correct)">✓ Excellent</span>';
+            } else {
+                input.className = 'wrong-input';
+                feedback.innerHTML = `<span class="correction-text">Correction: ${q.en}</span>`;
+            }
+        });
+
+        const scoreDisplay = document.getElementById('score-display');
+        scoreDisplay.innerHTML = `Votre score : ${score} / 10`;
+        scoreDisplay.style.display = 'block';
+        document.getElementById('btn-check').disabled = true;
+        
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    // Lancer au chargement
+    initQuiz();
+</script>
+
+</body>
+</html>
