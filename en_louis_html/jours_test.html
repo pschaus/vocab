@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apprendre les jours de la semaine, les mois et les saisons en anglais</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .quiz-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .question label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .question input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .result p {
+            margin: 5px 0;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+        @media (max-width: 600px) {
+            .quiz-container {
+                padding: 15px;
+            }
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Apprendre les jours de la semaine, les mois et les saisons en anglais</h1>
+        <div id="quiz">
+            <!-- Les questions seront générées dynamiquement ici -->
+        </div>
+        <button id="evaluateBtn">Évaluer</button>
+        <button id="regenerateBtn" class="hidden">Régénérer un nouveau quiz</button>
+        <div id="result" class="result hidden">
+            <!-- Les résultats seront affichés ici -->
+        </div>
+    </div>
+
+    <script>
+        const words = [
+            { english: "Monday", french: "Lundi" },
+            { english: "Tuesday", french: "Mardi" },
+            { english: "Wednesday", french: "Mercredi" },
+            { english: "Thursday", french: "Jeudi" },
+            { english: "Friday", french: "Vendredi" },
+            { english: "Saturday", french: "Samedi" },
+            { english: "Sunday", french: "Dimanche" },
+            { english: "January", french: "Janvier" },
+            { english: "February", french: "Février" },
+            { english: "March", french: "Mars" },
+            { english: "April", french: "Avril" },
+            { english: "May", french: "Mai" },
+            { english: "June", french: "Juin" },
+            { english: "July", french: "Juillet" },
+            { english: "August", french: "Août" },
+            { english: "September", french: "Septembre" },
+            { english: "October", french: "Octobre" },
+            { english: "November", french: "Novembre" },
+            { english: "December", french: "Décembre" },
+            { english: "Spring", french: "Printemps" },
+            { english: "Summer", french: "Été" },
+            { english: "Autumn", french: "Automne" },
+            { english: "Winter", french: "Hiver" }
+        ];
+
+        function generateQuiz() {
+            const quizContainer = document.getElementById('quiz');
+            quizContainer.innerHTML = '';
+            const quizWords = getRandomWords(10);
+
+            quizWords.forEach((word, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <label for="answer${index}">${word.french}:</label>
+                    <input type="text" id="answer${index}" data-english="${word.english}">
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function getRandomWords(count) {
+            const shuffled = words.sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        function evaluateQuiz() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '';
+            let correctCount = 0;
+
+            const questions = document.querySelectorAll('.question input');
+            questions.forEach(input => {
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = input.dataset.english.toLowerCase();
+                const result = document.createElement('p');
+
+                if (userAnswer === correctAnswer) {
+                    result.textContent = `Correct! ${input.previousElementSibling.textContent} est ${correctAnswer}.`;
+                    correctCount++;
+                } else {
+                    result.textContent = `Incorrect. ${input.previousElementSibling.textContent} est ${correctAnswer}, pas ${userAnswer}.`;
+                }
+
+                resultDiv.appendChild(result);
+            });
+
+            resultDiv.innerHTML += `<p>Score: ${correctCount} / ${questions.length}</p>`;
+            resultDiv.classList.remove('hidden');
+            document.getElementById('regenerateBtn').classList.remove('hidden');
+        }
+
+        document.getElementById('evaluateBtn').addEventListener('click', evaluateQuiz);
+        document.getElementById('regenerateBtn').addEventListener('click', () => {
+            generateQuiz();
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('regenerateBtn').classList.add('hidden');
+        });
+
+        // Générer le quiz initial
+        generateQuiz();
+    </script>
+</body>
+</html>
