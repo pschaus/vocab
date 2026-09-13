@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Present — Traduction FR ➔ EN</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --primary-hover: #357abd;
+            --secondary: #8e44ad;
+            --secondary-hover: #732d91;
+            --success: #27ae60;
+            --success-bg: #eafaf1;
+            --error: #e74c3c;
+            --error-bg: #fdf2e9;
+            --warning: #f39c12;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e2e8f0;
+            --badge-course-bg: #eef2ff;
+            --badge-course-text: #4338ca;
+            --badge-aff-bg: #e8f4fd;
+            --badge-aff-text: #1971c2;
+            --badge-neg-bg: #fff4e6;
+            --badge-neg-text: #d9480f;
+            --badge-que-bg: #f3f0ff;
+            --badge-que-text: #6741d9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 25px 15px 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .badge-top {
+            display: inline-block;
+            background: #ede9fe;
+            color: #6b21a8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            color: var(--text);
+            font-size: 26px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 span.highlight {
+            color: var(--secondary);
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Filter Tabs */
+        .filters-wrapper {
+            margin: 22px 0 15px;
+        }
+
+        .filter-label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 7px 14px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--secondary);
+            background: #faf5ff;
+        }
+
+        .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.25);
+        }
+
+        .count-pill {
+            background: rgba(0,0,0,0.08);
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 11px;
+        }
+
+        .filter-btn.active .count-pill {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* Options row */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            background: #f8fafc;
+            padding: 12px 18px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .select-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        select {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .status-summary {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* Quiz Item Card */
+        .quiz-item {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            transition: all 0.25s ease;
+        }
+
+        .quiz-item:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .quiz-item.is-correct {
+            border-color: var(--success);
+            background: var(--success-bg);
+        }
+
+        .quiz-item.is-wrong {
+            border-color: var(--error);
+            background: #fffafa;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .item-num {
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .item-type-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .type-course { background: var(--badge-course-bg); color: var(--badge-course-text); }
+        .type-affirmative { background: var(--badge-aff-bg); color: var(--badge-aff-text); }
+        .type-negative { background: var(--badge-neg-bg); color: var(--badge-neg-text); }
+        .type-question { background: var(--badge-que-bg); color: var(--badge-que-text); }
+
+        .french-prompt {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .flag-icon {
+            font-size: 16px;
+            user-select: none;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .en-prefix {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .translation-input {
+            flex: 1;
+            min-width: 260px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 9px 12px;
+            font-size: 15px;
+            color: #1e293b;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .translation-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(142, 68, 173, 0.15);
+        }
+
+        .translation-input.input-correct {
+            border-color: var(--success);
+            background: #ffffff;
+        }
+
+        .translation-input.input-wrong {
+            border-color: var(--error);
+            background: #ffffff;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-light);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-small:hover {
+            border-color: var(--secondary);
+            color: var(--secondary);
+            background: #faf5ff;
+        }
+
+        .btn-tts {
+            border-color: #cbd5e1;
+        }
+        .btn-tts:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #f0f7ff;
+        }
+
+        /* Clue / Hint Box */
+        .hint-box {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #fdf8e6;
+            border-left: 3px solid var(--warning);
+            border-radius: 4px;
+            font-size: 13px;
+            color: #795548;
+        }
+
+        /* Feedback display */
+        .feedback-box {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            display: none;
+        }
+
+        .feedback-box.correct {
+            display: block;
+            background: #eafaf1;
+            color: #1e7e34;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-box.wrong {
+            display: block;
+            background: #fdf0ed;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .user-echo {
+            text-decoration: line-through;
+            color: var(--error);
+            font-weight: 600;
+        }
+
+        .target-sentence {
+            font-weight: 700;
+            color: #155724;
+            font-size: 15px;
+        }
+
+        .explanation-text {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        /* Controls */
+        .controls-sticky {
+            position: sticky;
+            bottom: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            border: 1px solid var(--border);
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .controls-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button.btn-main {
+            padding: 12px 22px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.btn-main:active { transform: scale(0.98); }
+
+        .btn-correct {
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+        .btn-correct:hover { background-color: #219150; }
+
+        .btn-new {
+            background-color: var(--secondary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+        }
+        .btn-new:hover { background-color: var(--secondary-hover); }
+
+        .btn-retry-errors {
+            background-color: #e67e22;
+            color: white;
+            display: none;
+        }
+        .btn-retry-errors:hover { background-color: #d35400; }
+
+        .btn-show-all {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-show-all:hover { background: #e2e8f0; }
+
+        /* Results score box */
+        #result-banner {
+            display: none;
+            padding: 16px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .banner-perfect {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .banner-good {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .banner-retry {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Grammar reminder collapsible */
+        .reminder-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 25px;
+        }
+
+        .reminder-card summary {
+            font-weight: 700;
+            cursor: pointer;
+            color: var(--secondary);
+            font-size: 14px;
+            user-select: none;
+        }
+
+        .reminder-content {
+            margin-top: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .reminder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .reminder-col {
+            background: white;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .reminder-col h4 {
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+
+        /* Footer Links */
+        .footer-nav {
+            margin-top: 35px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .footer-nav a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer-nav a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 15px; }
+            h1 { font-size: 21px; }
+            .translation-input { min-width: 100%; }
+            .options-row { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="badge-top">Exercice Avancé • Traduction</div>
+        <h1>Simple Present : <span class="highlight">Français ➔ Anglais</span></h1>
+        <p class="subtitle">Traduis la phrase française complète en anglais au Simple Present.<br>
+        Attention à la 3e personne du singulier (<strong>-s / -es / -ies</strong>), aux négations (<strong>don't / doesn't</strong>) et aux questions (<strong>Do / Does</strong>) !</p>
+    </header>
+
+    <!-- Grammar Reminder -->
+    <details class="reminder-card">
+        <summary>📘 Rappel express de grammaire (cliquer pour ouvrir)</summary>
+        <div class="reminder-content">
+            <div class="reminder-grid">
+                <div class="reminder-col">
+                    <h4 style="color:#1971c2;">➕ Forme Affirmative</h4>
+                    • <strong>I / You / We / They</strong> + base verbale (ex: <em>I play</em>)<br>
+                    • <strong>He / She / It</strong> + verbe + <strong>-s</strong> (ex: <em>He plays</em>)<br>
+                    • Terminaisons en -ch, -sh, -ss, -x, -o : <strong>+ -es</strong> (<em>watches, goes</em>)<br>
+                    • Consonne + y : <strong>-ies</strong> (<em>studies</em>)
+                </div>
+                <div class="reminder-col">
+                    <h4 style="color:#d9480f;">➖ Forme Négative</h4>
+                    • <strong>I / You / We / They</strong> + <strong>don't</strong> + base verbale<br>
+                    • <strong>He / She / It</strong> + <strong>doesn't</strong> + base verbale (sans -s !)<br>
+                    • <em>Never</em> contient déjà la négation : <em>She never relaxes</em>
+                </div>
+                <div class="reminder-col">
+                    <h4 style="color:#6741d9;">❓ Forme Interrogative</h4>
+                    • <strong>Do</strong> + (I/you/we/they) + base verbale ?<br>
+                    • <strong>Does</strong> + (he/she/it) + base verbale ?<br>
+                    • <strong>(WH-)</strong> + Do/Does + sujet + base verbale ?
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Filter Buttons -->
+    <div class="filters-wrapper">
+        <div class="filter-label">Choisir une série d'exercices :</div>
+        <div class="filters">
+            <button class="filter-btn active" data-filter="course" onclick="setFilter('course')">
+                ⭐ Phrases du cours <span class="count-pill" id="count-course">20</span>
+            </button>
+            <button class="filter-btn" data-filter="affirmative" onclick="setFilter('affirmative')">
+                ➕ Affirmations <span class="count-pill" id="count-aff">20</span>
+            </button>
+            <button class="filter-btn" data-filter="negative" onclick="setFilter('negative')">
+                ➖ Négations <span class="count-pill" id="count-neg">8</span>
+            </button>
+            <button class="filter-btn" data-filter="question" onclick="setFilter('question')">
+                ❓ Questions <span class="count-pill" id="count-que">8</span>
+            </button>
+            <button class="filter-btn" data-filter="all" onclick="setFilter('all')">
+                🔄 Toutes <span class="count-pill" id="count-all">36</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Options Row -->
+    <div class="options-row">
+        <div class="select-group">
+            <label for="select-qty"><strong>Nombre de phrases :</strong></label>
+            <select id="select-qty" onchange="initQuiz()">
+                <option value="5">5 phrases</option>
+                <option value="10" selected>10 phrases</option>
+                <option value="20">20 phrases</option>
+                <option value="999">Toutes les phrases de la série</option>
+            </select>
+        </div>
+        <div class="status-summary" id="quiz-status">10 phrases prêtes</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <!-- Questions Container -->
+    <div id="quiz-container"></div>
+
+    <!-- Sticky Controls & Result Banner -->
+    <div class="controls-sticky">
+        <div id="result-banner"></div>
+        <div class="controls-buttons">
+            <button class="btn-main btn-correct" onclick="checkAnswers()">
+                <span>✓</span> Corriger mes traductions
+            </button>
+            <button class="btn-main btn-new" onclick="initQuiz()">
+                <span>🔄</span> Nouvelles phrases
+            </button>
+            <button class="btn-main btn-retry-errors" id="btn-retry" onclick="retryErrors()">
+                <span>✏️</span> Recommencer mes erreurs
+            </button>
+            <button class="btn-main btn-show-all" onclick="revealAll()">
+                <span>👁️</span> Voir les solutions
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer navigation -->
+    <div class="footer-nav">
+        <a href="simple_present.html">← Exercice original à trous (simple_present.html)</a>
+        <a href="present_simple.html">🚀 Exercice à trous toutes formes (Affirmatif, Négatif, Questions) →</a>
+        <a href="../index.html">🏠 Retour à l'accueil / Table des matières</a>
+    </div>
+</div>
+
+<script>
+    // Comprehensive database of French -> English Simple Present sentences
+    // 'course': exactly the 20 sentences from simple_present.html
+    const database = [
+        // ================= LES 20 PHRASES DU COURS (simple_present.html) =================
+        {
+            id: 1,
+            course: true,
+            type: "affirmative",
+            fr: "Je joue du piano tous les soirs.",
+            canonical: "I play the piano every evening.",
+            accepted: [
+                "I play the piano every evening",
+                "I play the piano every night",
+                "I play the piano each evening",
+                "I play piano every evening",
+                "I play piano each evening"
+            ],
+            verb: "to play",
+            hint: "Verbe : to play • every evening (tous les soirs)",
+            expl: "Avec 'I', le verbe reste sous sa forme de base (base verbale) sans modification : 'play'."
+        },
+        {
+            id: 2,
+            course: true,
+            type: "affirmative",
+            fr: "Elle regarde la télévision le soir.",
+            canonical: "She watches TV at night.",
+            accepted: [
+                "She watches TV at night",
+                "She watches TV in the evening",
+                "She watches television at night",
+                "She watches television in the evening",
+                "She watches the TV at night",
+                "She watches the TV in the evening"
+            ],
+            verb: "to watch",
+            hint: "Verbe : to watch • at night / in the evening",
+            expl: "À la 3e personne du singulier (she), les verbes se terminant par -ch prennent '-es' : 'watches'."
+        },
+        {
+            id: 3,
+            course: true,
+            type: "affirmative",
+            fr: "Il va à l'école à pied.",
+            canonical: "He goes to school on foot.",
+            accepted: [
+                "He goes to school on foot",
+                "He walks to school",
+                "He goes to school by foot"
+            ],
+            verb: "to go",
+            hint: "Verbe : to go • on foot (à pied)",
+            expl: "Avec 'he', 'go' prend '-es' -> 'goes'. 'À pied' se traduit couramment par 'on foot'."
+        },
+        {
+            id: 4,
+            course: true,
+            type: "affirmative",
+            fr: "Tu cours avec ton père une fois par semaine.",
+            canonical: "You run with your father once a week.",
+            accepted: [
+                "You run with your father once a week",
+                "You run with your dad once a week"
+            ],
+            verb: "to run",
+            hint: "Verbe : to run • your father • once a week",
+            expl: "Avec 'you', le verbe reste à la base verbale : 'run'. 'Une fois par semaine' = 'once a week'."
+        },
+        {
+            id: 5,
+            course: true,
+            type: "affirmative",
+            fr: "Victoria et sa mère boivent du thé l'après-midi.",
+            canonical: "Victoria and her mother drink tea in the afternoon.",
+            accepted: [
+                "Victoria and her mother drink tea in the afternoon",
+                "Victoria and her mum drink tea in the afternoon",
+                "Victoria and her mom drink tea in the afternoon"
+            ],
+            verb: "to drink",
+            hint: "Verbe : to drink • tea • in the afternoon",
+            expl: "'Victoria and her mother' correspond à 'they' (pluriel), donc base verbale 'drink' sans -s."
+        },
+        {
+            id: 6,
+            course: true,
+            type: "affirmative",
+            fr: "Elle finit ses devoirs vers 5 heures.",
+            canonical: "She finishes her homework around 5 o'clock.",
+            accepted: [
+                "She finishes her homework around 5 o'clock",
+                "She finishes her homework around 5 o clock",
+                "She finishes her homework around 5:00",
+                "She finishes her homework around 5",
+                "She finishes her homework at around 5 o'clock",
+                "She finishes her homework about 5 o'clock",
+                "She finishes her homework around five o'clock"
+            ],
+            verb: "to finish",
+            hint: "Verbe : to finish • homework • around 5 o'clock",
+            expl: "Les verbes en -sh prennent '-es' à la 3e personne : 'finishes'. Attention : 'homework' ne prend jamais de 's'."
+        },
+        {
+            id: 7,
+            course: true,
+            type: "affirmative",
+            fr: "Il pleut beaucoup en Écosse.",
+            canonical: "It rains a lot in Scotland.",
+            accepted: [
+                "It rains a lot in Scotland",
+                "It rains much in Scotland"
+            ],
+            verb: "to rain",
+            hint: "Verbe : to rain • a lot • in Scotland",
+            expl: "'It' = 3e personne du singulier, on ajoute un '-s' : 'rains'."
+        },
+        {
+            id: 8,
+            course: true,
+            type: "affirmative",
+            fr: "J'habite à Londres.",
+            canonical: "I live in London.",
+            accepted: [
+                "I live in London"
+            ],
+            verb: "to live",
+            hint: "Verbe : to live • in London",
+            expl: "Avec 'I', base verbale : 'live'. N'oublie pas la majuscule à 'London' !"
+        },
+        {
+            id: 9,
+            course: true,
+            type: "affirmative",
+            fr: "Victoria traîne avec ses amis après l'école.",
+            canonical: "Victoria hangs around with her friends after school.",
+            accepted: [
+                "Victoria hangs around with her friends after school",
+                "Victoria hangs out with her friends after school"
+            ],
+            verb: "to hang around",
+            hint: "Verbe à particule : to hang around • with her friends • after school",
+            expl: "'Victoria' = she -> on met la marque '-s' sur le verbe : 'hangs around'."
+        },
+        {
+            id: 10,
+            course: true,
+            type: "affirmative",
+            fr: "Ils aiment jouer au golf le dimanche.",
+            canonical: "They like playing golf on Sundays.",
+            accepted: [
+                "They like playing golf on Sundays",
+                "They like to play golf on Sundays",
+                "They love playing golf on Sundays",
+                "They love to play golf on Sundays"
+            ],
+            verb: "to like",
+            hint: "Verbe : to like • playing golf • on Sundays",
+            expl: "'They' prend la base verbale 'like'. Pour une habitude régulière le dimanche, on utilise 'on Sundays'."
+        },
+        {
+            id: 11,
+            course: true,
+            type: "affirmative",
+            fr: "Tu écris une lettre à ton frère toutes les semaines.",
+            canonical: "You write a letter to your brother every week.",
+            accepted: [
+                "You write a letter to your brother every week",
+                "You write a letter to your brother each week"
+            ],
+            verb: "to write",
+            hint: "Verbe : to write • a letter to your brother • every week",
+            expl: "Avec 'you', base verbale : 'write'."
+        },
+        {
+            id: 12,
+            course: true,
+            type: "affirmative",
+            fr: "Il se lève à 7 heures tous les jours.",
+            canonical: "He gets up at 7 o'clock every day.",
+            accepted: [
+                "He gets up at 7 o'clock every day",
+                "He gets up at 7 o clock every day",
+                "He gets up at 7:00 every day",
+                "He gets up at 7 every day",
+                "He gets up at seven o'clock every day",
+                "He wakes up at 7 o'clock every day"
+            ],
+            verb: "to get up",
+            hint: "Verbe à particule : to get up • at 7 o'clock • every day",
+            expl: "'He' = 3e personne : 'gets up'. Pour introduire une heure précise, on utilise 'at'."
+        },
+        {
+            id: 13,
+            course: true,
+            type: "affirmative",
+            fr: "Le chien mange deux fois par jour.",
+            canonical: "The dog eats twice a day.",
+            accepted: [
+                "The dog eats twice a day",
+                "The dog eats two times a day"
+            ],
+            verb: "to eat",
+            hint: "Verbe : to eat • twice a day (deux fois par jour)",
+            expl: "'The dog' = it (singulier), on ajoute un '-s' : 'eats'. 'Deux fois par jour' se dit 'twice a day'."
+        },
+        {
+            id: 14,
+            course: true,
+            type: "affirmative",
+            fr: "Elle va au lit à 10 heures tous les soirs.",
+            canonical: "She goes to bed at 10 o'clock every night.",
+            accepted: [
+                "She goes to bed at 10 o'clock every night",
+                "She goes to bed at 10 o clock every night",
+                "She goes to bed at 10:00 every night",
+                "She goes to bed at 10 every night",
+                "She goes to bed at ten o'clock every night",
+                "She goes to bed at 10 o'clock every evening"
+            ],
+            verb: "to go",
+            hint: "Verbe : to go to bed • at 10 o'clock • every night",
+            expl: "Le verbe 'go' prend '-es' à la 3e personne du singulier : 'goes'."
+        },
+        {
+            id: 15,
+            course: true,
+            type: "affirmative",
+            fr: "Il achète toujours beaucoup de vêtements pendant les soldes.",
+            canonical: "He always buys a lot of clothes in the sales.",
+            accepted: [
+                "He always buys a lot of clothes in the sales",
+                "He always buys a lot of clothes on sale",
+                "He always buys lots of clothes in the sales",
+                "He always buys lots of clothes on sale"
+            ],
+            verb: "to buy",
+            hint: "Adverbe : always • to buy • a lot of clothes • in the sales",
+            expl: "Voyelle + 'y' (buy) : on ajoute un simple '-s' -> 'buys'. L'adverbe 'always' se place avant le verbe."
+        },
+        {
+            id: 16,
+            course: true,
+            type: "affirmative",
+            fr: "Elle n'embrasse jamais personne.",
+            canonical: "She never kisses anyone.",
+            accepted: [
+                "She never kisses anyone",
+                "She never kisses anybody"
+            ],
+            verb: "to kiss",
+            hint: "Adverbe : never • to kiss • anyone",
+            expl: "En anglais, 'never' porte déjà le sens négatif, donc le verbe reste affirmatif : 'kisses' (-es après -ss)."
+        },
+        {
+            id: 17,
+            course: true,
+            type: "affirmative",
+            fr: "Victoria danse avec ses amis après l'école.",
+            canonical: "Victoria dances with her friends after school.",
+            accepted: [
+                "Victoria dances with her friends after school",
+                "Victoria dances with her friends after class"
+            ],
+            verb: "to dance",
+            hint: "Verbe : to dance • with her friends • after school",
+            expl: "Avec 'Victoria' (she), on ajoute un '-s' : 'dances'."
+        },
+        {
+            id: 18,
+            course: true,
+            type: "affirmative",
+            fr: "Il étudie à 6 heures tous les jours.",
+            canonical: "He studies at 6 o'clock every day.",
+            accepted: [
+                "He studies at 6 o'clock every day",
+                "He studies at 6 o clock every day",
+                "He studies at 6:00 every day",
+                "He studies at 6 every day",
+                "He studies at six o'clock every day"
+            ],
+            verb: "to study",
+            hint: "Verbe : to study • at 6 o'clock • every day",
+            expl: "Consonne + 'y' (study) se transforme en '-ies' à la 3e personne : 'studies'."
+        },
+        {
+            id: 19,
+            course: true,
+            type: "affirmative",
+            fr: "Elle ne se détend jamais !",
+            canonical: "She never relaxes!",
+            accepted: [
+                "She never relaxes!",
+                "She never relaxes"
+            ],
+            verb: "to relax",
+            hint: "Adverbe : never • to relax",
+            expl: "Verbe terminé par -x : on ajoute '-es' à la 3e personne -> 'never relaxes'."
+        },
+        {
+            id: 20,
+            course: true,
+            type: "affirmative",
+            fr: "Nous parlons très bien anglais.",
+            canonical: "We speak English very well.",
+            accepted: [
+                "We speak English very well",
+                "We speak very good English"
+            ],
+            verb: "to speak",
+            hint: "Verbe : to speak • English • very well",
+            expl: "Avec 'we', le verbe reste à la base verbale : 'speak'. N'oublie pas la majuscule à 'English' !"
+        },
+
+        // ================= NÉGATIONS COMPLÉMENTAIRES (-) =================
+        {
+            id: 21,
+            course: false,
+            type: "negative",
+            fr: "Il n'aime pas les champignons sur sa pizza.",
+            canonical: "He doesn't like mushrooms on his pizza.",
+            accepted: [
+                "He doesn't like mushrooms on his pizza",
+                "He does not like mushrooms on his pizza",
+                "He doesn't like mushrooms on pizza",
+                "He does not like mushrooms on pizza"
+            ],
+            verb: "to like",
+            hint: "Négation avec he : doesn't + base verbale • mushrooms • on his pizza",
+            expl: "Avec 'he', on utilise l'auxiliaire 'doesn't' suivi de la base verbale 'like' (sans -s !)."
+        },
+        {
+            id: 22,
+            course: false,
+            type: "negative",
+            fr: "Je ne bois pas de café le soir.",
+            canonical: "I don't drink coffee in the evening.",
+            accepted: [
+                "I don't drink coffee in the evening",
+                "I do not drink coffee in the evening",
+                "I don't drink coffee at night",
+                "I do not drink coffee at night"
+            ],
+            verb: "to drink",
+            hint: "Négation avec I : don't + to drink • coffee • in the evening",
+            expl: "Avec 'I', la négation se forme avec 'don't' + base verbale : 'don't drink'."
+        },
+        {
+            id: 23,
+            course: false,
+            type: "negative",
+            fr: "Elle ne regarde pas la télévision pendant la semaine.",
+            canonical: "She doesn't watch television during the week.",
+            accepted: [
+                "She doesn't watch television during the week",
+                "She does not watch television during the week",
+                "She doesn't watch TV during the week",
+                "She does not watch TV during the week"
+            ],
+            verb: "to watch",
+            hint: "doesn't + base verbale watch • during the week",
+            expl: "Avec 'she' : 'doesn't' + base verbale 'watch'. Le verbe ne prend plus de '-es' car 'does' porte la marque."
+        },
+        {
+            id: 24,
+            course: false,
+            type: "negative",
+            fr: "Ils ne parlent pas italien.",
+            canonical: "They don't speak Italian.",
+            accepted: [
+                "They don't speak Italian",
+                "They do not speak Italian"
+            ],
+            verb: "to speak",
+            hint: "don't + to speak • Italian (majuscule !)",
+            expl: "Avec 'they' : 'don't speak'. N'oublie pas la majuscule obligatoire à 'Italian'."
+        },
+        {
+            id: 25,
+            course: false,
+            type: "negative",
+            fr: "Tom ne joue pas du piano.",
+            canonical: "Tom doesn't play the piano.",
+            accepted: [
+                "Tom doesn't play the piano",
+                "Tom does not play the piano",
+                "Tom doesn't play piano",
+                "Tom does not play piano"
+            ],
+            verb: "to play",
+            hint: "Tom (he) : doesn't + to play • the piano",
+            expl: "'Tom' = he, on utilise donc 'doesn't play'."
+        },
+        {
+            id: 26,
+            course: false,
+            type: "negative",
+            fr: "Nous n'habitons pas près de la mer.",
+            canonical: "We don't live near the sea.",
+            accepted: [
+                "We don't live near the sea",
+                "We do not live near the sea",
+                "We don't live close to the sea",
+                "We do not live close to the sea"
+            ],
+            verb: "to live",
+            hint: "don't + to live • near the sea",
+            expl: "Avec 'we' : 'don't' + base verbale 'live'."
+        },
+        {
+            id: 27,
+            course: false,
+            type: "negative",
+            fr: "Mon frère ne fait pas ses devoirs le matin.",
+            canonical: "My brother doesn't do his homework in the morning.",
+            accepted: [
+                "My brother doesn't do his homework in the morning",
+                "My brother does not do his homework in the morning"
+            ],
+            verb: "to do",
+            hint: "My brother (he) : doesn't + to do • his homework • in the morning",
+            expl: "L'auxiliaire est 'doesn't' et le verbe d'action reste 'do' : 'doesn't do'."
+        },
+        {
+            id: 28,
+            course: false,
+            type: "negative",
+            fr: "Vous n'avez pas de voiture.",
+            canonical: "You don't have a car.",
+            accepted: [
+                "You don't have a car",
+                "You do not have a car"
+            ],
+            verb: "to have",
+            hint: "don't + to have • a car",
+            expl: "Avec 'you', la négation est 'don't have'."
+        },
+
+        // ================= QUESTIONS COMPLÉMENTAIRES (?) =================
+        {
+            id: 29,
+            course: false,
+            type: "question",
+            fr: "Aimes-tu la musique rock ?",
+            canonical: "Do you like rock music?",
+            accepted: [
+                "Do you like rock music",
+                "Do you like rock",
+                "Do you like rock music?"
+            ],
+            verb: "to like",
+            hint: "Question avec you : Do + you + like • rock music",
+            expl: "Au présent, les questions avec 'you' commencent par l'auxiliaire 'Do'."
+        },
+        {
+            id: 30,
+            course: false,
+            type: "question",
+            fr: "Où habite-t-elle ?",
+            canonical: "Where does she live?",
+            accepted: [
+                "Where does she live",
+                "Where does she live?"
+            ],
+            verb: "to live",
+            hint: "Mot en WH (Where) + does + she + live ?",
+            expl: "Structure : Mot interrogatif (Where) + auxiliaire 'does' + sujet 'she' + verbe 'live'."
+        },
+        {
+            id: 31,
+            course: false,
+            type: "question",
+            fr: "Pleut-il souvent en Écosse ?",
+            canonical: "Does it often rain in Scotland?",
+            accepted: [
+                "Does it often rain in Scotland",
+                "Does it rain often in Scotland",
+                "Does it often rain in Scotland?",
+                "Does it rain often in Scotland?"
+            ],
+            verb: "to rain",
+            hint: "Does + it + often + rain • in Scotland ?",
+            expl: "'it' demande l'auxiliaire 'Does' en tête de question."
+        },
+        {
+            id: 32,
+            course: false,
+            type: "question",
+            fr: "À quelle heure te lèves-tu ?",
+            canonical: "What time do you get up?",
+            accepted: [
+                "What time do you get up",
+                "What time do you wake up",
+                "What time do you get up?",
+                "What time do you wake up?"
+            ],
+            verb: "to get up",
+            hint: "What time + do + you + get up ?",
+            expl: "'À quelle heure' = 'What time' + 'do you get up?'."
+        },
+        {
+            id: 33,
+            course: false,
+            type: "question",
+            fr: "Est-ce qu'ils jouent au football le samedi ?",
+            canonical: "Do they play football on Saturdays?",
+            accepted: [
+                "Do they play football on Saturdays",
+                "Do they play soccer on Saturdays",
+                "Do they play football on Saturdays?",
+                "Do they play soccer on Saturdays?"
+            ],
+            verb: "to play",
+            hint: "Do + they + play football • on Saturdays ?",
+            expl: "Question avec 'they' : on utilise 'Do'. 'Le samedi' (répété) = 'on Saturdays'."
+        },
+        {
+            id: 34,
+            course: false,
+            type: "question",
+            fr: "Parle-t-il anglais ?",
+            canonical: "Does he speak English?",
+            accepted: [
+                "Does he speak English",
+                "Does he speak English?"
+            ],
+            verb: "to speak",
+            hint: "Does + he + speak English ?",
+            expl: "Avec 'he', l'auxiliaire est 'Does' et le verbe reste à la base verbale 'speak'."
+        },
+        {
+            id: 35,
+            course: false,
+            type: "question",
+            fr: "Pourquoi étudies-tu le français ?",
+            canonical: "Why do you study French?",
+            accepted: [
+                "Why do you study French",
+                "Why do you study French?",
+                "Why do you learn French",
+                "Why do you learn French?"
+            ],
+            verb: "to study",
+            hint: "Why + do you + study • French ?",
+            expl: "'Pourquoi' = 'Why' + auxiliaire 'do' + sujet 'you' + verbe 'study'."
+        },
+        {
+            id: 36,
+            course: false,
+            type: "question",
+            fr: "Que manges-tu pour le petit-déjeuner ?",
+            canonical: "What do you eat for breakfast?",
+            accepted: [
+                "What do you eat for breakfast",
+                "What do you have for breakfast",
+                "What do you eat for breakfast?",
+                "What do you have for breakfast?"
+            ],
+            verb: "to eat",
+            hint: "What + do you + eat • for breakfast ?",
+            expl: "'Que' = 'What' + 'do you eat for breakfast?'."
+        }
+    ];
+
+    let currentFilter = 'course';
+    let currentQuestions = [];
+    let lastWrongQuestions = [];
+
+    // Clean and normalize strings for forgiving matching
+    function normalizeStr(str) {
+        return (str || "")
+            .toLowerCase()
+            // Normalize quotes and apostrophes
+            .replace(/[’‘`´]/g, "'")
+            // Remove common end punctuation
+            .replace(/[.?!,;:]+$/g, "")
+            // Replace multiple spaces with single space
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+    // Update counts in badges
+    function updateCounts() {
+        const courseCount = database.filter(i => i.course).length;
+        const affCount = database.filter(i => i.type === 'affirmative').length;
+        const negCount = database.filter(i => i.type === 'negative').length;
+        const queCount = database.filter(i => i.type === 'question').length;
+
+        document.getElementById('count-course').textContent = courseCount;
+        document.getElementById('count-aff').textContent = affCount;
+        document.getElementById('count-neg').textContent = negCount;
+        document.getElementById('count-que').textContent = queCount;
+        document.getElementById('count-all').textContent = database.length;
+    }
+
+    function setFilter(filterName) {
+        currentFilter = filterName;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filterName);
+        });
+        initQuiz();
+    }
+
+    function initQuiz(customList = null) {
+        // Reset UI banners
+        const banner = document.getElementById('result-banner');
+        banner.style.display = 'none';
+        banner.className = '';
+        banner.innerHTML = '';
+
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('progress-bar').style.width = '0%';
+
+        let pool = [];
+        if (customList && customList.length > 0) {
+            pool = [...customList];
+        } else {
+            if (currentFilter === 'course') {
+                pool = database.filter(item => item.course);
+            } else if (currentFilter === 'all') {
+                pool = [...database];
+            } else {
+                pool = database.filter(item => item.type === currentFilter);
+            }
+        }
+
+        // Shuffle pool
+        const shuffled = [...pool].sort(() => 0.5 - Math.random());
+        const qtySelect = document.getElementById('select-qty');
+        const maxQty = parseInt(qtySelect.value, 10);
+        currentQuestions = shuffled.slice(0, Math.min(shuffled.length, maxQty));
+
+        document.getElementById('quiz-status').textContent = 
+            `${currentQuestions.length} phrase${currentQuestions.length > 1 ? 's' : ''} à traduire`;
+
+        renderQuestions();
+    }
+
+    function renderQuestions() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = "";
+
+        currentQuestions.forEach((item, index) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-item';
+            card.id = `card-${index}`;
+
+            let badgeClass = 'type-affirmative';
+            let badgeText = 'Affirmatif';
+            if (item.type === 'negative') {
+                badgeClass = 'type-negative';
+                badgeText = 'Négatif';
+            } else if (item.type === 'question') {
+                badgeClass = 'type-question';
+                badgeText = 'Question';
+            }
+            if (item.course) {
+                badgeText += ' • Cours';
+            }
+
+            card.innerHTML = `
+                <div class="item-header">
+                    <span class="item-num">Phrase #${index + 1} / ${currentQuestions.length}</span>
+                    <span class="item-type-badge ${badgeClass}">${badgeText}</span>
+                </div>
+                <div class="french-prompt">
+                    <span class="flag-icon">🇫🇷</span>
+                    <span>${item.fr}</span>
+                </div>
+                <div class="input-row">
+                    <span class="en-prefix">🇬🇧</span>
+                    <input type="text" 
+                           id="input-${index}" 
+                           class="translation-input" 
+                           placeholder="Traduis ici en anglais..." 
+                           autocomplete="off" 
+                           autocorrect="off" 
+                           spellcheck="false"
+                           onkeydown="handleKey(event, ${index})">
+                </div>
+                <div class="card-actions">
+                    <button type="button" class="btn-small" onclick="toggleHint(${index})">
+                        <span>💡</span> Indice
+                    </button>
+                    <button type="button" class="btn-small" onclick="revealOne(${index})">
+                        <span>👁️</span> Voir solution
+                    </button>
+                    <button type="button" class="btn-small btn-tts" onclick="speak('${encodeURIComponent(item.canonical)}')">
+                        <span>🔊</span> Écouter
+                    </button>
+                </div>
+                <div class="hint-box" id="hint-${index}">
+                    ${item.hint}
+                </div>
+                <div class="feedback-box" id="feedback-${index}"></div>
+            `;
+            container.appendChild(card);
+        });
+
+        // Focus first input
+        setTimeout(() => {
+            const firstInput = document.getElementById('input-0');
+            if (firstInput) firstInput.focus();
+        }, 100);
+    }
+
+    function toggleHint(index) {
+        const hintBox = document.getElementById(`hint-${index}`);
+        if (hintBox.style.display === 'block') {
+            hintBox.style.display = 'none';
+        } else {
+            hintBox.style.display = 'block';
+        }
+    }
+
+    function revealOne(index) {
+        const item = currentQuestions[index];
+        const input = document.getElementById(`input-${index}`);
+        input.value = item.canonical;
+        const feedback = document.getElementById(`feedback-${index}`);
+        feedback.className = 'feedback-box correct';
+        feedback.innerHTML = `
+            <strong>Solution :</strong> <span class="target-sentence">${item.canonical}</span>
+            <div class="explanation-text">${item.expl}</div>
+        `;
+    }
+
+    function revealAll() {
+        currentQuestions.forEach((item, index) => {
+            revealOne(index);
+        });
+    }
+
+    function handleKey(event, index) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const nextInput = document.getElementById(`input-${index + 1}`);
+            if (nextInput) {
+                nextInput.focus();
+            } else {
+                checkAnswers();
+            }
+        }
+    }
+
+    function isAnswerCorrect(userInput, item) {
+        const cleanUser = normalizeStr(userInput);
+        if (!cleanUser) return false;
+
+        const cleanCanonical = normalizeStr(item.canonical);
+        if (cleanUser === cleanCanonical) return true;
+
+        if (item.accepted && Array.isArray(item.accepted)) {
+            for (let variant of item.accepted) {
+                if (cleanUser === normalizeStr(variant)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    function checkAnswers() {
+        let score = 0;
+        lastWrongQuestions = [];
+
+        currentQuestions.forEach((item, index) => {
+            const inputField = document.getElementById(`input-${index}`);
+            const card = document.getElementById(`card-${index}`);
+            const feedback = document.getElementById(`feedback-${index}`);
+            const userRaw = inputField.value.trim();
+
+            const correct = isAnswerCorrect(userRaw, item);
+
+            card.classList.remove('is-correct', 'is-wrong');
+            inputField.classList.remove('input-correct', 'input-wrong');
+
+            if (correct) {
+                score++;
+                card.classList.add('is-correct');
+                inputField.classList.add('input-correct');
+                feedback.className = 'feedback-box correct';
+                feedback.innerHTML = `
+                    <span>✓ <strong>Excellent !</strong></span>
+                    <span class="target-sentence" style="margin-left: 6px;">${item.canonical}</span>
+                    <button type="button" class="btn-small btn-tts" style="margin-left: 8px; vertical-align: middle;" onclick="speak('${encodeURIComponent(item.canonical)}')">
+                        <span>🔊</span>
+                    </button>
+                    <div class="explanation-text">${item.expl}</div>
+                `;
+            } else {
+                lastWrongQuestions.push(item);
+                card.classList.add('is-wrong');
+                inputField.classList.add('input-wrong');
+                feedback.className = 'feedback-box wrong';
+                feedback.innerHTML = `
+                    <div>✗ <strong>Ta réponse :</strong> <span class="user-echo">${escapeHtml(userRaw) || '(vide)'}</span></div>
+                    <div>➜ <strong>Traduction attendue :</strong> <span class="target-sentence">${item.canonical}</span>
+                        <button type="button" class="btn-small btn-tts" style="margin-left: 8px; vertical-align: middle;" onclick="speak('${encodeURIComponent(item.canonical)}')">
+                            <span>🔊</span>
+                        </button>
+                    </div>
+                    <div class="explanation-text">${item.expl}</div>
+                `;
+            }
+        });
+
+        // Progress & Score
+        const total = currentQuestions.length;
+        const percent = Math.round((score / total) * 100);
+        document.getElementById('progress-bar').style.width = `${percent}%`;
+
+        const banner = document.getElementById('result-banner');
+        banner.style.display = 'block';
+
+        if (score === total) {
+            banner.className = 'banner-perfect';
+            banner.innerHTML = `🎉 Parfait ! <strong>${score} / ${total}</strong> (${percent}%) — Toutes tes traductions sont exactes ! Tu maîtrises le Simple Present !`;
+        } else if (score >= total * 0.7) {
+            banner.className = 'banner-good';
+            banner.innerHTML = `👍 Bien joué ! <strong>${score} / ${total}</strong> (${percent}%) — Très bon travail, revois les quelques erreurs ci-dessus.`;
+        } else {
+            banner.className = 'banner-retry';
+            banner.innerHTML = `💪 Courage ! <strong>${score} / ${total}</strong> (${percent}%) — Analyse la correction et réessaie pour progresser !`;
+        }
+
+        // Show retry button if errors
+        const retryBtn = document.getElementById('btn-retry');
+        if (lastWrongQuestions.length > 0) {
+            retryBtn.style.display = 'inline-flex';
+            retryBtn.innerHTML = `<span>✏️</span> Recommencer mes erreurs (${lastWrongQuestions.length})`;
+        } else {
+            retryBtn.style.display = 'none';
+        }
+
+        // Scroll to banner if on mobile
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function retryErrors() {
+        if (lastWrongQuestions.length === 0) return;
+        initQuiz(lastWrongQuestions);
+    }
+
+    // Text-to-speech helper
+    function speak(encodedText) {
+        if (!('speechSynthesis' in window)) {
+            alert("La synthèse vocale n'est pas supportée par ton navigateur.");
+            return;
+        }
+        const text = decodeURIComponent(encodedText);
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-GB';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function escapeHtml(text) {
+        if (!text) return "";
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // Initialize
+    updateCounts();
+    initQuiz();
+</script>
+
+</body>
+</html>
