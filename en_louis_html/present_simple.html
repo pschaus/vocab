@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Present : Affirmative, Négative & Questions</title>
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --primary-hover: #357abd;
+            --success: #2ecc71;
+            --success-bg: #e8f8f0;
+            --error: #e74c3c;
+            --error-bg: #fdf0ed;
+            --warning: #f39c12;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text: #2c3e50;
+            --text-light: #7f8c8d;
+            --border: #e2e8f0;
+            --badge-aff-bg: #e8f4fd;
+            --badge-aff-text: #1971c2;
+            --badge-neg-bg: #fff4e6;
+            --badge-neg-text: #d9480f;
+            --badge-que-bg: #f3f0ff;
+            --badge-que-text: #6741d9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 25px 15px 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            max-width: 780px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* Category Filter Tabs */
+        .filters-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(74, 144, 226, 0.3);
+        }
+
+        .filter-btn .count {
+            background: rgba(0,0,0,0.08);
+            padding: 2px 7px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        .filter-btn.active .count {
+            background: rgba(255,255,255,0.25);
+            color: white;
+        }
+
+        /* Grammar Cheat Sheet Accordion */
+        .cheat-sheet-toggle {
+            display: block;
+            width: 100%;
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #475569;
+            cursor: pointer;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .cheat-sheet-toggle:hover {
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .cheat-sheet {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .cheat-sheet.show {
+            display: block;
+        }
+
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+
+        .cheat-card {
+            background: white;
+            padding: 14px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            font-size: 13px;
+        }
+
+        .cheat-card.card-aff { border-left-color: #3b82f6; }
+        .cheat-card.card-neg { border-left-color: #f97316; }
+        .cheat-card.card-que { border-left-color: #8b5cf6; }
+
+        .cheat-card h4 {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .cheat-card p {
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        .cheat-card code {
+            background: #edf2f7;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* Quiz Item */
+        .quiz-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            line-height: 1.8;
+            font-size: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .quiz-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .quiz-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+
+        .item-num {
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .type-badge {
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .badge-aff {
+            background-color: var(--badge-aff-bg);
+            color: var(--badge-aff-text);
+        }
+        .badge-neg {
+            background-color: var(--badge-neg-bg);
+            color: var(--badge-neg-text);
+        }
+        .badge-que {
+            background-color: var(--badge-que-bg);
+            color: var(--badge-que-text);
+        }
+
+        .sentence-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        input[type="text"] {
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 16px;
+            font-family: inherit;
+            min-width: 90px;
+            max-width: 170px;
+            text-align: center;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        input.input-correct {
+            border-color: var(--success) !important;
+            background-color: var(--success-bg);
+            color: #1b8146;
+            font-weight: 600;
+        }
+
+        input.input-wrong {
+            border-color: var(--error) !important;
+            background-color: var(--error-bg);
+            color: #b91c1c;
+            font-weight: 600;
+        }
+
+        .speaker-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 6px;
+            padding: 4px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s, background 0.15s;
+            vertical-align: middle;
+            color: #64748b;
+        }
+
+        .speaker-btn:hover {
+            transform: scale(1.15);
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .feedback-box {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .ans-tag-correct {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .ans-tag-wrong {
+            color: var(--error);
+            text-decoration: line-through;
+            margin-right: 6px;
+        }
+
+        .ans-tag-expected {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .grammar-hint {
+            margin-top: 4px;
+            font-size: 13px;
+            color: #64748b;
+            font-style: italic;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button.action-btn {
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-correct {
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.3);
+        }
+        .btn-correct:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-new {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+        .btn-new:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        /* Result summary banner */
+        #result-banner {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .score-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .score-msg {
+            font-size: 15px;
+            color: #475569;
+        }
+
+        .score-10 {
+            background-color: #ecfdf5;
+            border: 2px solid #a7f3d0;
+            color: #065f46;
+        }
+        .score-good {
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            color: #1e40af;
+        }
+        .score-low {
+            background-color: #fff1f2;
+            border: 2px solid #fecdd3;
+            color: #9f1239;
+        }
+
+        .nav-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+
+        .nav-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px; }
+            h1 { font-size: 22px; }
+            input[type="text"] { min-width: 75px; font-size: 15px; padding: 5px 8px; }
+            .quiz-item { font-size: 15px; }
+            button.action-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🇬🇧 Simple Present Practice</h1>
+        <p class="subtitle">Complète les phrases avec la forme correcte au présent simple : <strong>affirmative (+)</strong>, <strong>négative (-)</strong> ou <strong>question (?)</strong>.</p>
+    </header>
+
+    <!-- Filters -->
+    <div class="filters-wrapper">
+        <div class="filter-label">Choisis un mode de travail :</div>
+        <div class="filters">
+            <button class="filter-btn active" onclick="setFilter('all')">
+                <span>🔀 Mixte (Toutes)</span>
+                <span class="count" id="count-all">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('affirmative')">
+                <span>➕ Affirmatif</span>
+                <span class="count" id="count-aff">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('negative')">
+                <span>➖ Négatif</span>
+                <span class="count" id="count-neg">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('question')">
+                <span>❓ Questions</span>
+                <span class="count" id="count-que">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Collapsible Grammar Cheat Sheet -->
+    <button class="cheat-sheet-toggle" onclick="toggleCheatSheet()" id="toggleCheatBtn">
+        📘 Afficher le rappel des règles (Aide-mémoire)
+    </button>
+
+    <div class="cheat-sheet" id="cheatSheet">
+        <div class="cheat-grid">
+            <div class="cheat-card card-aff">
+                <h4>➕ Forme Affirmative</h4>
+                <p>• <strong>I / You / We / They</strong> + base verbale<br>
+                   <em>ex : They play tennis.</em></p>
+                <p>• <strong>He / She / It</strong> + verbe avec <code>-s</code><br>
+                   <em>ex : He works hard.</em></p>
+                <p>• <strong>Terminaisons en -ch, -sh, -ss, -x, -o</strong> ➔ ajouter <code>-es</code> : <em>watches, goes, washes</em>.<br>
+                • <strong>Consonne + y</strong> ➔ <code>-ies</code> : <em>studies, cries</em>.<br>
+                • <code>have</code> devient <code>has</code>.</p>
+            </div>
+
+            <div class="cheat-card card-neg">
+                <h4>➖ Forme Négative</h4>
+                <p>• <strong>I / You / We / They</strong> + <code>don't</code> (do not) + base verbale<br>
+                   <em>ex : I don't like coffee.</em></p>
+                <p>• <strong>He / She / It</strong> + <code>doesn't</code> (does not) + base verbale<br>
+                   <em>ex : She doesn't eat meat.</em></p>
+                <p>⚠️ <strong>Attention :</strong> avec <em>doesn't</em>, le verbe repasse à la base verbale, il <strong>ne prend plus de -s</strong> !</p>
+            </div>
+
+            <div class="cheat-card card-que">
+                <h4>❓ Forme Interrogative</h4>
+                <p>• <code>Do</code> + <strong>I / you / we / they</strong> + base verbale... ?<br>
+                   <em>ex : Do you speak English?</em></p>
+                <p>• <code>Does</code> + <strong>he / she / it</strong> + base verbale... ?<br>
+                   <em>ex : Does she live here?</em></p>
+                <p>• <strong>Questions en Wh-</strong> : <em>Where / What / When...</em> + <code>do / does</code> + sujet + base verbale ?<br>
+                   <em>ex : Where does he work?</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz list -->
+    <div id="quiz-container"></div>
+
+    <!-- Result Banner -->
+    <div id="result-banner">
+        <div class="score-title" id="score-text"></div>
+        <div class="score-msg" id="score-msg"></div>
+    </div>
+
+    <!-- Action Controls -->
+    <div class="controls">
+        <button class="action-btn btn-correct" onclick="checkAnswers()">
+            <span>✓</span> Corriger
+        </button>
+        <button class="action-btn btn-new" onclick="newQuiz()">
+            <span>🔄</span> Nouvelle série (10 phrases)
+        </button>
+        <button class="action-btn btn-secondary" onclick="revealAnswers()">
+            <span>💡</span> Voir les solutions
+        </button>
+    </div>
+
+    <div class="nav-footer">
+        Exercice interactif d'anglais • <a href="simple_present.html">Voir l'exercice original (Affirmatif)</a>
+    </div>
+</div>
+
+<script>
+    // Comprehensive database of Simple Present sentences
+    const database = [
+        // ================= AFFIRMATIVE (+) =================
+        {
+            type: "affirmative",
+            q: "She ___ (to watch) TV every evening.",
+            a: [["watches"]],
+            hint: "Verbe en -ch à la 3e personne du singulier : ajouter -es."
+        },
+        {
+            type: "affirmative",
+            q: "I ___ (to play) basketball on Wednesdays.",
+            a: [["play"]],
+            hint: "Avec 'I', le verbe reste à la base verbale sans modification."
+        },
+        {
+            type: "affirmative",
+            q: "He ___ (to go) to school by bus.",
+            a: [["goes"]],
+            hint: "Le verbe 'go' prend -es à la 3e personne : 'goes'."
+        },
+        {
+            type: "affirmative",
+            q: "Lucas ___ (to study) English at home.",
+            a: [["studies"]],
+            hint: "Consonne + 'y' se transforme en '-ies' à la 3e personne."
+        },
+        {
+            type: "affirmative",
+            q: "My parents ___ (to live) in a big house.",
+            a: [["live"]],
+            hint: "'My parents' correspond à 'they' (pluriel), donc base verbale sans -s."
+        },
+        {
+            type: "affirmative",
+            q: "The train ___ (to arrive) at 8 o'clock every morning.",
+            a: [["arrives"]],
+            hint: "'The train' = it (3e personne singulier), on ajoute un -s."
+        },
+        {
+            type: "affirmative",
+            q: "She ___ (to have) a wonderful dog.",
+            a: [["has"]],
+            hint: "À la 3e personne du singulier, 'have' devient 'has'."
+        },
+        {
+            type: "affirmative",
+            q: "We ___ (to eat) dinner together at 7:30.",
+            a: [["eat"]],
+            hint: "Avec 'we', le verbe reste sous sa forme de base."
+        },
+        {
+            type: "affirmative",
+            q: "He ___ (to wash) his car every Sunday.",
+            a: [["washes"]],
+            hint: "Verbe terminé par -sh : ajouter -es à la 3e personne."
+        },
+        {
+            type: "affirmative",
+            q: "Emily ___ (to buy) fruit at the supermarket.",
+            a: [["buys"]],
+            hint: "Voyelle + 'y' (buy) : on ajoute simplement un '-s' -> 'buys'."
+        },
+        {
+            type: "affirmative",
+            q: "They ___ (to speak) French and English.",
+            a: [["speak"]],
+            hint: "Avec 'they', on garde la base verbale."
+        },
+        {
+            type: "affirmative",
+            q: "The baby ___ (to cry) when he is hungry.",
+            a: [["cries"]],
+            hint: "Consonne + 'y' (cry) devient '-ies' à la 3e personne."
+        },
+        {
+            type: "affirmative",
+            q: "My brother ___ (to do) his homework after school.",
+            a: [["does"]],
+            hint: "Le verbe 'do' prend -es à la 3e personne : 'does'."
+        },
+        {
+            type: "affirmative",
+            q: "You ___ (to read) a lot of interesting books.",
+            a: [["read"]],
+            hint: "Avec 'you', le verbe reste à la base verbale."
+        },
+        {
+            type: "affirmative",
+            q: "She ___ (to kiss) her children before bedtime.",
+            a: [["kisses"]],
+            hint: "Verbe terminé par -ss : ajouter -es."
+        },
+        {
+            type: "affirmative",
+            q: "Tom ___ (to tidy) his bedroom every weekend.",
+            a: [["tidies"]],
+            hint: "Consonne + 'y' (tidy) devient '-ies' à la 3e personne."
+        },
+        {
+            type: "affirmative",
+            q: "The mechanic ___ (to fix) old motorbikes.",
+            a: [["fixes"]],
+            hint: "Verbe terminé par -x : ajouter -es."
+        },
+        {
+            type: "affirmative",
+            q: "It ___ (to rain) a lot in Scotland.",
+            a: [["rains"]],
+            hint: "'It' est la 3e personne du singulier : ajouter un -s."
+        },
+        {
+            type: "affirmative",
+            q: "Sarah and Lisa ___ (to play) tennis together.",
+            a: [["play"]],
+            hint: "'Sarah and Lisa' = 'they' (pluriel), donc base verbale sans -s."
+        },
+        {
+            type: "affirmative",
+            q: "He always ___ (to get up) at 7 o'clock.",
+            a: [["gets up"]],
+            hint: "Verbe à particule : le -s va sur le verbe 'get' -> 'gets up'."
+        },
+        {
+            type: "affirmative",
+            q: "The cat ___ (to sleep) on the sofa all afternoon.",
+            a: [["sleeps"]],
+            hint: "'The cat' = it (singulier), on ajoute -s."
+        },
+        {
+            type: "affirmative",
+            q: "Victoria ___ (to dance) with her friends after class.",
+            a: [["dances"]],
+            hint: "Avec 'Victoria' (she), on ajoute un -s."
+        },
+
+        // ================= NEGATIVE (-) =================
+        {
+            type: "negative",
+            q: "He ___ (not / to like) mushrooms on his pizza.",
+            a: [["doesn't like", "does not like"]],
+            hint: "Avec 'he' : 'doesn't' + verbe à la base verbale (sans -s !)."
+        },
+        {
+            type: "negative",
+            q: "I ___ (not / to drink) coffee in the evening.",
+            a: [["don't drink", "do not drink"]],
+            hint: "Avec 'I' : 'don't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "She ___ (not / to watch) television during the week.",
+            a: [["doesn't watch", "does not watch"]],
+            hint: "Avec 'she' : 'doesn't' + base verbale 'watch'."
+        },
+        {
+            type: "negative",
+            q: "They ___ (not / to speak) Italian.",
+            a: [["don't speak", "do not speak"]],
+            hint: "Avec 'they' : 'don't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "Tom ___ (not / to play) the piano.",
+            a: [["doesn't play", "does not play"]],
+            hint: "'Tom' = he : utiliser 'doesn't play'."
+        },
+        {
+            type: "negative",
+            q: "We ___ (not / to live) near the sea.",
+            a: [["don't live", "do not live"]],
+            hint: "Avec 'we' : 'don't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "My sister ___ (not / to eat) meat because she is vegetarian.",
+            a: [["doesn't eat", "does not eat"]],
+            hint: "'My sister' = she : 'doesn't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "You ___ (not / to understand) this rule.",
+            a: [["don't understand", "do not understand"]],
+            hint: "Avec 'you' : 'don't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "It ___ (not / to snow) very often in Paris.",
+            a: [["doesn't snow", "does not snow"]],
+            hint: "Avec 'it' : 'doesn't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "The children ___ (not / to want) to go to bed.",
+            a: [["don't want", "do not want"]],
+            hint: "'The children' = pluriel (they) : utiliser 'don't'."
+        },
+        {
+            type: "negative",
+            q: "He ___ (not / to have) a bicycle.",
+            a: [["doesn't have", "does not have"]],
+            hint: "Attention : avec l'auxiliaire 'doesn't', on garde 'have' (base verbale), pas 'has' !"
+        },
+        {
+            type: "negative",
+            q: "My parents ___ (not / to work) on Sundays.",
+            a: [["don't work", "do not work"]],
+            hint: "'My parents' = pluriel (they) : 'don't work'."
+        },
+        {
+            type: "negative",
+            q: "Emma ___ (not / to go) to bed early on Fridays.",
+            a: [["doesn't go", "does not go"]],
+            hint: "'Emma' = she : 'doesn't' + 'go' (sans -es)."
+        },
+        {
+            type: "negative",
+            q: "I ___ (not / to know) his telephone number.",
+            a: [["don't know", "do not know"]],
+            hint: "Avec 'I' : 'don't' + base verbale."
+        },
+        {
+            type: "negative",
+            q: "He ___ (not / to do) his chores in the morning.",
+            a: [["doesn't do", "does not do"]],
+            hint: "Auxiliaire négatif 'doesn't' + base verbale 'do'."
+        },
+        {
+            type: "negative",
+            q: "We ___ (not / to have) school on Wednesday afternoon.",
+            a: [["don't have", "do not have"]],
+            hint: "Avec 'we' : 'don't have'."
+        },
+        {
+            type: "negative",
+            q: "The dog ___ (not / to bark) at strangers.",
+            a: [["doesn't bark", "does not bark"]],
+            hint: "'The dog' = it (singulier) : 'doesn't bark'."
+        },
+        {
+            type: "negative",
+            q: "You ___ (not / to need) a coat today, it is warm.",
+            a: [["don't need", "do not need"]],
+            hint: "Avec 'you' : 'don't need'."
+        },
+        {
+            type: "negative",
+            q: "David ___ (not / to study) Spanish at school.",
+            a: [["doesn't study", "does not study"]],
+            hint: "'David' = he : 'doesn't study'."
+        },
+        {
+            type: "negative",
+            q: "They ___ (not / to travel) during winter.",
+            a: [["don't travel", "do not travel"]],
+            hint: "Avec 'they' : 'don't travel'."
+        },
+        {
+            type: "negative",
+            q: "She ___ (not / to drink) tea with milk.",
+            a: [["doesn't drink", "does not drink"]],
+            hint: "'She' : 'doesn't drink'."
+        },
+        {
+            type: "negative",
+            q: "Paul and Mark ___ (not / to swim) in the lake.",
+            a: [["don't swim", "do not swim"]],
+            hint: "Sujet pluriel (Paul and Mark = they) : 'don't swim'."
+        },
+
+        // ================= QUESTIONS (?) =================
+        {
+            type: "question",
+            q: "___ you ___ (to speak) English fluently?",
+            a: [["do"], ["speak"]],
+            hint: "Auxiliaire 'Do' avec 'you' + base verbale 'speak'."
+        },
+        {
+            type: "question",
+            q: "___ he ___ (to play) football on Saturdays?",
+            a: [["does"], ["play"]],
+            hint: "Auxiliaire 'Does' avec 'he' + base verbale 'play' (sans -s !)."
+        },
+        {
+            type: "question",
+            q: "Where ___ she ___ (to live)?",
+            a: [["does"], ["live"]],
+            hint: "Question Wh- : Mot interrogatif + Does + sujet (she) + base verbale."
+        },
+        {
+            type: "question",
+            q: "___ they ___ (to watch) television in the evening?",
+            a: [["do"], ["watch"]],
+            hint: "Auxiliaire 'Do' avec 'they' + base verbale 'watch'."
+        },
+        {
+            type: "question",
+            q: "What time ___ the train ___ (to leave)?",
+            a: [["does"], ["leave"]],
+            hint: "'The train' = it -> auxiliaire 'does' + verbe 'leave'."
+        },
+        {
+            type: "question",
+            q: "___ your mother ___ (to like) cooking Italian food?",
+            a: [["does"], ["like"]],
+            hint: "'Your mother' = she -> auxiliaire 'Does' + base verbale 'like'."
+        },
+        {
+            type: "question",
+            q: "Where ___ you ___ (to go) on vacation?",
+            a: [["do"], ["go"]],
+            hint: "Where + do + you + base verbale 'go'."
+        },
+        {
+            type: "question",
+            q: "___ your parents ___ (to speak) German?",
+            a: [["do"], ["speak"]],
+            hint: "'Your parents' = they (pluriel) -> auxiliaire 'Do' + 'speak'."
+        },
+        {
+            type: "question",
+            q: "What ___ he ___ (to want) for his birthday?",
+            a: [["does"], ["want"]],
+            hint: "What + does + he + base verbale 'want'."
+        },
+        {
+            type: "question",
+            q: "___ it ___ (to rain) a lot in Scotland?",
+            a: [["does"], ["rain"]],
+            hint: "Auxiliaire 'Does' avec 'it' + 'rain'."
+        },
+        {
+            type: "question",
+            q: "When ___ you ___ (to finish) school on Fridays?",
+            a: [["do"], ["finish"]],
+            hint: "When + do + you + base verbale 'finish'."
+        },
+        {
+            type: "question",
+            q: "___ she ___ (to have) any brothers or sisters?",
+            a: [["does"], ["have"]],
+            hint: "Does + she + 'have' (base verbale, jamais 'has' après l'auxiliaire !)."
+        },
+        {
+            type: "question",
+            q: "Why ___ they ___ (to laugh) so loudly?",
+            a: [["do"], ["laugh"]],
+            hint: "Why + do + they + base verbale 'laugh'."
+        },
+        {
+            type: "question",
+            q: "___ you ___ (to listen) to music when you study?",
+            a: [["do"], ["listen"]],
+            hint: "Do + you + listen."
+        },
+        {
+            type: "question",
+            q: "How often ___ he ___ (to visit) his grandparents?",
+            a: [["does"], ["visit"]],
+            hint: "How often + does + he + base verbale 'visit'."
+        },
+        {
+            type: "question",
+            q: "___ your cat ___ (to sleep) in your bedroom?",
+            a: [["does"], ["sleep"]],
+            hint: "'Your cat' = it -> Does + sleep."
+        },
+        {
+            type: "question",
+            q: "What kind of music ___ she ___ (to like)?",
+            a: [["does"], ["like"]],
+            hint: "Question Wh- : ... does + she + like."
+        },
+        {
+            type: "question",
+            q: "___ we ___ (to have) English class tomorrow?",
+            a: [["do"], ["have"]],
+            hint: "Do + we + have."
+        },
+        {
+            type: "question",
+            q: "Where ___ your cousins ___ (to study)?",
+            a: [["do"], ["study"]],
+            hint: "'Your cousins' = they (pluriel) -> Where + do + your cousins + study."
+        },
+        {
+            type: "question",
+            q: "___ he ___ (to do) judo on Wednesdays?",
+            a: [["does"], ["do"]],
+            hint: "Does (auxiliaire) + he + do (verbe d'action)."
+        },
+        {
+            type: "question",
+            q: "What time ___ you ___ (to get up) at the weekend?",
+            a: [["do"], ["get up"]],
+            hint: "What time + do + you + get up."
+        },
+        {
+            type: "question",
+            q: "___ Sarah ___ (to eat) fish?",
+            a: [["does"], ["eat"]],
+            hint: "'Sarah' = she -> Does + eat."
+        }
+    ];
+
+    let currentFilter = 'all';
+    let currentQuestions = [];
+    const QUIZ_SIZE = 10;
+
+    // Normalisation utility (handles apostrophes, spaces, lowercase)
+    function normalize(str) {
+        if (!str) return '';
+        return str.trim()
+                  .toLowerCase()
+                  .replace(/[’'`´]/g, "'")
+                  .replace(/\s+/g, ' ');
+    }
+
+    // Update count labels on filter buttons
+    function updateCounts() {
+        const affCount = database.filter(i => i.type === 'affirmative').length;
+        const negCount = database.filter(i => i.type === 'negative').length;
+        const queCount = database.filter(i => i.type === 'question').length;
+        
+        document.getElementById('count-all').textContent = database.length;
+        document.getElementById('count-aff').textContent = affCount;
+        document.getElementById('count-neg').textContent = negCount;
+        document.getElementById('count-que').textContent = queCount;
+    }
+
+    // Toggle Grammar Cheat Sheet
+    function toggleCheatSheet() {
+        const sheet = document.getElementById('cheatSheet');
+        const btn = document.getElementById('toggleCheatBtn');
+        sheet.classList.toggle('show');
+        if (sheet.classList.contains('show')) {
+            btn.textContent = "📕 Masquer le rappel des règles";
+        } else {
+            btn.textContent = "📘 Afficher le rappel des règles (Aide-mémoire)";
+        }
+    }
+
+    // Filter selection
+    function setFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        
+        const filterBtns = {
+            'all': 0,
+            'affirmative': 1,
+            'negative': 2,
+            'question': 3
+        };
+        const activeBtn = document.querySelectorAll('.filter-btn')[filterBtns[filter]];
+        if (activeBtn) activeBtn.classList.add('active');
+
+        newQuiz();
+    }
+
+    // Generate full text for speech synthesis
+    function getFullSentence(item) {
+        const parts = item.q.split('___');
+        let full = parts[0];
+        for (let b = 0; b < item.a.length; b++) {
+            // Use primary expected answer
+            full += item.a[b][0] + (parts[b + 1] || '');
+        }
+        // Clean out prompt in parentheses e.g. "(to watch)"
+        return full.replace(/\s*\([^)]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim();
+    }
+
+    // Play text-to-speech
+    function speakSentence(text) {
+        if (!('speechSynthesis' in window)) {
+            alert("La synthèse vocale n'est pas supportée par votre navigateur.");
+            return;
+        }
+        window.speechSynthesis.cancel(); // stop previous
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Initialize/Regenerate Quiz
+    function newQuiz() {
+        // Reset Result Banner
+        const banner = document.getElementById('result-banner');
+        banner.style.display = "none";
+        banner.className = "";
+
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = "";
+
+        // Filter database
+        let pool = (currentFilter === 'all') 
+            ? [...database] 
+            : database.filter(item => item.type === currentFilter);
+
+        // Shuffle pool
+        const shuffled = [...pool].sort(() => 0.5 - Math.random());
+        currentQuestions = shuffled.slice(0, Math.min(QUIZ_SIZE, shuffled.length));
+
+        // Render questions
+        currentQuestions.forEach((item, qIdx) => {
+            const div = document.createElement('div');
+            div.className = 'quiz-item';
+            div.id = `item-${qIdx}`;
+
+            // Type badge info
+            let badgeText = "➕ Affirmatif";
+            let badgeClass = "badge-aff";
+            if (item.type === 'negative') {
+                badgeText = "➖ Négatif";
+                badgeClass = "badge-neg";
+            } else if (item.type === 'question') {
+                badgeText = "❓ Question";
+                badgeClass = "badge-que";
+            }
+
+            const cleanSpeechSentence = getFullSentence(item).replace(/'/g, "\\'");
+
+            // Build sentence with inputs
+            const parts = item.q.split('___');
+            let sentenceHtml = `<span class="sentence-row">`;
+            for (let b = 0; b < parts.length; b++) {
+                sentenceHtml += `<span>${parts[b]}</span>`;
+                if (b < item.a.length) {
+                    const placeholder = (b === 0 && item.type === 'question') ? "Do / Does" : "verbe";
+                    sentenceHtml += `
+                        <input type="text" 
+                               id="input-${qIdx}-${b}" 
+                               data-q="${qIdx}" 
+                               data-b="${b}"
+                               placeholder="${placeholder}"
+                               autocomplete="off" 
+                               autocorrect="off" 
+                               autocapitalize="off" 
+                               spellcheck="false"
+                               onkeydown="handleKey(event, ${qIdx}, ${b})">
+                    `;
+                }
+            }
+
+            // Speaker button
+            sentenceHtml += `
+                <button type="button" class="speaker-btn" title="Écouter la phrase en anglais" onclick="speakSentence('${cleanSpeechSentence}')">
+                    🔊
+                </button>
+            </span>`;
+
+            div.innerHTML = `
+                <div class="quiz-item-header">
+                    <span class="item-num">Question ${qIdx + 1} / ${currentQuestions.length}</span>
+                    <span class="type-badge ${badgeClass}">${badgeText}</span>
+                </div>
+                ${sentenceHtml}
+                <div id="feedback-${qIdx}" class="feedback-box"></div>
+            `;
+            container.appendChild(div);
+        });
+
+        // Focus first input
+        const firstInput = document.getElementById('input-0-0');
+        if (firstInput) firstInput.focus();
+    }
+
+    // Keyboard navigation (Enter moves to next input or corrects)
+    function handleKey(event, qIdx, bIdx) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            // Try next blank in same question
+            let next = document.getElementById(`input-${qIdx}-${bIdx + 1}`);
+            if (!next) {
+                // Try first blank of next question
+                next = document.getElementById(`input-${qIdx + 1}-0`);
+            }
+            if (next) {
+                next.focus();
+            } else {
+                checkAnswers();
+            }
+        }
+    }
+
+    // Check Answers
+    function checkAnswers() {
+        let score = 0;
+
+        currentQuestions.forEach((item, qIdx) => {
+            let questionAllCorrect = true;
+            let feedbackDetails = [];
+
+            item.a.forEach((acceptableList, bIdx) => {
+                const inputEl = document.getElementById(`input-${qIdx}-${bIdx}`);
+                const userVal = normalize(inputEl.value);
+
+                // Check if user's input matches any acceptable form
+                const isCorrect = acceptableList.some(ans => normalize(ans) === userVal);
+
+                if (isCorrect) {
+                    inputEl.className = "input-correct";
+                    feedbackDetails.push(`<span class="ans-tag-correct">✓ ${acceptableList[0]}</span>`);
+                } else {
+                    questionAllCorrect = false;
+                    inputEl.className = "input-wrong";
+                    const displayUser = inputEl.value.trim() ? inputEl.value.trim() : "(vide)";
+                    feedbackDetails.push(
+                        `<span class="ans-tag-wrong">${displayUser}</span> <span class="ans-tag-expected">➔ ${acceptableList.join(' OU ')}</span>`
+                    );
+                }
+            });
+
+            if (questionAllCorrect) {
+                score++;
+            }
+
+            // Show feedback box
+            const fbBox = document.getElementById(`feedback-${qIdx}`);
+            fbBox.className = "feedback-box show";
+            let resultHtml = "";
+            if (questionAllCorrect) {
+                resultHtml = `<span class="ans-tag-correct">✓ Très bien !</span>`;
+            } else {
+                resultHtml = `Correction : ${feedbackDetails.join(' | ')}`;
+            }
+
+            if (item.hint) {
+                resultHtml += `<div class="grammar-hint">💡 ${item.hint}</div>`;
+            }
+            fbBox.innerHTML = resultHtml;
+        });
+
+        // Display Score Banner
+        const banner = document.getElementById('result-banner');
+        const scoreText = document.getElementById('score-text');
+        const scoreMsg = document.getElementById('score-msg');
+        banner.style.display = "block";
+
+        scoreText.textContent = `Score : ${score} / ${currentQuestions.length}`;
+
+        const pct = Math.round((score / currentQuestions.length) * 100);
+        if (score === currentQuestions.length) {
+            banner.className = "score-10";
+            scoreMsg.innerHTML = `🎉 <strong>Parfait ! 100% de réussite !</strong> Tu maîtrises parfaitement le présent simple.`;
+        } else if (pct >= 70) {
+            banner.className = "score-good";
+            scoreMsg.innerHTML = `👍 <strong>Beau travail ! (${pct}%)</strong> Vérifie les quelques erreurs ci-dessus pour progresser encore.`;
+        } else {
+            banner.className = "score-low";
+            scoreMsg.innerHTML = `💪 <strong>Score : ${pct}%</strong> Regarde bien les corrections et clique sur "Afficher le rappel des règles" pour réviser !`;
+        }
+
+        // Scroll to banner if needed
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Reveal all answers
+    function revealAnswers() {
+        currentQuestions.forEach((item, qIdx) => {
+            item.a.forEach((acceptableList, bIdx) => {
+                const inputEl = document.getElementById(`input-${qIdx}-${bIdx}`);
+                inputEl.value = acceptableList[0];
+                inputEl.className = "input-correct";
+            });
+            const fbBox = document.getElementById(`feedback-${qIdx}`);
+            fbBox.className = "feedback-box show";
+            fbBox.innerHTML = `<span class="ans-tag-correct">Solution affichée</span>` + 
+                (item.hint ? `<div class="grammar-hint">💡 ${item.hint}</div>` : '');
+        });
+
+        const banner = document.getElementById('result-banner');
+        banner.style.display = "block";
+        banner.className = "score-good";
+        document.getElementById('score-text').textContent = "Solutions affichées";
+        document.getElementById('score-msg').textContent = "Prends le temps d'observer la construction des phrases affirmatives, négatives et questions !";
+    }
+
+    // Start on page load
+    updateCounts();
+    newQuiz();
+</script>
+
+</body>
+</html>
