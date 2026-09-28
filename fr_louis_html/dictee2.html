@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictée 2 : Vocabulaire, Conjugaison et Homophones (on / ont / on n')</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1d4ed8;
+            --secondary: #0ea5e9;
+            --success: #15803d;
+            --success-bg: #dcfce7;
+            --error: #b91c1c;
+            --error-bg: #fee2e2;
+            --warning-bg: #fef3c7;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --audio: #7c3aed;
+            --audio-hover: #6d28d9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 15px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        /* En-tête */
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 28px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+        }
+
+        header h1 {
+            font-size: 1.85rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        /* Fiche Mémo repliable */
+        .memo-details {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .memo-summary {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 16px 20px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            color: var(--primary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .memo-summary:hover {
+            background-color: #f1f5f9;
+        }
+
+        .memo-content {
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-gap: 20px;
+        }
+
+        .memo-section {
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .memo-section h3 {
+            font-size: 1.05rem;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .memo-section p, .memo-section ul {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-left: 18px;
+        }
+
+        .memo-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .chip {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .chip.verb {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .chip.invar {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .chip.adj {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        /* Sélecteur de mode */
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2);
+        }
+
+        /* Questions */
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .q-number {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .badge-homophone {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-conjugaison {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-audio {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .question-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #0f172a;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .q-text {
+            display: inline;
+        }
+
+        .q-verb-hint {
+            font-style: italic;
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            font-size: 1.05rem;
+            font-family: inherit;
+            padding: 6px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.2s;
+            min-width: 140px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        input[type="text"]:disabled {
+            background-color: #f1f5f9;
+            color: #334155;
+            cursor: not-allowed;
+        }
+
+        /* Bouton Audio */
+        .btn-audio {
+            background-color: var(--audio);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 6px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-audio:hover {
+            background-color: var(--audio-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-audio:active {
+            transform: translateY(1px);
+        }
+
+        /* États de correction */
+        .quiz-card.correct {
+            border-color: #22c55e;
+            background-color: #f0fdf4;
+        }
+
+        .quiz-card.incorrect {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .correction-feedback {
+            margin-top: 10px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            line-height: 1.4;
+            display: none;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-card.correct .correction-feedback {
+            display: block;
+            color: var(--success);
+        }
+
+        .quiz-card.incorrect .correction-feedback {
+            display: block;
+            color: var(--error);
+        }
+
+        .rule-tip {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.88rem;
+            font-weight: normal;
+            color: #475569;
+        }
+
+        /* Zone de score */
+        #score-banner {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .score-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .score-msg {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        /* Boutons d'action */
+        .actions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-main:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-main:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e40af;
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: #dbeafe;
+        }
+
+        .btn-restart {
+            display: none;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+        }
+
+        /* Canvas Confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.45rem; }
+            .question-body { font-size: 1.05rem; }
+            input[type="text"] { width: 100%; min-width: unset; }
+            .memo-content { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <header>
+        <h1>📝 Dictée 2 : Entraînement & Quiz</h1>
+        <p>Homophones (<em>on / ont / on n'</em>), Conjugaison et Vocabulaire</p>
+    </header>
+
+    <!-- Fiche mémo de révision -->
+    <details class="memo-details">
+        <summary class="memo-summary">
+            <span>📖 Consulter la fiche mémo (Règles & Vocabulaire de la Dictée 2)</span>
+            <span style="font-size: 0.85em; opacity: 0.8;">▼ Cliquer pour ouvrir</span>
+        </summary>
+        <div class="memo-content">
+            <div class="memo-section">
+                <h3>⚖️ Règles d'orthographe (fiche 33) : on / ont / on n'</h3>
+                <p>• <strong>on</strong> : pronom personnel sujet (3<sup>e</sup> personne du singulier). <em>Astuce : on peut le remplacer par <strong>il</strong>.</em> (Ex : <em>On écoute &rarr; Il écoute</em>)</p>
+                <p>• <strong>ont</strong> : verbe ou auxiliaire <em>avoir</em> au présent (3<sup>e</sup> personne du pluriel). <em>Astuce : on peut le remplacer par <strong>avaient</strong>.</em> (Ex : <em>Ils ont menti &rarr; Ils avaient menti</em>)</p>
+                <p>• <strong>on n'</strong> : forme négative devant une voyelle ou un <em>h</em> muet, lorsqu'il y a un mot négatif (<em>pas, plus, jamais, rien, guère, aucun...</em>). <em>Astuce : remplace par <strong>il</strong>, tu entendras distinctement <strong>il n'</strong> !</em> (Ex : <em>On n'entend rien &rarr; Il n'entend rien</em>)</p>
+            </div>
+
+            <div class="memo-section">
+                <h3>📚 Les Noms à connaître</h3>
+                <div class="memo-chips">
+                    <span class="chip">un sourire</span>
+                    <span class="chip">une chaleur</span>
+                    <span class="chip">un travail</span>
+                    <span class="chip">un employé</span>
+                    <span class="chip">une interrogation</span>
+                    <span class="chip">une leçon</span>
+                    <span class="chip">un manuscrit</span>
+                    <span class="chip">un tableau</span>
+                    <span class="chip">une exposition</span>
+                    <span class="chip">un palais</span>
+                    <span class="chip">une reine</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>🎨 Les Adjectifs</h3>
+                <div class="memo-chips">
+                    <span class="chip adj">sympathique (sympathiques)</span>
+                    <span class="chip adj">excessif (excessive, excessifs, excessives)</span>
+                    <span class="chip adj">compréhensif (compréhensive, compréhensifs, compréhensives)</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>✍️ Les 18 Verbes à conjuguer (au présent)</h3>
+                <p style="margin-bottom: 6px;"><em>Pour la conjugaison, l'infinitif n'est pas affiché : clique sur <strong>🔊 Écouter</strong> pour entendre le verbe et la phrase !<br>Attention aux particularités : <strong>accueillir</strong> (j'accueille), <strong>acheter</strong> (j'achète), <strong>espérer</strong> (j'espère), <strong>progresser</strong> (nous progressons), <strong>atteindre</strong> (j'atteins, il atteint, nous atteignons).</em></p>
+                <div class="memo-chips">
+                    <span class="chip verb">accueillir</span>
+                    <span class="chip verb">apprécier</span>
+                    <span class="chip verb">attaquer</span>
+                    <span class="chip verb">assommer</span>
+                    <span class="chip verb">arrêter</span>
+                    <span class="chip verb">travailler</span>
+                    <span class="chip verb">arriver</span>
+                    <span class="chip verb">progresser</span>
+                    <span class="chip verb">égarer</span>
+                    <span class="chip verb">emprunter</span>
+                    <span class="chip verb">espérer</span>
+                    <span class="chip verb">exhiber</span>
+                    <span class="chip verb">envelopper</span>
+                    <span class="chip verb">acheter</span>
+                    <span class="chip verb">approcher</span>
+                    <span class="chip verb">acclamer</span>
+                    <span class="chip verb">hésiter</span>
+                    <span class="chip verb">atteindre</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>📌 Les Mots invariables</h3>
+                <div class="memo-chips">
+                    <span class="chip invar">toujours</span>
+                    <span class="chip invar">quand</span>
+                    <span class="chip invar">trop</span>
+                    <span class="chip invar">lorsque</span>
+                    <span class="chip invar">bientôt</span>
+                    <span class="chip invar">malheureusement</span>
+                    <span class="chip invar">quand même</span>
+                    <span class="chip invar">jamais</span>
+                    <span class="chip invar">près de</span>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Choix de mode -->
+    <div class="mode-selector">
+        <button class="mode-btn active" onclick="changerMode('mixte')">🌟 Quiz Mixte (10 questions · max 3 « on/ont »)</button>
+        <button class="mode-btn" onclick="changerMode('homophones')">⚖️ On / Ont / On n' (10)</button>
+        <button class="mode-btn" onclick="changerMode('conjugaison')">⚡ Conjugaison au Présent (10)</button>
+        <button class="mode-btn" onclick="changerMode('audio')">🔊 Dictée Vocabulaire (10)</button>
+    </div>
+
+    <!-- Conteneur des 10 questions -->
+    <div id="quiz-container"></div>
+
+    <!-- Bannière de score -->
+    <div id="score-banner">
+        <div class="score-number" id="score-display">0 / 10</div>
+        <div class="score-msg" id="score-message">Bravo !</div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="actions-container">
+        <button id="btn-submit" class="btn-main" onclick="corrigerQuiz()">✅ Corriger mon quiz (sur 10)</button>
+        <button id="btn-retry" class="btn-secondary" style="display: none;" onclick="reessayerMemeQuiz()">🔁 Réessayer ce même quiz</button>
+        <button id="btn-new-quiz" class="btn-main btn-restart" onclick="nouveauQuiz()">🔄 Faire un autre quiz (10 nouvelles questions)</button>
+    </div>
+</div>
+
+<script>
+    /* =========================================================
+       BANQUE COMPLÈTE DE QUESTIONS POUR LA DICTÉE 2
+       ========================================================= */
+    const BANQUE = {
+        // --- 1. RÈGLE ON / ONT / ON N' ---
+        homophones: [
+            // Phrases officielles de la fiche d'exercice :
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "",
+                fin: " ne leur fait plus confiance : ils nous ont déjà menti !",
+                reponses: ["on"],
+                astuce: "Remplaçable par 'il' (sujet du verbe fait)."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "On ne leur fait plus confiance : ils nous ",
+                fin: " déjà menti !",
+                reponses: ["ont"],
+                astuce: "Auxiliaire avoir au présent (remplaçable par 'avaient')."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Elles me l'",
+                fin: " raconté quand on s'est vues.",
+                reponses: ["ont"],
+                astuce: "Auxiliaire avoir (remplaçable par 'avaient raconté')."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Elles me l'ont raconté quand ",
+                fin: " s'est vues.",
+                reponses: ["on"],
+                astuce: "Pronom sujet (remplaçable par 'il')."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "On écoute mais ",
+                fin: "entend rien.",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'rien' devant une voyelle : remplace par 'il' -> 'il n'entend rien'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "",
+                fin: " s'est encore disputé pour une broutille.",
+                reponses: ["on"],
+                astuce: "Pronom sujet : remplaçable par 'il'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Comment ",
+                fin: "-ils su cela ?",
+                reponses: ["ont"],
+                astuce: "Verbe avoir : remplaçable par 'avaient-ils su'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "",
+                fin: "a pas toujours le temps de jouer.",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'pas' devant voyelle : remplace par 'il' -> 'il n'a pas'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Comment va-t-",
+                fin: " faire, à présent ?",
+                reponses: ["on"],
+                astuce: "Pronom sujet : remplaçable par 'il' -> 'va-t-il faire'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Après une telle promenade, ",
+                fin: "en pouvait plus !",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'plus' devant voyelle : remplace par 'il' -> 'il n'en pouvait plus'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Durant la Première Guerre mondiale, les populations ",
+                fin: " beaucoup souffert.",
+                reponses: ["ont"],
+                astuce: "Auxiliaire avoir : remplaçable par 'avaient beaucoup souffert'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "",
+                fin: "a guère le temps d'aller au cinéma aujourd'hui.",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'guère' devant voyelle : remplace par 'il' -> 'il n'a guère'."
+            },
+            // Phrases complémentaires intégrant le vocabulaire de la fiche :
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Les employés ",
+                fin: " beaucoup de travail aujourd'hui.",
+                reponses: ["ont"],
+                astuce: "Verbe avoir : remplaçable par 'avaient beaucoup de travail'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Dans ce musée, ",
+                fin: "apprécie la beauté de chaque tableau.",
+                reponses: ["on"],
+                astuce: "Phrase affirmative : remplace par 'il' -> 'il apprécie'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "",
+                fin: "hésite jamais quand il faut faire preuve de courage.",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'jamais' devant le 'h' muet : 'il n'hésite jamais'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Les gardes ",
+                fin: " arrêté l'intrus devant les grilles du palais.",
+                reponses: ["ont"],
+                astuce: "Auxiliaire avoir : remplaçable par 'avaient arrêté'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "",
+                fin: " espère que la reine sera compréhensive.",
+                reponses: ["on"],
+                astuce: "Pronom sujet : remplaçable par 'il espère'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "À cette heure tardive, ",
+                fin: "aperçoit aucun employé dans les bureaux.",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'aucun' : remplace par 'il' -> 'il n'aperçoit aucun'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Pourquoi ",
+                fin: "-ils hésité à acheter ce manuscrit ?",
+                reponses: ["ont"],
+                astuce: "Auxiliaire avoir : remplaçable par 'avaient-ils hésité'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Quand ",
+                fin: " progresse régulièrement, les leçons deviennent faciles.",
+                reponses: ["on"],
+                astuce: "Pronom sujet : remplaçable par 'il progresse'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Malheureusement, ",
+                fin: "a plus assez de temps pour visiter l'exposition.",
+                reponses: ["on n'", "on n’"],
+                astuce: "Négation avec 'plus' devant voyelle : 'il n'a plus assez'."
+            },
+            {
+                type: "texte",
+                badge: "⚖️ on / ont / on n'",
+                badgeClass: "badge-homophone",
+                debut: "Bientôt, ",
+                fin: " va atteindre la fin de cette leçon.",
+                reponses: ["on"],
+                astuce: "Pronom sujet : remplaçable par 'il va atteindre'."
+            }
+        ],
+
+        // --- 2. CONJUGAISON AU PRÉSENT DES 18 VERBES DE LA FICHE ---
+        conjugaison: [
+            // 1. accueillir
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "accueillir",
+                audioText: "Verbe accueillir : Le directeur accueille chaleureusement le nouvel employé.",
+                debut: "Le directeur ",
+                fin: " chaleureusement le nouvel employé.",
+                reponses: ["accueille"],
+                astuce: "accueillir se conjugue comme un verbe en -er : il accueille (terminaison -e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "accueillir",
+                audioText: "Verbe accueillir : Nous accueillons nos invités avec un grand sourire.",
+                debut: "Nous ",
+                fin: " nos invités avec un grand sourire.",
+                reponses: ["accueillons"],
+                astuce: "accueillir avec nous : nous accueillons."
+            },
+            // 2. apprécier
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "apprécier",
+                audioText: "Verbe apprécier : J'apprécie beaucoup votre travail et vos efforts.",
+                debut: "J'",
+                fin: " beaucoup votre travail et vos efforts.",
+                reponses: ["apprécie"],
+                astuce: "apprécier à la 1ère personne : j'apprécie (terminaison -e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "apprécier",
+                audioText: "Verbe apprécier : Vous appréciez cette magnifique exposition de peinture.",
+                debut: "Vous ",
+                fin: " cette magnifique exposition de peinture.",
+                reponses: ["appréciez"],
+                astuce: "apprécier avec vous : vous appréciez."
+            },
+            // 3. attaquer
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "attaquer",
+                audioText: "Verbe attaquer : Les guerriers attaquent les remparts du vieux palais.",
+                debut: "Les guerriers ",
+                fin: " les remparts du vieux palais.",
+                reponses: ["attaquent"],
+                astuce: "attaquer avec ils : ils attaquent (terminaison -ent)."
+            },
+            // 4. assommer
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "assommer",
+                audioText: "Verbe assommer : Cette chaleur excessive nous assomme l'après-midi.",
+                debut: "Cette chaleur excessive nous ",
+                fin: " l'après-midi.",
+                reponses: ["assomme"],
+                astuce: "Le sujet est 'cette chaleur' (singulier) : elle assomme (terminaison -e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "assommer",
+                audioText: "Verbe assommer : Tu nous assommes avec toutes tes questions !",
+                debut: "Tu nous ",
+                fin: " avec toutes tes questions !",
+                reponses: ["assommes"],
+                astuce: "assommer avec tu : tu assommes (terminaison -es)."
+            },
+            // 5. arrêter
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "arrêter",
+                audioText: "Verbe arrêter : Les gardes arrêtent le suspect près du palais.",
+                debut: "Les gardes ",
+                fin: " le suspect près du palais.",
+                reponses: ["arrêtent"],
+                astuce: "arrêter avec ils : ils arrêtent (terminaison -ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "arrêter",
+                audioText: "Verbe arrêter : Nous arrêtons le travail pour écouter la leçon.",
+                debut: "Nous ",
+                fin: " le travail pour écouter la leçon.",
+                reponses: ["arrêtons"],
+                astuce: "arrêter avec nous : nous arrêtons."
+            },
+            // 6. travailler
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "travailler",
+                audioText: "Verbe travailler : Cet employé travaille toujours avec beaucoup de sérieux.",
+                debut: "Cet employé ",
+                fin: " toujours avec beaucoup de sérieux.",
+                reponses: ["travaille"],
+                astuce: "travailler avec il : il travaille (terminaison -e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "travailler",
+                audioText: "Verbe travailler : Vous travaillez sur un manuscrit très ancien.",
+                debut: "Vous ",
+                fin: " sur un manuscrit très ancien.",
+                reponses: ["travaillez"],
+                astuce: "travailler avec vous : vous travaillez."
+            },
+            // 7. arriver
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "arriver",
+                audioText: "Verbe arriver : Le train arrive bientôt à destination.",
+                debut: "Le train ",
+                fin: " bientôt à destination.",
+                reponses: ["arrive"],
+                astuce: "arriver avec il : il arrive (terminaison -e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "arriver",
+                audioText: "Verbe arriver : Elles arrivent enfin près du musée.",
+                debut: "Elles ",
+                fin: " enfin près du musée.",
+                reponses: ["arrivent"],
+                astuce: "arriver avec elles : elles arrivent (terminaison -ent)."
+            },
+            // 8. progresser
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "progresser",
+                audioText: "Verbe progresser : Tu progresses chaque jour grâce à tes révisions.",
+                debut: "Tu ",
+                fin: " chaque jour grâce à tes révisions.",
+                reponses: ["progresses"],
+                astuce: "progresser avec tu : tu progresses (terminaison -es)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "progresser",
+                audioText: "Verbe progresser : Nous progressons rapidement dans cette leçon.",
+                debut: "Nous ",
+                fin: " rapidement dans cette leçon.",
+                reponses: ["progressons"],
+                astuce: "progresser avec nous : nous progressons."
+            },
+            // 9. égarer
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "égarer",
+                audioText: "Verbe égarer : J'égare souvent mes affaires de classe.",
+                debut: "J'",
+                fin: " souvent mes affaires de classe.",
+                reponses: ["égare"],
+                astuce: "égarer avec je : j'égare (terminaison -e)."
+            },
+            // 10. emprunter
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "emprunter",
+                audioText: "Verbe emprunter : Tu empruntes un livre rare à la bibliothèque.",
+                debut: "Tu ",
+                fin: " un livre rare à la bibliothèque.",
+                reponses: ["empruntes"],
+                astuce: "emprunter avec tu : tu empruntes (terminaison -es)."
+            },
+            // 11. espérer
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "espérer",
+                audioText: "Verbe espérer : Elle espère avoir une bonne note à son interrogation.",
+                debut: "Elle ",
+                fin: " avoir une bonne note à son interrogation.",
+                reponses: ["espère"],
+                astuce: "Attention à l'accent : espérer &rarr; elle espère (accent grave è) !"
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "espérer",
+                audioText: "Verbe espérer : Nous espérons que le professeur sera compréhensif.",
+                debut: "Nous ",
+                fin: " que le professeur sera compréhensif.",
+                reponses: ["espérons"],
+                astuce: "avec nous, l'accent reste aigu : nous espérons."
+            },
+            // 12. exhiber
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "exhiber",
+                audioText: "Verbe exhiber : L'artiste exhibe son plus beau tableau à l'exposition.",
+                debut: "L'artiste ",
+                fin: " son plus beau tableau à l'exposition.",
+                reponses: ["exhibe"],
+                astuce: "exhiber avec il : il exhibe (terminaison -e)."
+            },
+            // 13. envelopper
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "envelopper",
+                audioText: "Verbe envelopper : Nous enveloppons le manuscrit avec du papier de soie.",
+                debut: "Nous ",
+                fin: " le manuscrit avec du papier de soie.",
+                reponses: ["enveloppons"],
+                astuce: "envelopper avec nous : nous enveloppons (2 p)."
+            },
+            // 14. acheter
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "acheter",
+                audioText: "Verbe acheter : J'achète deux billets pour visiter le palais.",
+                debut: "J'",
+                fin: " deux billets pour visiter le palais.",
+                reponses: ["achète"],
+                astuce: "Attention à l'accent : acheter &rarr; j'achète (accent grave è) !"
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "acheter",
+                audioText: "Verbe acheter : Tu achètes un souvenir pour tes amis.",
+                debut: "Tu ",
+                fin: " un souvenir pour tes amis.",
+                reponses: ["achètes"],
+                astuce: "acheter &rarr; tu achètes (accent grave è, terminaison -es)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "acheter",
+                audioText: "Verbe acheter : Nous achetons des tableaux magnifiques.",
+                debut: "Nous ",
+                fin: " des tableaux magnifiques.",
+                reponses: ["achetons"],
+                astuce: "avec nous, pas d'accent : nous achetons."
+            },
+            // 15. approcher
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "approcher",
+                audioText: "Verbe approcher : Le carrosse approche de la cour de la reine.",
+                debut: "Le carrosse ",
+                fin: " de la cour de la reine.",
+                reponses: ["approche"],
+                astuce: "approcher avec il : il approche (terminaison -e)."
+            },
+            // 16. acclamer
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "acclamer",
+                audioText: "Verbe acclamer : La foule acclame la reine lors de sa venue.",
+                debut: "La foule ",
+                fin: " la reine lors de sa venue.",
+                reponses: ["acclame"],
+                astuce: "la foule (singulier) acclame (terminaison -e, 2 c)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "acclamer",
+                audioText: "Verbe acclamer : Les spectateurs acclament chaleureusement l'artiste.",
+                debut: "Les spectateurs ",
+                fin: " chaleureusement l'artiste.",
+                reponses: ["acclament"],
+                astuce: "ils acclament (terminaison -ent)."
+            },
+            // 17. hésiter
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "hésiter",
+                audioText: "Verbe hésiter : Je n'hésite jamais quand le travail m'attend.",
+                debut: "Je n'",
+                fin: " jamais quand le travail m'attend.",
+                reponses: ["hésite"],
+                astuce: "hésiter avec je : j'hésite (terminaison -e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "hésiter",
+                audioText: "Verbe hésiter : Vous hésitez encore entre ces deux réponses.",
+                debut: "Vous ",
+                fin: " encore entre ces deux réponses.",
+                reponses: ["hésitez"],
+                astuce: "hésiter avec vous : vous hésitez."
+            },
+            // 18. atteindre
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "atteindre",
+                audioText: "Verbe atteindre : L'alpiniste atteint le sommet de la montagne.",
+                debut: "L'alpiniste ",
+                fin: " le sommet de la montagne.",
+                reponses: ["atteint"],
+                astuce: "Verbe en -eindre au présent : il atteint (se termine par un t)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "atteindre",
+                audioText: "Verbe atteindre : J'atteins un excellent niveau en orthographe.",
+                debut: "J'",
+                fin: " un excellent niveau en orthographe.",
+                reponses: ["atteins"],
+                astuce: "atteindre au présent avec je : j'atteins (se termine par un s)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison (présent)",
+                badgeClass: "badge-conjugaison",
+                infinitive: "atteindre",
+                audioText: "Verbe atteindre : Nous atteignons bientôt la fin de l'exercice.",
+                debut: "Nous ",
+                fin: " bientôt la fin de l'exercice.",
+                reponses: ["atteignons"],
+                astuce: "atteindre avec nous : nous atteignons (-gnons)."
+            }
+        ],
+
+        // --- 3. DICTÉE AUDIO : NOMS, ADJECTIFS & MOTS INVARIABLES ---
+        audio: [
+            // Noms
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un sourire", reponses: ["un sourire"], consigne: "Écris le groupe nominal avec son déterminant :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une chaleur", reponses: ["une chaleur"], consigne: "Écris le groupe nominal avec son déterminant :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un travail", reponses: ["un travail"], consigne: "Écris le groupe nominal avec son déterminant :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un employé", reponses: ["un employé"], consigne: "Écris le groupe nominal avec son déterminant (attention à l'accent) :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une interrogation", reponses: ["une interrogation"], consigne: "Écris le groupe nominal avec son déterminant :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une leçon", reponses: ["une leçon"], consigne: "Écris le groupe nominal avec son déterminant (attention à la cédille) :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un manuscrit", reponses: ["un manuscrit"], consigne: "Écris le groupe nominal avec son déterminant (lettre muette à la fin) :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un tableau", reponses: ["un tableau"], consigne: "Écris le groupe nominal avec son déterminant :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une exposition", reponses: ["une exposition"], consigne: "Écris le groupe nominal avec son déterminant :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un palais", reponses: ["un palais"], consigne: "Écris le groupe nominal avec son déterminant (lettre muette à la fin) :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une reine", reponses: ["une reine"], consigne: "Écris le groupe nominal avec son déterminant :" },
+
+            // Adjectifs & accords
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "sympathique", reponses: ["sympathique"], consigne: "Écris l'adjectif entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "excessif", reponses: ["excessif"], consigne: "Écris l'adjectif masculin entendu (attention aux deux 's') :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "excessive", reponses: ["excessive"], consigne: "Écris l'adjectif féminin entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "compréhensif", reponses: ["compréhensif"], consigne: "Écris l'adjectif masculin entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "compréhensive", reponses: ["compréhensive"], consigne: "Écris l'adjectif féminin entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (accord)", badgeClass: "badge-audio", audioText: "une reine compréhensive", reponses: ["une reine compréhensive"], consigne: "Écris l'expression entendue en accordant l'adjectif :" },
+            { type: "audio", badge: "🔊 Dictée audio (accord)", badgeClass: "badge-audio", audioText: "une chaleur excessive", reponses: ["une chaleur excessive"], consigne: "Écris l'expression entendue en accordant l'adjectif :" },
+
+            // Mots invariables
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "toujours", reponses: ["toujours"], consigne: "Écris le mot invariable entendu (lettre muette à la fin) :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "lorsque", reponses: ["lorsque"], consigne: "Écris le mot invariable entendu :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "bientôt", reponses: ["bientôt"], consigne: "Écris le mot invariable entendu (accent circonflexe et lettre muette) :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "malheureusement", reponses: ["malheureusement"], consigne: "Écris le mot invariable entendu :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "quand même", reponses: ["quand même"], consigne: "Écris les deux mots invariables entendus :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "près de", reponses: ["près de"], consigne: "Écris les mots entendus (accent grave sur le è) :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "jamais", reponses: ["jamais"], consigne: "Écris le mot invariable entendu (lettre muette à la fin) :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "trop", reponses: ["trop"], consigne: "Écris le mot invariable entendu :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "quand", reponses: ["quand"], consigne: "Écris le mot invariable entendu (lettre muette à la fin) :" }
+        ]
+    };
+
+    /* =========================================================
+       LOGIQUE DU QUIZ
+       ========================================================= */
+    let modeActuel = 'mixte';
+    let questionsActuelles = [];
+    let voixFrancaise = null;
+
+    // Initialisation Voix Synthèse Vocale
+    function initialiserVoix() {
+        if ('speechSynthesis' in window) {
+            const charger = () => {
+                const voix = window.speechSynthesis.getVoices();
+                // Recherche une voix française de qualité (ex: Thomas, Amelie, Hortense, Google français...)
+                voixFrancaise = voix.find(v => v.lang === 'fr-FR' || v.lang.startsWith('fr'));
+            };
+            window.speechSynthesis.onvoiceschanged = charger;
+            charger();
+        }
+    }
+
+    function ecouter(texte) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'fr-FR';
+            utterance.rate = 0.82; // Rythme posé pour dictée scolaire
+            utterance.pitch = 1.0;
+            if (voixFrancaise) utterance.voice = voixFrancaise;
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Désolé, ton navigateur ne supporte pas la synthèse vocale.");
+        }
+    }
+
+    function changerMode(mode) {
+        modeActuel = mode;
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        const btnActif = Array.from(document.querySelectorAll('.mode-btn')).find(b => b.getAttribute('onclick').includes(mode));
+        if (btnActif) btnActif.classList.add('active');
+        nouveauQuiz();
+    }
+
+    function melanger(tableau) {
+        const arr = [...tableau];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function selectionnerQuestions() {
+        if (modeActuel === 'mixte') {
+            // Maximum 3 exercices sur les homophones (on / ont / on n')
+            // Répartition sur 10 questions : 3 homophones (max 3) + 4 conjugaisons (audio) + 3 dictées vocabulaire
+            const h = melanger(BANQUE.homophones).slice(0, 3);
+            const c = melanger(BANQUE.conjugaison).slice(0, 4);
+            const a = melanger(BANQUE.audio).slice(0, 3);
+            return melanger([...h, ...c, ...a]);
+        } else {
+            // Mode spécifique : 10 questions de la catégorie choisie
+            return melanger(BANQUE[modeActuel]).slice(0, 10);
+        }
+    }
+
+    function genererAffichageQuiz() {
+        const conteneur = document.getElementById('quiz-container');
+        conteneur.innerHTML = '';
+
+        // Masquer le score et basculer les boutons
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.id = `card-${idx}`;
+
+            const topHtml = `
+                <div class="card-top">
+                    <span class="q-number">Question ${idx + 1} / 10</span>
+                    <span class="badge ${q.badgeClass}">${q.badge}</span>
+                </div>
+            `;
+
+            let bodyHtml = '';
+
+            if (q.type === 'audio') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        ${q.consigne}
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${q.audioText.replace(/'/g, "\\'")}')" title="Cliquer pour écouter">
+                            🔊 Écouter
+                        </button>
+                        <input type="text" id="input-${idx}" placeholder="Écris ici..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                    </div>
+                `;
+            } else if (q.type === 'conjugaison') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        🎧 Clique sur <strong>🔊 Écouter</strong> pour entendre le verbe et la phrase, puis écris le verbe au présent :
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${q.audioText.replace(/'/g, "\\'")}')" title="Cliquer pour écouter le verbe et la phrase">
+                            🔊 Écouter
+                        </button>
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <input type="text" id="input-${idx}" placeholder="verbe au présent..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            } else {
+                bodyHtml = `
+                    <div class="question-body">
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <input type="text" id="input-${idx}" placeholder="..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            const feedbackHtml = `
+                <div id="feedback-${idx}" class="correction-feedback"></div>
+            `;
+
+            card.innerHTML = topHtml + bodyHtml + feedbackHtml;
+            conteneur.appendChild(card);
+        });
+
+        // Focus direct sur la première question
+        setTimeout(() => {
+            const premierInput = document.getElementById('input-0');
+            if (premierInput) premierInput.focus();
+        }, 100);
+    }
+
+    function gererToucheEntree(event, idx) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const suivant = document.getElementById(`input-${idx + 1}`);
+            if (suivant) {
+                suivant.focus();
+            } else {
+                corrigerQuiz();
+            }
+        }
+    }
+
+    function normaliser(str) {
+        if (!str) return "";
+        return str
+            .replace(/[’']/g, "'") // Harmonise apostrophes
+            .replace(/\s+/g, ' ')  // Harmonise espaces
+            .trim()
+            .toLowerCase()
+            .replace(/\.$/, '');   // Enlève point final accidentel
+    }
+
+    function corrigerQuiz() {
+        let score = 0;
+        let nonRepondues = 0;
+
+        // Vérifier s'il reste des questions vides
+        for (let i = 0; i < questionsActuelles.length; i++) {
+            const input = document.getElementById(`input-${i}`);
+            if (input.value.trim() === '') {
+                nonRepondues++;
+            }
+        }
+
+        if (nonRepondues > 0) {
+            const confirmMsg = `Il te reste ${nonRepondues} question(s) sans réponse.\nVeux-tu quand même corriger ton quiz maintenant ?`;
+            if (!confirm(confirmMsg)) {
+                // Focus sur la première vide
+                for (let i = 0; i < questionsActuelles.length; i++) {
+                    const input = document.getElementById(`input-${i}`);
+                    if (input.value.trim() === '') {
+                        input.focus();
+                        break;
+                    }
+                }
+                return;
+            }
+        }
+
+        // Évaluation des questions
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            const saisie = normaliser(input.value);
+            const reponsesNormalisees = q.reponses.map(r => normaliser(r));
+
+            const estCorrect = reponsesNormalisees.includes(saisie);
+            input.disabled = true;
+
+            // Retirer classes précédentes
+            card.classList.remove('correct', 'incorrect');
+
+            if (estCorrect) {
+                score++;
+                card.classList.add('correct');
+                feedback.innerHTML = `✔ Bravo ! Bonne réponse.`;
+            } else {
+                card.classList.add('incorrect');
+                const bonneReponseAffichee = q.reponses[0];
+                let msg = `✘ Oups ! Réponse attendue : <strong>« ${bonneReponseAffichee} »</strong>`;
+                if (q.astuce) {
+                    msg += `<span class="rule-tip">💡 Astuce : ${q.astuce}</span>`;
+                }
+                feedback.innerHTML = msg;
+            }
+        });
+
+        // Affichage du résultat
+        const banner = document.getElementById('score-banner');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreMessage = document.getElementById('score-message');
+
+        scoreDisplay.textContent = `${score} / 10`;
+
+        if (score === 10) {
+            banner.style.backgroundColor = 'var(--success-bg)';
+            banner.style.color = 'var(--success)';
+            scoreMessage.innerHTML = '🎉 <strong>Score parfait ! 10 sur 10 !</strong> Tu es parfaitement prêt pour la dictée !';
+            lancerConfettis();
+        } else if (score >= 8) {
+            banner.style.backgroundColor = '#ecfdf5';
+            banner.style.color = '#047857';
+            scoreMessage.innerHTML = '👏 <strong>Très bon score !</strong> Encore un tout petit effort pour le sans-faute !';
+        } else if (score >= 5) {
+            banner.style.backgroundColor = 'var(--warning-bg)';
+            banner.style.color = '#b45309';
+            scoreMessage.innerHTML = '👍 <strong>Pas mal !</strong> Revois tes erreurs et retente ta chance pour t\'améliorer !';
+        } else {
+            banner.style.backgroundColor = 'var(--error-bg)';
+            banner.style.color = 'var(--error)';
+            scoreMessage.innerHTML = '💪 <strong>Ne te décourage pas !</strong> Ouvre la fiche mémo en haut pour réviser et relance un quiz.';
+        }
+
+        banner.style.display = 'block';
+
+        // Basculer les boutons
+        document.getElementById('btn-submit').style.display = 'none';
+        document.getElementById('btn-retry').style.display = 'block';
+        document.getElementById('btn-new-quiz').style.display = 'block';
+
+        // Scroll fluide vers le résultat
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function reessayerMemeQuiz() {
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            input.disabled = false;
+            input.value = '';
+            card.classList.remove('correct', 'incorrect');
+            feedback.innerHTML = '';
+        });
+
+        const premier = document.getElementById('input-0');
+        if (premier) premier.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nouveauQuiz() {
+        questionsActuelles = selectionnerQuestions();
+        genererAffichageQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       CONFETTIS (Pur JavaScript sans dépendance)
+       ========================================================= */
+    function lancerConfettis() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particules = [];
+        const couleurs = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+        for (let i = 0; i < 90; i++) {
+            particules.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height * 0.4,
+                w: Math.random() * 9 + 5,
+                h: Math.random() * 5 + 4,
+                couleur: couleurs[Math.floor(Math.random() * couleurs.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 4 + 2,
+                rotation: Math.random() * 360,
+                vRot: (Math.random() - 0.5) * 8
+            });
+        }
+
+        let animationFrame;
+        let duree = 0;
+
+        function animer() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particules.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.vRot;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.couleur;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+
+            duree++;
+            if (duree < 140) {
+                animationFrame = requestAnimationFrame(animer);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animationFrame);
+            }
+        }
+
+        animer();
+    }
+
+    // Lancement au chargement
+    window.addEventListener('DOMContentLoaded', () => {
+        initialiserVoix();
+        nouveauQuiz();
+    });
+</script>
+
+</body>
+</html>
