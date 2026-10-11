@@ -52,7 +52,7 @@
             padding: 35px 30px;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.07);
-            max-width: 820px;
+            max-width: 860px;
             width: 100%;
         }
 
@@ -74,13 +74,27 @@
         .subtitle {
             color: var(--text-light);
             font-size: 15px;
-            line-height: 1.5;
-            max-width: 650px;
+            line-height: 1.55;
+            max-width: 720px;
             margin: 0 auto;
+        }
+
+        .highlight-notice {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 4px solid var(--primary);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            color: #1e40af;
+            margin-top: 12px;
+            text-align: left;
+            line-height: 1.5;
         }
 
         /* Category Filter Tabs */
         .filters-wrapper {
+            margin-top: 20px;
             margin-bottom: 20px;
         }
 
@@ -177,7 +191,7 @@
 
         .cheat-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 15px;
         }
 
@@ -220,8 +234,8 @@
             background: #fff;
             border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 16px 18px;
-            margin-bottom: 14px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
             line-height: 1.8;
             font-size: 16px;
             transition: border-color 0.2s, box-shadow 0.2s;
@@ -245,7 +259,7 @@
         }
 
         .type-badge {
-            padding: 3px 9px;
+            padding: 3px 10px;
             border-radius: 20px;
             font-weight: 700;
             font-size: 11px;
@@ -272,8 +286,8 @@
             padding: 6px 10px;
             font-size: 15px;
             font-family: inherit;
-            min-width: 90px;
-            max-width: 175px;
+            min-width: 95px;
+            max-width: 180px;
             text-align: center;
             transition: all 0.2s;
             background: #fff;
@@ -321,9 +335,10 @@
             color: var(--primary);
         }
 
+        /* Rich Justificatif & Feedback Box */
         .feedback-box {
-            margin-top: 10px;
-            padding-top: 8px;
+            margin-top: 12px;
+            padding-top: 10px;
             border-top: 1px dashed var(--border);
             font-size: 14px;
             display: none;
@@ -331,32 +346,158 @@
 
         .feedback-box.show {
             display: block;
+            animation: fadeIn 0.25s ease-in-out;
         }
 
-        .ans-tag-correct {
-            color: var(--success);
+        .code-wrong {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-family: inherit;
             font-weight: 700;
-        }
-
-        .ans-tag-wrong {
-            color: var(--error);
             text-decoration: line-through;
-            margin-right: 6px;
         }
 
-        .ans-tag-expected {
-            color: var(--success);
+        .ans-green {
+            color: #15803d;
             font-weight: 700;
         }
 
-        .grammar-hint {
-            margin-top: 5px;
+        .clue-tag {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+            border: 1px solid #bfdbfe;
+        }
+
+        .formula-box {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             font-size: 13px;
+            font-weight: 600;
+            margin: 2px 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .feedback-tense-card {
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 8px;
+            font-size: 13.5px;
+            line-height: 1.55;
+        }
+
+        .feedback-tense-card.error-tense {
+            background-color: #fff1f2;
+            border: 2px solid #f43f5e;
+            box-shadow: 0 2px 6px rgba(244, 63, 94, 0.08);
+        }
+
+        .feedback-tense-card.warn-formation {
+            background-color: #fffbeb;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.08);
+        }
+
+        .tense-error-banner, .formation-banner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .error-badge-pill {
+            background-color: #e11d48;
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .warn-badge-pill {
+            background-color: #d97706;
+            color: white;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 3px 9px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .error-title-text, .warn-title-text {
+            font-weight: 700;
+            font-size: 14px;
+            color: #1e293b;
+        }
+
+        .tense-error-body {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .fb-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .fb-label {
+            font-weight: 700;
             color: #475569;
-            background: #f8fafc;
-            border-left: 3px solid #cbd5e1;
-            padding: 4px 8px;
-            border-radius: 0 4px 4px 0;
+            min-width: 145px;
+            flex-shrink: 0;
+        }
+
+        .fb-val {
+            color: #1e293b;
+            flex-grow: 1;
+        }
+
+        .reminder-row {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(0,0,0,0.12);
+        }
+
+        .feedback-correct-box {
+            background: #f0fdf4;
+            border: 1.5px solid #86efac;
+            color: #166534;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 14px;
+        }
+
+        .feedback-correct-box .correct-icon {
+            background: #16a34a;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            flex-shrink: 0;
         }
 
         /* Controls */
@@ -482,7 +623,9 @@
             .container { padding: 20px 14px; }
             h1 { font-size: 21px; }
             input[type="text"] { min-width: 75px; font-size: 14px; padding: 5px 8px; }
-            .quiz-item { font-size: 15px; }
+            .quiz-item { font-size: 15px; padding: 14px 14px; }
+            .fb-row { flex-direction: column; gap: 2px; }
+            .fb-label { min-width: auto; }
             button.action-btn { width: 100%; justify-content: center; }
         }
     </style>
@@ -492,7 +635,10 @@
 <div class="container">
     <header>
         <h1>🇬🇧 Simple Present vs Present Continuous</h1>
-        <p class="subtitle">Entraînement complet pour le test de Louis : conjugaison, règles d'orthographe (<em>-ing</em>), choix du bon temps (habitudes vs action en cours), <em>to be</em>, <em>have got</em> et réponses courtes.</p>
+        <p class="subtitle">Entraînement complet pour Louis : repère les indices dans chaque phrase (<em>Look!</em>, <em>every day</em>, <em>now</em>, <em>usually</em>...) pour <strong>choisir par toi-même</strong> le bon temps (Simple ou Continu), applique les règles de conjugaison et d'orthographe (<em>-ing</em>), les réponses courtes et <em>to be / have got</em>.</p>
+        <div class="highlight-notice">
+            🎯 <strong>Consigne du test :</strong> C'est à toi de déterminer seul s'il faut utiliser le <strong>Simple Present</strong> (routine, habitude, vérité générale) ou le <strong>Present Continuous</strong> (action qui se déroule sous tes yeux maintenant). En cas d'erreur de temps, une explication détaillée t'indique précisément l'indice et la règle !
+        </div>
     </header>
 
     <!-- Filters -->
@@ -504,15 +650,15 @@
                 <span class="count" id="count-all">0</span>
             </button>
             <button class="filter-btn" onclick="setFilter('contrast')">
-                <span>⚖️ Simple vs Continuous</span>
+                <span>⚖️ Simple ou Continu ?</span>
                 <span class="count" id="count-contrast">0</span>
             </button>
             <button class="filter-btn" onclick="setFilter('spelling')">
-                <span>🏃 Présent Continu (-ing)</span>
+                <span>🏃 Focus Orthographe (-ing)</span>
                 <span class="count" id="count-spelling">0</span>
             </button>
             <button class="filter-btn" onclick="setFilter('short')">
-                <span>💬 Réponses courtes</span>
+                <span>💬 Réponses courtes & Questions</span>
                 <span class="count" id="count-short">0</span>
             </button>
             <button class="filter-btn" onclick="setFilter('tobe_have')">
@@ -524,19 +670,19 @@
 
     <!-- Collapsible Grammar Cheat Sheet -->
     <button class="cheat-sheet-toggle" onclick="toggleCheatSheet()" id="toggleCheatBtn">
-        📘 Afficher l'aide-mémoire (Règles, Mots-clés & Astuces)
+        📘 Afficher l'aide-mémoire (Indices, Formules & Règles)
     </button>
 
     <div class="cheat-sheet" id="cheatSheet">
         <div class="cheat-grid">
             <div class="cheat-card card-contrast">
                 <h4>⚖️ Quel temps choisir ?</h4>
-                <p>• <strong>Présent Continu :</strong> action <em>en train de se dérouler maintenant</em>.<br>
-                   🚩 <em>Mots repères :</em> <code>now</code>, <code>at the moment</code>, <code>right now</code>, <code>Look!</code>, <code>Listen!</code>, <code>Shh!</code>.<br>
+                <p>• <strong>Présent Continu :</strong> action <em>en direct maintenant</em>.<br>
+                   🚩 <em>Mots repères :</em> <code>now</code>, <code>at the moment</code>, <code>right now</code>, <code>today</code>, <code>Look!</code>, <code>Listen!</code>, <code>Shh!</code>.<br>
                    Formule : <code>am / is / are + V-ing</code>.</p>
-                <p>• <strong>Simple Present :</strong> habitude, routine, vérité générale, goûts.<br>
-                   🚩 <em>Mots repères :</em> <code>every day</code>, <code>always</code>, <code>often</code>, <code>usually</code>, <code>never</code>, <code>on Sundays</code>.<br>
-                   Formule : Base verbale (<code>+ -s</code> à la 3e pers. du singulier <em>he/she/it</em>).</p>
+                <p>• <strong>Simple Present :</strong> habitude, routine, vérité générale, goût.<br>
+                   🚩 <em>Mots repères :</em> <code>every day</code>, <code>always</code>, <code>often</code>, <code>usually</code>, <code>never</code>, <code>on Sundays</code>, verbes de sentiment (<code>like</code>, <code>prefer</code>).<br>
+                   Formule : Base verbale (<code>+ -s</code> avec <em>he / she / it</em>).</p>
             </div>
 
             <div class="cheat-card card-spelling">
@@ -544,7 +690,7 @@
                 <p>• <strong>Cas général :</strong> on ajoute simplement <code>-ing</code>.<br>
                    <em>cook ➔ cooking</em>, <em>eat ➔ eating</em>, <em>wait ➔ waiting</em>.</p>
                 <p>• <strong>Verbe terminé par -e muet :</strong> le 'e' disparaît !<br>
-                   <em>dance ➔ dancing</em>, <em>type ➔ typing</em>, <em>write ➔ writing</em>.</p>
+                   <em>dance ➔ dancing</em>, <em>type ➔ typing</em>, <em>write ➔ writing</em>, <em>hide ➔ hiding</em>.</p>
                 <p>• <strong>1 syllabe + Consonne-Voyelle-Consonne (CVC) :</strong> on <strong>double</strong> la consonne finale !<br>
                    <em>run ➔ running</em>, <em>swim ➔ swimming</em>, <em>stop ➔ stopping</em>, <em>sit ➔ sitting</em>.</p>
                 <p>⚠️ <em>eat</em> a 2 voyelles (ea) et <em>wait</em> en a 2 (ai) ➔ on ne double PAS !</p>
@@ -603,639 +749,2222 @@
         <a href="to_be_to_have.html">To Be & To Have basique</a>
     </div>
 </div>
-
 <script>
     // Comprehensive database of Simple Present & Present Continuous questions
     const database = [
-        // ================= 1. SPELLING & PRESENT CONTINUOUS CONJUGATION =================
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "She ___ (to cook) dinner in the kitchen.",
-            a: [["is cooking", "'s cooking"]],
-            speech: "She is cooking dinner in the kitchen.",
-            hint: "Règle générale : auxiliaire be (is) + verbe avec -ing (cooking)."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "I ___ (to dance) to my favourite song.",
-            a: [["am dancing", "'m dancing"]],
-            speech: "I am dancing to my favourite song.",
-            hint: "Le 'e' muet final de 'dance' disparaît devant -ing : dancing !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "He ___ (to eat) a delicious apple.",
-            a: [["is eating", "'s eating"]],
-            speech: "He is eating a delicious apple.",
-            hint: "'eat' contient deux voyelles (ea) : on ne double PAS la consonne t -> eating !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "You ___ (to run) very fast in the park.",
-            a: [["are running", "'re running"]],
-            speech: "You are running very fast in the park.",
-            hint: "'run' est un verbe d'une syllabe CVC (consonne-voyelle-consonne) : on double le n -> running !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "We ___ (to drink) cold water after the match.",
-            a: [["are drinking", "'re drinking"]],
-            speech: "We are drinking cold water after the match.",
-            hint: "Auxiliaire be avec 'we' (are) + drink-ing."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "You ___ (to type) an email on your laptop.",
-            a: [["are typing", "'re typing"]],
-            speech: "You are typing an email on your laptop.",
-            hint: "'type' se termine par un 'e' muet qui saute devant -ing -> typing !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "I ___ (to swim) in the lake today.",
-            a: [["am swimming", "'m swimming"]],
-            speech: "I am swimming in the lake today.",
-            hint: "'swim' est un mot court CVC : on double le m -> swimming !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "They ___ (to wait) for the 8 o'clock bus.",
-            a: [["are waiting", "'re waiting"]],
-            speech: "They are waiting for the eight o'clock bus.",
-            hint: "'wait' a deux voyelles (ai) : pas de doublement de consonne -> waiting !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "Look! The car ___ (to stop) in front of the house.",
-            a: [["is stopping", "'s stopping"]],
-            speech: "Look! The car is stopping in front of the house.",
-            hint: "'stop' est un verbe court CVC : on double le p -> stopping !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "I ___ (to watch) now my favourite movie.",
-            a: [["am watching", "'m watching"]],
-            speech: "I am watching now my favourite movie.",
-            hint: "Exercice de la feuille : 'I am watching' avec l'indicateur 'now'."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "He ___ (to listen) to the news on the radio.",
-            a: [["is listening", "'s listening"]],
-            speech: "He is listening to the news on the radio.",
-            hint: "Auxiliaire 'is' + listening."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "They ___ (to speak) Spanish with a friend.",
-            a: [["are speaking", "'re speaking"]],
-            speech: "They are speaking Spanish with a friend.",
-            hint: "Auxiliaire 'are' + speaking (speak a deux voyelles 'ea' -> pas de double consonne)."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "He ___ (to swim) to prepare the competition.",
-            a: [["is swimming", "'s swimming"]],
-            speech: "He is swimming to prepare the competition.",
-            hint: "Double 'm' pour swim : 'is swimming'."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "I ___ (to do) a puzzle in my room.",
-            a: [["am doing", "'m doing"]],
-            speech: "I am doing a puzzle in my room.",
-            hint: "Auxiliaire 'am' + doing."
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "The children ___ (to sit) on the sofa.",
-            a: [["are sitting", "'re sitting"]],
-            speech: "The children are sitting on the sofa.",
-            hint: "'sit' est court CVC : on double le t -> sitting !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "He ___ (to put) on his warm coat.",
-            a: [["is putting", "'s putting"]],
-            speech: "He is putting on his warm coat.",
-            hint: "'put' est court CVC : on double le t -> putting !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "She ___ (to write) a letter to her grandmother.",
-            a: [["is writing", "'s writing"]],
-            speech: "She is writing a letter to her grandmother.",
-            hint: "'write' perd son 'e' final devant -ing -> writing (avec un seul t) !"
-        },
-        {
-            category: "spelling",
-            typeLabel: "Présent Continu (-ing)",
-            badgeClass: "badge-cont",
-            q: "Look! My dog ___ (to hide) behind the tree.",
-            a: [["is hiding", "'s hiding"]],
-            speech: "Look! My dog is hiding behind the tree.",
-            hint: "'hide' se termine par -e muet -> hiding !"
-        },
-
-        // ================= 2. CONTRAST: SIMPLE PRESENT VS PRESENT CONTINUOUS =================
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Listen! Somebody ___ (to sing) in the shower.",
-            a: [["is singing", "'s singing"]],
-            speech: "Listen! Somebody is singing in the shower.",
-            hint: "L'indicateur 'Listen!' montre que l'action se passe maintenant ➔ Présent Continu (is singing)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "My brother ___ (to play) basketball every Saturday.",
-            a: [["plays"]],
-            speech: "My brother plays basketball every Saturday.",
-            hint: "'every Saturday' indique une habitude régulière ➔ Simple Present (plays avec -s)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Look outside! It ___ (to rain) again.",
-            a: [["is raining", "'s raining"]],
-            speech: "Look outside! It is raining again.",
-            hint: "'Look outside!' signale une action visible en cours ➔ Présent Continu (is raining)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "It often ___ (to rain) in Scotland.",
-            a: [["rains"]],
-            speech: "It often rains in Scotland.",
-            hint: "'often' (souvent) est un adverbe de fréquence / vérité générale ➔ Simple Present (rains)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Right now, she ___ (to do) her English homework.",
-            a: [["is doing", "'s doing"]],
-            speech: "Right now, she is doing her English homework.",
-            hint: "'Right now' (en ce moment précis) ➔ Présent Continu (is doing)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "She always ___ (to do) her homework before dinner.",
-            a: [["does"]],
-            speech: "She always does her homework before dinner.",
-            hint: "'always' (toujours) indique une routine ➔ Simple Present ('does' pour la 3e personne)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Shh! Be quiet! The baby ___ (to sleep).",
-            a: [["is sleeping", "'s sleeping"]],
-            speech: "Shh! Be quiet! The baby is sleeping.",
-            hint: "'Shh! Be quiet!' indique que l'action se passe sous nos yeux en ce moment ➔ is sleeping."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Water ___ (to boil) at 100 degrees Celsius.",
-            a: [["boils"]],
-            speech: "Water boils at one hundred degrees Celsius.",
-            hint: "Vérité générale / fait scientifique permanent ➔ Simple Present (boils)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Turn off the gas! The water ___ (to boil)!",
-            a: [["is boiling", "'s boiling"]],
-            speech: "Turn off the gas! The water is boiling!",
-            hint: "L'eau est en train de bouillir maintenant ➔ Présent Continu (is boiling)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Lions ___ (to live) in Africa.",
-            a: [["live"]],
-            speech: "Lions live in Africa.",
-            hint: "Vérité générale / état permanent (feuille de cours) ➔ Simple Present (live)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "I ___ (to like) chocolate ice cream very much.",
-            a: [["like"]],
-            speech: "I like chocolate ice cream very much.",
-            hint: "'like' exprime un goût / sentiment permanent (verbe d'état) ➔ Simple Present !"
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "She ___ (to prefer) Taylor Swift to other singers.",
-            a: [["prefers"]],
-            speech: "She prefers Taylor Swift to other singers.",
-            hint: "'prefer' exprime une opinion/goût ➔ toujours Simple Present ('prefers' avec -s)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Where is dad? He ___ (to wash) his car in the garage.",
-            a: [["is washing", "'s washing"]],
-            speech: "Where is dad? He is washing his car in the garage.",
-            hint: "Action en cours à la question 'où est-il ?' ➔ Présent Continu (is washing)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "He ___ (to wash) his car every Sunday morning.",
-            a: [["washes"]],
-            speech: "He washes his car every Sunday morning.",
-            hint: "'every Sunday morning' = habitude ➔ Simple Present (terme en -sh prend -es : washes)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "Look! The cat ___ (to climb) up the tall tree.",
-            a: [["is climbing", "'s climbing"]],
-            speech: "Look! The cat is climbing up the tall tree.",
-            hint: "'Look!' appelle l'attention sur une action en cours ➔ is climbing."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "We usually ___ (to walk) to school, but today we ___ (to take) the bus.",
-            a: [["walk"], ["are taking", "'re taking"]],
-            speech: "We usually walk to school, but today we are taking the bus.",
-            hint: "'usually' ➔ Simple Present (walk) ; 'today' (exception temporaire) ➔ Présent Continu (are taking)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "He usually ___ (to ride) a bike, but today he ___ (to run).",
-            a: [["rides"], ["is running", "'s running"]],
-            speech: "He usually rides a bike, but today he is running.",
-            hint: "'usually' ➔ rides (avec -s) ; 'today' ➔ is running (double n !)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "At the moment, they ___ (to build) a new sports centre.",
-            a: [["are building", "'re building"]],
-            speech: "At the moment, they are building a new sports centre.",
-            hint: "'At the moment' (en ce moment) ➔ Présent Continu (are building)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "I can't talk right now, I ___ (to study) for my exam.",
-            a: [["am studying", "'m studying"]],
-            speech: "I can't talk right now, I am studying for my exam.",
-            hint: "'right now' ➔ Présent Continu : am studying (study garde son 'y' devant -ing !)."
-        },
-        {
-            category: "contrast",
-            typeLabel: "Choix du temps",
-            badgeClass: "badge-mix",
-            q: "He never ___ (to watch) horror movies at night.",
-            a: [["watches"]],
-            speech: "He never watches horror movies at night.",
-            hint: "'never' = fréquence ➔ Simple Present (verbe en -ch prend -es : watches)."
-        },
-
-        // ================= 3. SHORT ANSWERS & QUESTIONS =================
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Are you writing an essay? — Yes, I ___.",
-            a: [["am"]],
-            speech: "Are you writing an essay? Yes, I am.",
-            hint: "Réponse courte affirmative avec 'to be' : toujours sous forme entière 'Yes, I am' (jamais contracté 'Yes, I'm')."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Are you watching TV right now? — No, I ___.",
-            a: [["am not", "'m not"]],
-            speech: "Are you watching TV right now? No, I'm not.",
-            hint: "Réponse courte négative : 'No, I'm not' (ou 'No, I am not')."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Is your father working at the moment? — Yes, he ___.",
-            a: [["is"]],
-            speech: "Is your father working at the moment? Yes, he is.",
-            hint: "Réponse courte affirmative : 'Yes, he is' (forme pleine obligatoire)."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Is your father working today? — No, he ___.",
-            a: [["isn't", "is not"]],
-            speech: "Is your father working today? No, he isn't.",
-            hint: "Réponse courte négative : 'No, he isn't' (forme contractée usuelle)."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Are the students listening to the teacher? — Yes, they ___.",
-            a: [["are"]],
-            speech: "Are the students listening to the teacher? Yes, they are.",
-            hint: "The students = they ➔ 'Yes, they are'."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Are they playing football in the garden? — No, they ___.",
-            a: [["aren't", "are not"]],
-            speech: "Are they playing football in the garden? No, they aren't.",
-            hint: "Réponse courte négative au pluriel : 'No, they aren't'."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Do you like classical music? — Yes, I ___.",
-            a: [["do"]],
-            speech: "Do you like classical music? Yes, I do.",
-            hint: "Réponse courte au Simple Present : on reprend l'auxiliaire 'do' ➔ 'Yes, I do'."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Do your friends play golf on Sundays? — No, they ___.",
-            a: [["don't", "do not"]],
-            speech: "Do your friends play golf on Sundays? No, they don't.",
-            hint: "Auxiliaire négatif au pluriel : 'No, they don't'."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Does your brother live in London? — Yes, he ___.",
-            a: [["does"]],
-            speech: "Does your brother live in London? Yes, he does.",
-            hint: "À la 3e personne du singulier au Simple Present : 'Yes, he does'."
-        },
-        {
-            category: "short",
-            typeLabel: "Réponse courte",
-            badgeClass: "badge-short",
-            q: "Does she drink coffee in the evening? — No, she ___.",
-            a: [["doesn't", "does not"]],
-            speech: "Does she drink coffee in the evening? No, she doesn't.",
-            hint: "Négation à la 3e personne : 'No, she doesn't'."
-        },
-        {
-            category: "short",
-            typeLabel: "Question",
-            badgeClass: "badge-short",
-            q: "What ___ you ___ (to do) now?",
-            a: [["are"], ["doing"]],
-            speech: "What are you doing now?",
-            hint: "Question au Présent Continu : What + are + you + doing ?"
-        },
-        {
-            category: "short",
-            typeLabel: "Question",
-            badgeClass: "badge-short",
-            q: "Why ___ she ___ (to cry) at the moment?",
-            a: [["is"], ["crying"]],
-            speech: "Why is she crying at the moment?",
-            hint: "Question au Présent Continu : Why + is + she + crying ?"
-        },
-        {
-            category: "short",
-            typeLabel: "Question",
-            badgeClass: "badge-short",
-            q: "___ he ___ (to speak) English every day?",
-            a: [["Does", "does"], ["speak"]],
-            speech: "Does he speak English every day?",
-            hint: "Question au Simple Present : Does + he + base verbale (speak sans -s) ?"
-        },
-
-        // ================= 4. TO BE & HAVE GOT (FROM LOUIS'S EXERCISE SHEETS) =================
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Mum ___ (to have got) a car, but she (-) ___ a motorbike.",
-            a: [["has got", "'s got"], ["hasn't got", "has not got"]],
-            speech: "Mum has got a car, but she hasn't got a motorbike.",
-            hint: "Mum = she ➔ 'has got' à l'affirmatif, et 'hasn't got' au négatif."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Calvin Harris ___ my favourite pop star.",
-            a: [["is", "'s"]],
-            speech: "Calvin Harris is my favourite pop star.",
-            hint: "Calvin Harris = he ➔ 'is'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Are Vince and Sue twins? — Yes, they ___.",
-            a: [["are"]],
-            speech: "Are Vince and Sue twins? Yes, they are.",
-            hint: "Réponse courte affirmative avec 'to be' : 'Yes, they are' (sans contraction)."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "What ___ your address?",
-            a: [["is", "'s"]],
-            speech: "What is your address?",
-            hint: "'your address' est singulier (it) ➔ 'What is your address?'"
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "How much ___ these watches?",
-            a: [["are"]],
-            speech: "How much are these watches?",
-            hint: "'these watches' est au pluriel (they) ➔ 'How much are these watches?'"
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Susan and John ___ our neighbours, too.",
-            a: [["are"]],
-            speech: "Susan and John are our neighbours, too.",
-            hint: "Susan and John = they (pluriel) ➔ 'are'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "My sister and I ___ good friends.",
-            a: [["are"]],
-            speech: "My sister and I are good friends.",
-            hint: "'My sister and I' équivaut à 'we' (nous) ➔ 'are' !"
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Is Kelly your friend? — No, she ___.",
-            a: [["isn't", "is not"]],
-            speech: "Is Kelly your friend? No, she isn't.",
-            hint: "Réponse courte négative : 'No, she isn't'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "___ your teacher ___ (to have got) any children? — No, he ___.",
-            a: [["Has", "has"], ["got"], ["hasn't", "has not"]],
-            speech: "Has your teacher got any children? No, he hasn't.",
-            hint: "Your teacher = he ➔ 'Has your teacher got...'. Pas de 'got' dans la réponse courte : 'No, he hasn't' !"
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "My parents (-) ___ (to have got) a big house.",
-            a: [["haven't got", "have not got"]],
-            speech: "My parents haven't got a big house.",
-            hint: "My parents = they (pluriel) ➔ 'haven't got'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Kamala ___ (to have got) a shop in Hartfield.",
-            a: [["has got", "'s got"]],
-            speech: "Kamala has got a shop in Hartfield.",
-            hint: "Kamala = she ➔ 'has got'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "___ your dad ___ (to have got) a computer at work? — Yes, he ___.",
-            a: [["Has", "has"], ["got"], ["has"]],
-            speech: "Has your dad got a computer at work? Yes, he has.",
-            hint: "Your dad = he ➔ 'Has your dad got...'. Réponse courte affirmative : 'Yes, he has' (sans got !)."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "I (-) ___ a child! I am sixteen years old.",
-            a: [["am not", "'m not"]],
-            speech: "I am not a child! I am sixteen years old.",
-            hint: "Négation avec 'I' et 'to be' ➔ 'am not'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "They (-) ___ my favourite pop group.",
-            a: [["aren't", "are not"]],
-            speech: "They aren't my favourite pop group.",
-            hint: "Négation avec 'they' et 'to be' ➔ 'aren't'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "We ___ (to have got) two cars.",
-            a: [["have got", "'ve got"]],
-            speech: "We have got two cars.",
-            hint: "Avec 'we' ➔ 'have got'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "I (-) ___ (to have got) any money in my pocket.",
-            a: [["haven't got", "have not got"]],
-            speech: "I haven't got any money in my pocket.",
-            hint: "Exercice de la feuille : 'I haven't got any money'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "___ your sister ___ (to have got) a new bike? — No, she ___.",
-            a: [["Has", "has"], ["got"], ["hasn't", "has not"]],
-            speech: "Has your sister got a new bike? No, she hasn't.",
-            hint: "Your sister = she ➔ 'Has your sister got... No, she hasn't'."
-        },
-        {
-            category: "tobe_have",
-            typeLabel: "To Be & Have Got",
-            badgeClass: "badge-tb",
-            q: "Brooke ___ (to have got) a boyfriend? — Yes, she ___.",
-            a: [["has got", "has"], ["has"]],
-            speech: "Brooke has got a boyfriend? Yes, she has.",
-            hint: "Brooke = she ➔ 'has got'. Réponse courte : 'Yes, she has'."
+        {
+                "id": 1,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! She ___ (to cook) dinner in the kitchen right now.",
+                "a": [
+                        [
+                                "is cooking",
+                                "'s cooking"
+                        ]
+                ],
+                "speech": "Look! She is cooking dinner in the kitchen right now.",
+                "verb": "cook",
+                "subject": "she",
+                "expectedTense": "continuous",
+                "clue": "Look! / right now",
+                "clueExplanation": "Action en train de se dérouler sous nos yeux en ce moment.",
+                "spellingRule": "",
+                "hint": "Indices 'Look!' et 'right now' ➔ Présent Continu : is cooking."
+        },
+        {
+                "id": 2,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Listen! I ___ (to dance) to my favourite song in my room.",
+                "a": [
+                        [
+                                "am dancing",
+                                "'m dancing"
+                        ]
+                ],
+                "speech": "Listen! I am dancing to my favourite song in my room.",
+                "verb": "dance",
+                "subject": "I",
+                "expectedTense": "continuous",
+                "clue": "Listen!",
+                "clueExplanation": "L'injonction 'Listen!' signale une action en direct en ce moment.",
+                "spellingRule": "e_drop",
+                "hint": "Indice 'Listen!' ➔ Présent Continu (am dancing). Le 'e' muet de dance disparaît devant -ing !"
+        },
+        {
+                "id": 3,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look, he ___ (to eat) a delicious red apple right now.",
+                "a": [
+                        [
+                                "is eating",
+                                "'s eating"
+                        ]
+                ],
+                "speech": "Look, he is eating a delicious red apple right now.",
+                "verb": "eat",
+                "subject": "he",
+                "expectedTense": "continuous",
+                "clue": "Look / right now",
+                "clueExplanation": "Action visible en train de se produire en ce moment.",
+                "spellingRule": "no_double",
+                "hint": "Indice 'Look / right now' ➔ is eating. Pas de double consonne (eat a 2 voyelles ea)."
+        },
+        {
+                "id": 4,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look at you! You ___ (to run) very fast in the park.",
+                "a": [
+                        [
+                                "are running",
+                                "'re running"
+                        ]
+                ],
+                "speech": "Look at you! You are running very fast in the park.",
+                "verb": "run",
+                "subject": "you",
+                "expectedTense": "continuous",
+                "clue": "Look at you!",
+                "clueExplanation": "Action en cours de déroulement sous nos yeux.",
+                "spellingRule": "cvc",
+                "hint": "Indice 'Look at you!' ➔ are running. Règle CVC : on double le n de run ➔ running !"
+        },
+        {
+                "id": 5,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Right now, we ___ (to drink) cold water after the match.",
+                "a": [
+                        [
+                                "are drinking",
+                                "'re drinking"
+                        ]
+                ],
+                "speech": "Right now, we are drinking cold water after the match.",
+                "verb": "drink",
+                "subject": "we",
+                "expectedTense": "continuous",
+                "clue": "Right now",
+                "clueExplanation": "'Right now' indique le moment présent précis.",
+                "spellingRule": "",
+                "hint": "'Right now' ➔ Présent Continu : are drinking."
+        },
+        {
+                "id": 6,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Be quiet! You ___ (to type) an important email on your laptop.",
+                "a": [
+                        [
+                                "are typing",
+                                "'re typing"
+                        ]
+                ],
+                "speech": "Be quiet! You are typing an important email on your laptop.",
+                "verb": "type",
+                "subject": "you",
+                "expectedTense": "continuous",
+                "clue": "Be quiet!",
+                "clueExplanation": "'Be quiet!' attire l'attention sur l'action en cours.",
+                "spellingRule": "e_drop",
+                "hint": "'Be quiet!' ➔ are typing. Le 'e' muet de type saute devant -ing !"
+        },
+        {
+                "id": 7,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Today, I ___ (to swim) in the lake because it is so hot.",
+                "a": [
+                        [
+                                "am swimming",
+                                "'m swimming"
+                        ]
+                ],
+                "speech": "Today, I am swimming in the lake because it is so hot.",
+                "verb": "swim",
+                "subject": "I",
+                "expectedTense": "continuous",
+                "clue": "Today",
+                "clueExplanation": "'Today' marque l'action temporaire en cours aujourd'hui.",
+                "spellingRule": "cvc",
+                "hint": "'Today' ➔ am swimming. Règle CVC : double m ➔ swimming !"
+        },
+        {
+                "id": 8,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! They ___ (to wait) for the 8 o'clock bus.",
+                "a": [
+                        [
+                                "are waiting",
+                                "'re waiting"
+                        ]
+                ],
+                "speech": "They are waiting for the eight o'clock bus.",
+                "verb": "wait",
+                "subject": "they",
+                "expectedTense": "continuous",
+                "clue": "Look!",
+                "clueExplanation": "'Look!' signale une scène en direct.",
+                "spellingRule": "no_double",
+                "hint": "'Look!' ➔ are waiting (wait a 2 voyelles ai ➔ pas de double t)."
+        },
+        {
+                "id": 9,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! The car ___ (to stop) in front of the house.",
+                "a": [
+                        [
+                                "is stopping",
+                                "'s stopping"
+                        ]
+                ],
+                "speech": "Look! The car is stopping in front of the house.",
+                "verb": "stop",
+                "subject": "the car",
+                "expectedTense": "continuous",
+                "clue": "Look!",
+                "clueExplanation": "'Look!' indique une action visible maintenant.",
+                "spellingRule": "cvc",
+                "hint": "'Look!' ➔ is stopping. Règle CVC : on double le p ➔ stopping !"
+        },
+        {
+                "id": 10,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "I ___ (to watch) now my favourite movie.",
+                "a": [
+                        [
+                                "am watching",
+                                "'m watching"
+                        ]
+                ],
+                "speech": "I am watching now my favourite movie.",
+                "verb": "watch",
+                "subject": "I",
+                "expectedTense": "continuous",
+                "clue": "now",
+                "clueExplanation": "'now' indique l'instant présent.",
+                "spellingRule": "",
+                "hint": "'now' ➔ Présent Continu : am watching."
+        },
+        {
+                "id": 11,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Shh! He ___ (to listen) to the news on the radio right now.",
+                "a": [
+                        [
+                                "is listening",
+                                "'s listening"
+                        ]
+                ],
+                "speech": "Shh! He is listening to the news on the radio right now.",
+                "verb": "listen",
+                "subject": "he",
+                "expectedTense": "continuous",
+                "clue": "Shh! / right now",
+                "clueExplanation": "Action en train de se dérouler maintenant.",
+                "spellingRule": "",
+                "hint": "'Shh! / right now' ➔ is listening."
+        },
+        {
+                "id": 12,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Listen! They ___ (to speak) Spanish with a friend.",
+                "a": [
+                        [
+                                "are speaking",
+                                "'re speaking"
+                        ]
+                ],
+                "speech": "Listen! They are speaking Spanish with a friend.",
+                "verb": "speak",
+                "subject": "they",
+                "expectedTense": "continuous",
+                "clue": "Listen!",
+                "clueExplanation": "'Listen!' appelle l'écoute sur une action en cours.",
+                "spellingRule": "no_double",
+                "hint": "'Listen!' ➔ are speaking (speak a 2 voyelles ea)."
+        },
+        {
+                "id": 13,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look at Tom! He ___ (to swim) to prepare the competition.",
+                "a": [
+                        [
+                                "is swimming",
+                                "'s swimming"
+                        ]
+                ],
+                "speech": "Look at Tom! He is swimming to prepare the competition.",
+                "verb": "swim",
+                "subject": "he",
+                "expectedTense": "continuous",
+                "clue": "Look at Tom!",
+                "clueExplanation": "Action en direct sous nos yeux.",
+                "spellingRule": "cvc",
+                "hint": "'Look at Tom!' ➔ is swimming (double m)."
+        },
+        {
+                "id": 14,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "At the moment, I ___ (to do) a puzzle in my room.",
+                "a": [
+                        [
+                                "am doing",
+                                "'m doing"
+                        ]
+                ],
+                "speech": "At the moment, I am doing a puzzle in my room.",
+                "verb": "do",
+                "subject": "I",
+                "expectedTense": "continuous",
+                "clue": "At the moment",
+                "clueExplanation": "'At the moment' = en ce moment précis.",
+                "spellingRule": "",
+                "hint": "'At the moment' ➔ am doing."
+        },
+        {
+                "id": 15,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! The children ___ (to sit) on the sofa.",
+                "a": [
+                        [
+                                "are sitting",
+                                "'re sitting"
+                        ]
+                ],
+                "speech": "Look! The children are sitting on the sofa.",
+                "verb": "sit",
+                "subject": "the children",
+                "expectedTense": "continuous",
+                "clue": "Look!",
+                "clueExplanation": "Action visible maintenant.",
+                "spellingRule": "cvc",
+                "hint": "'Look!' ➔ are sitting. Règle CVC : double t ➔ sitting !"
+        },
+        {
+                "id": 16,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look, he ___ (to put) on his warm coat before going out.",
+                "a": [
+                        [
+                                "is putting",
+                                "'s putting"
+                        ]
+                ],
+                "speech": "Look, he is putting on his warm coat before going out.",
+                "verb": "put",
+                "subject": "he",
+                "expectedTense": "continuous",
+                "clue": "Look",
+                "clueExplanation": "Action en direct.",
+                "spellingRule": "cvc",
+                "hint": "'Look' ➔ is putting. Règle CVC : double t ➔ putting !"
+        },
+        {
+                "id": 17,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Right now, she ___ (to write) a letter to her grandmother.",
+                "a": [
+                        [
+                                "is writing",
+                                "'s writing"
+                        ]
+                ],
+                "speech": "Right now, she is writing a letter to her grandmother.",
+                "verb": "write",
+                "subject": "she",
+                "expectedTense": "continuous",
+                "clue": "Right now",
+                "clueExplanation": "'Right now' signale une action en cours.",
+                "spellingRule": "e_drop",
+                "hint": "'Right now' ➔ is writing. Le 'e' muet de write disparaît !"
+        },
+        {
+                "id": 18,
+                "category": "spelling",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! My dog ___ (to hide) behind the tree.",
+                "a": [
+                        [
+                                "is hiding",
+                                "'s hiding"
+                        ]
+                ],
+                "speech": "Look! My dog is hiding behind the tree.",
+                "verb": "hide",
+                "subject": "my dog",
+                "expectedTense": "continuous",
+                "clue": "Look!",
+                "clueExplanation": "Action en train de se dérouler maintenant.",
+                "spellingRule": "e_drop",
+                "hint": "'Look!' ➔ is hiding. Le 'e' muet de hide saute !"
+        },
+        {
+                "id": 19,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "She usually ___ (to cook) dinner for her family at 7 pm.",
+                "a": [
+                        [
+                                "cooks"
+                        ]
+                ],
+                "speech": "She usually cooks dinner for her family at seven pm.",
+                "verb": "cook",
+                "subject": "she",
+                "expectedTense": "simple",
+                "clue": "usually / at 7 pm",
+                "clueExplanation": "'usually' indique une habitude régulière dans le présent.",
+                "spellingRule": "",
+                "hint": "'usually' ➔ Simple Present (cooks avec -s pour she)."
+        },
+        {
+                "id": 20,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "I often ___ (to dance) in my bedroom on Saturdays.",
+                "a": [
+                        [
+                                "dance"
+                        ]
+                ],
+                "speech": "I often dance in my bedroom on Saturdays.",
+                "verb": "dance",
+                "subject": "I",
+                "expectedTense": "simple",
+                "clue": "often / on Saturdays",
+                "clueExplanation": "'often' et 'on Saturdays' indiquent une fréquence / habitude.",
+                "spellingRule": "",
+                "hint": "'often / on Saturdays' ➔ Simple Present : dance (base verbale avec I)."
+        },
+        {
+                "id": 21,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He always ___ (to eat) an apple after lunch.",
+                "a": [
+                        [
+                                "eats"
+                        ]
+                ],
+                "speech": "He always eats an apple after lunch.",
+                "verb": "eat",
+                "subject": "he",
+                "expectedTense": "simple",
+                "clue": "always",
+                "clueExplanation": "'always' marque une habitude constante.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present (eats avec -s pour he)."
+        },
+        {
+                "id": 22,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "You usually ___ (to run) five kilometres every Sunday morning.",
+                "a": [
+                        [
+                                "run"
+                        ]
+                ],
+                "speech": "You usually run five kilometres every Sunday morning.",
+                "verb": "run",
+                "subject": "you",
+                "expectedTense": "simple",
+                "clue": "usually / every Sunday morning",
+                "clueExplanation": "Routine récurrente tous les dimanches matins.",
+                "spellingRule": "",
+                "hint": "'usually / every Sunday' ➔ Simple Present : run."
+        },
+        {
+                "id": 23,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "We always ___ (to drink) fresh water during tennis matches.",
+                "a": [
+                        [
+                                "drink"
+                        ]
+                ],
+                "speech": "We always drink fresh water during tennis matches.",
+                "verb": "drink",
+                "subject": "we",
+                "expectedTense": "simple",
+                "clue": "always",
+                "clueExplanation": "'always' exprime une règle habituelle.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present : drink."
+        },
+        {
+                "id": 24,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He often ___ (to type) emails for his school projects.",
+                "a": [
+                        [
+                                "types"
+                        ]
+                ],
+                "speech": "He often types emails for his school projects.",
+                "verb": "type",
+                "subject": "he",
+                "expectedTense": "simple",
+                "clue": "often",
+                "clueExplanation": "'often' indique une action habituelle répétée.",
+                "spellingRule": "",
+                "hint": "'often' ➔ Simple Present (types avec -s pour he)."
+        },
+        {
+                "id": 25,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "They usually ___ (to swim) in this pool on Wednesdays.",
+                "a": [
+                        [
+                                "swim"
+                        ]
+                ],
+                "speech": "They usually swim in this pool on Wednesdays.",
+                "verb": "swim",
+                "subject": "they",
+                "expectedTense": "simple",
+                "clue": "usually / on Wednesdays",
+                "clueExplanation": "Habitude hebdomadaire.",
+                "spellingRule": "",
+                "hint": "'usually / on Wednesdays' ➔ Simple Present : swim."
+        },
+        {
+                "id": 26,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "They always ___ (to wait) for the school bus at 8 o'clock.",
+                "a": [
+                        [
+                                "wait"
+                        ]
+                ],
+                "speech": "They always wait for the school bus at eight o'clock.",
+                "verb": "wait",
+                "subject": "they",
+                "expectedTense": "simple",
+                "clue": "always / at 8 o'clock",
+                "clueExplanation": "Routine quotidienne.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present : wait."
+        },
+        {
+                "id": 27,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "The bus always ___ (to stop) at this corner.",
+                "a": [
+                        [
+                                "stops"
+                        ]
+                ],
+                "speech": "The bus always stops at this corner.",
+                "verb": "stop",
+                "subject": "the bus",
+                "expectedTense": "simple",
+                "clue": "always",
+                "clueExplanation": "Habitude régulière pour un transport en commun.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present (stops avec -s pour the bus = it)."
+        },
+        {
+                "id": 28,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "I always ___ (to watch) cartoons on Saturday mornings.",
+                "a": [
+                        [
+                                "watch"
+                        ]
+                ],
+                "speech": "I always watch cartoons on Saturday mornings.",
+                "verb": "watch",
+                "subject": "I",
+                "expectedTense": "simple",
+                "clue": "always / on Saturday mornings",
+                "clueExplanation": "Habitude régulière du week-end.",
+                "spellingRule": "",
+                "hint": "'always / on Saturday mornings' ➔ Simple Present : watch."
+        },
+        {
+                "id": 29,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He usually ___ (to listen) to podcasts when he walks.",
+                "a": [
+                        [
+                                "listens"
+                        ]
+                ],
+                "speech": "He usually listens to podcasts when he walks.",
+                "verb": "listen",
+                "subject": "he",
+                "expectedTense": "simple",
+                "clue": "usually",
+                "clueExplanation": "'usually' indique une habitude.",
+                "spellingRule": "",
+                "hint": "'usually' ➔ Simple Present (listens avec -s pour he)."
+        },
+        {
+                "id": 30,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "They always ___ (to speak) English during English lessons.",
+                "a": [
+                        [
+                                "speak"
+                        ]
+                ],
+                "speech": "They always speak English during English lessons.",
+                "verb": "speak",
+                "subject": "they",
+                "expectedTense": "simple",
+                "clue": "always / during lessons",
+                "clueExplanation": "Règle habituelle / routine de classe.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present : speak."
+        },
+        {
+                "id": 31,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "My sister never ___ (to do) puzzles in her free time.",
+                "a": [
+                        [
+                                "does"
+                        ]
+                ],
+                "speech": "My sister never does puzzles in her free time.",
+                "verb": "do",
+                "subject": "my sister",
+                "expectedTense": "simple",
+                "clue": "never",
+                "clueExplanation": "'never' est un adverbe de fréquence marquant une habitude.",
+                "spellingRule": "",
+                "hint": "'never' ➔ Simple Present (does avec -es pour my sister = she)."
+        },
+        {
+                "id": 32,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Grandpa usually ___ (to sit) in that comfortable armchair.",
+                "a": [
+                        [
+                                "sits"
+                        ]
+                ],
+                "speech": "Grandpa usually sits in that comfortable armchair.",
+                "verb": "sit",
+                "subject": "grandpa",
+                "expectedTense": "simple",
+                "clue": "usually",
+                "clueExplanation": "Habitude quotidienne de grand-père.",
+                "spellingRule": "",
+                "hint": "'usually' ➔ Simple Present (sits avec -s pour he)."
+        },
+        {
+                "id": 33,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He always ___ (to put) his keys on the table when he gets home.",
+                "a": [
+                        [
+                                "puts"
+                        ]
+                ],
+                "speech": "He always puts his keys on the table when he gets home.",
+                "verb": "put",
+                "subject": "he",
+                "expectedTense": "simple",
+                "clue": "always",
+                "clueExplanation": "'always' signale une habitude automatique.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present (puts avec -s pour he)."
+        },
+        {
+                "id": 34,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "She often ___ (to write) postcards to her friends during holidays.",
+                "a": [
+                        [
+                                "writes"
+                        ]
+                ],
+                "speech": "She often writes postcards to her friends during holidays.",
+                "verb": "write",
+                "subject": "she",
+                "expectedTense": "simple",
+                "clue": "often",
+                "clueExplanation": "'often' indique une action répétée.",
+                "spellingRule": "",
+                "hint": "'often' ➔ Simple Present (writes avec -s pour she)."
+        },
+        {
+                "id": 35,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Dogs often ___ (to hide) their bones in the garden.",
+                "a": [
+                        [
+                                "hide"
+                        ]
+                ],
+                "speech": "Dogs often hide their bones in the garden.",
+                "verb": "hide",
+                "subject": "dogs",
+                "expectedTense": "simple",
+                "clue": "often",
+                "clueExplanation": "Habitude générale chez les chiens.",
+                "spellingRule": "",
+                "hint": "'often' ➔ Simple Present : hide (sujet pluriel dogs = they)."
+        },
+        {
+                "id": 36,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "My brother ___ (to prepare) his school bag every evening.",
+                "a": [
+                        [
+                                "prepares"
+                        ]
+                ],
+                "speech": "My brother prepares his school bag every evening.",
+                "verb": "prepare",
+                "subject": "my brother",
+                "expectedTense": "simple",
+                "clue": "every evening",
+                "clueExplanation": "'every evening' exprime la répétition quotidienne.",
+                "spellingRule": "",
+                "hint": "'every evening' ➔ Simple Present (prepares avec -s pour he)."
+        },
+        {
+                "id": 37,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Listen! Somebody ___ (to sing) in the shower.",
+                "a": [
+                        [
+                                "is singing",
+                                "'s singing"
+                        ]
+                ],
+                "speech": "Listen! Somebody is singing in the shower.",
+                "verb": "sing",
+                "subject": "somebody",
+                "expectedTense": "continuous",
+                "clue": "Listen!",
+                "clueExplanation": "'Listen!' attire l'attention sur une action en train de se dérouler maintenant.",
+                "spellingRule": "",
+                "hint": "'Listen!' ➔ Présent Continu : is singing."
+        },
+        {
+                "id": 38,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "My sister often ___ (to sing) when she does the dishes.",
+                "a": [
+                        [
+                                "sings"
+                        ]
+                ],
+                "speech": "My sister often sings when she does the dishes.",
+                "verb": "sing",
+                "subject": "my sister",
+                "expectedTense": "simple",
+                "clue": "often",
+                "clueExplanation": "'often' indique une habitude régulière.",
+                "spellingRule": "",
+                "hint": "'often' ➔ Simple Present (sings avec -s pour my sister = she)."
+        },
+        {
+                "id": 39,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Where is dad? He ___ (to play) basketball in the garden right now.",
+                "a": [
+                        [
+                                "is playing",
+                                "'s playing"
+                        ]
+                ],
+                "speech": "Where is dad? He is playing basketball in the garden right now.",
+                "verb": "play",
+                "subject": "he",
+                "expectedTense": "continuous",
+                "clue": "Where is dad? / right now",
+                "clueExplanation": "Action en train de se passer à l'instant même.",
+                "spellingRule": "",
+                "hint": "'Where is dad? / right now' ➔ Présent Continu : is playing."
+        },
+        {
+                "id": 40,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "My brother ___ (to play) basketball every Saturday.",
+                "a": [
+                        [
+                                "plays"
+                        ]
+                ],
+                "speech": "My brother plays basketball every Saturday.",
+                "verb": "play",
+                "subject": "my brother",
+                "expectedTense": "simple",
+                "clue": "every Saturday",
+                "clueExplanation": "'every Saturday' indique une habitude hebdomadaire.",
+                "spellingRule": "",
+                "hint": "'every Saturday' ➔ Simple Present (plays avec -s)."
+        },
+        {
+                "id": 41,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look outside! It ___ (to rain) again.",
+                "a": [
+                        [
+                                "is raining",
+                                "'s raining"
+                        ]
+                ],
+                "speech": "Look outside! It is raining again.",
+                "verb": "rain",
+                "subject": "it",
+                "expectedTense": "continuous",
+                "clue": "Look outside!",
+                "clueExplanation": "Action visible en direct en ce moment.",
+                "spellingRule": "",
+                "hint": "'Look outside!' ➔ Présent Continu : is raining."
+        },
+        {
+                "id": 42,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "It often ___ (to rain) in Scotland.",
+                "a": [
+                        [
+                                "rains"
+                        ]
+                ],
+                "speech": "It often rains in Scotland.",
+                "verb": "rain",
+                "subject": "it",
+                "expectedTense": "simple",
+                "clue": "often",
+                "clueExplanation": "'often' indique une vérité générale / fréquence habituelle.",
+                "spellingRule": "",
+                "hint": "'often' ➔ Simple Present (rains avec -s)."
+        },
+        {
+                "id": 43,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Right now, she ___ (to do) her English homework.",
+                "a": [
+                        [
+                                "is doing",
+                                "'s doing"
+                        ]
+                ],
+                "speech": "Right now, she is doing her English homework.",
+                "verb": "do",
+                "subject": "she",
+                "expectedTense": "continuous",
+                "clue": "Right now",
+                "clueExplanation": "'Right now' indique le moment présent précis.",
+                "spellingRule": "",
+                "hint": "'Right now' ➔ Présent Continu : is doing."
+        },
+        {
+                "id": 44,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "She always ___ (to do) her homework before dinner.",
+                "a": [
+                        [
+                                "does"
+                        ]
+                ],
+                "speech": "She always does her homework before dinner.",
+                "verb": "do",
+                "subject": "she",
+                "expectedTense": "simple",
+                "clue": "always",
+                "clueExplanation": "'always' indique une routine quotidienne.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present (does avec -es pour she)."
+        },
+        {
+                "id": 45,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Shh! Be quiet! The baby ___ (to sleep).",
+                "a": [
+                        [
+                                "is sleeping",
+                                "'s sleeping"
+                        ]
+                ],
+                "speech": "Shh! Be quiet! The baby is sleeping.",
+                "verb": "sleep",
+                "subject": "the baby",
+                "expectedTense": "continuous",
+                "clue": "Shh! Be quiet!",
+                "clueExplanation": "'Shh! Be quiet!' signale une action en cours en ce moment.",
+                "spellingRule": "",
+                "hint": "'Shh! Be quiet!' ➔ Présent Continu : is sleeping."
+        },
+        {
+                "id": 46,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "The baby usually ___ (to sleep) ten hours every night.",
+                "a": [
+                        [
+                                "sleeps"
+                        ]
+                ],
+                "speech": "The baby usually sleeps ten hours every night.",
+                "verb": "sleep",
+                "subject": "the baby",
+                "expectedTense": "simple",
+                "clue": "usually / every night",
+                "clueExplanation": "Routine habituelle de sommeil.",
+                "spellingRule": "",
+                "hint": "'usually / every night' ➔ Simple Present (sleeps avec -s)."
+        },
+        {
+                "id": 47,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Turn off the gas! The water ___ (to boil)!",
+                "a": [
+                        [
+                                "is boiling",
+                                "'s boiling"
+                        ]
+                ],
+                "speech": "Turn off the gas! The water is boiling!",
+                "verb": "boil",
+                "subject": "the water",
+                "expectedTense": "continuous",
+                "clue": "Turn off the gas!",
+                "clueExplanation": "L'eau est en train de bouillir sous nos yeux en ce moment.",
+                "spellingRule": "",
+                "hint": "Action immédiate en cours ➔ is boiling."
+        },
+        {
+                "id": 48,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Water ___ (to boil) at 100 degrees Celsius.",
+                "a": [
+                        [
+                                "boils"
+                        ]
+                ],
+                "speech": "Water boils at one hundred degrees Celsius.",
+                "verb": "boil",
+                "subject": "water",
+                "expectedTense": "simple",
+                "clue": "vérité générale / fait scientifique",
+                "clueExplanation": "Loi physique permanente (feuille de cours de Louis).",
+                "spellingRule": "",
+                "hint": "Vérité générale / fait scientifique ➔ Simple Present (boils avec -s)."
+        },
+        {
+                "id": 49,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Lions ___ (to live) in Africa.",
+                "a": [
+                        [
+                                "live"
+                        ]
+                ],
+                "speech": "Lions live in Africa.",
+                "verb": "live",
+                "subject": "lions",
+                "expectedTense": "simple",
+                "clue": "vérité générale / état permanent",
+                "clueExplanation": "Fait permanent (fiche de cours de Louis : Lions live in Africa).",
+                "spellingRule": "",
+                "hint": "Vérité générale ➔ Simple Present : live (sujet pluriel lions = they)."
+        },
+        {
+                "id": 50,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "I ___ (to like) chocolate ice cream very much.",
+                "a": [
+                        [
+                                "like"
+                        ]
+                ],
+                "speech": "I like chocolate ice cream very much.",
+                "verb": "like",
+                "subject": "I",
+                "expectedTense": "simple",
+                "clue": "verbe de goût/sentiment (like)",
+                "clueExplanation": "Les verbes de goût et sentiment ('like', 'love', 'hate') sont au Simple Present.",
+                "spellingRule": "",
+                "hint": "'like' est un verbe d'état/goût (fiche de cours de Louis) ➔ Simple Present : like."
+        },
+        {
+                "id": 51,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "She ___ (to prefer) Taylor Swift to other singers.",
+                "a": [
+                        [
+                                "prefers"
+                        ]
+                ],
+                "speech": "She prefers Taylor Swift to other singers.",
+                "verb": "prefer",
+                "subject": "she",
+                "expectedTense": "simple",
+                "clue": "verbe d'opinion/goût (prefer)",
+                "clueExplanation": "Verbe de préférence (fiche de cours de Louis : She prefers Taylor Swift).",
+                "spellingRule": "",
+                "hint": "'prefer' exprime une opinion/goût permanent ➔ Simple Present (prefers avec -s)."
+        },
+        {
+                "id": 52,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Where is dad? He ___ (to wash) his car in the garage.",
+                "a": [
+                        [
+                                "is washing",
+                                "'s washing"
+                        ]
+                ],
+                "speech": "Where is dad? He is washing his car in the garage.",
+                "verb": "wash",
+                "subject": "he",
+                "expectedTense": "continuous",
+                "clue": "Where is dad?",
+                "clueExplanation": "Question sur l'activité en cours maintenant.",
+                "spellingRule": "",
+                "hint": "'Where is dad?' ➔ action en cours ➔ is washing."
+        },
+        {
+                "id": 53,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He ___ (to wash) his car every Sunday morning.",
+                "a": [
+                        [
+                                "washes"
+                        ]
+                ],
+                "speech": "He washes his car every Sunday morning.",
+                "verb": "wash",
+                "subject": "he",
+                "expectedTense": "simple",
+                "clue": "every Sunday morning",
+                "clueExplanation": "Habitude récurrente chaque dimanche.",
+                "spellingRule": "",
+                "hint": "'every Sunday morning' ➔ Simple Present (les verbes en -sh prennent -es : washes)."
+        },
+        {
+                "id": 54,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! The cat ___ (to climb) up the tall tree.",
+                "a": [
+                        [
+                                "is climbing",
+                                "'s climbing"
+                        ]
+                ],
+                "speech": "Look! The cat is climbing up the tall tree.",
+                "verb": "climb",
+                "subject": "the cat",
+                "expectedTense": "continuous",
+                "clue": "Look!",
+                "clueExplanation": "Action visible sous nos yeux en ce moment.",
+                "spellingRule": "",
+                "hint": "'Look!' ➔ Présent Continu : is climbing."
+        },
+        {
+                "id": 55,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Cats often ___ (to climb) trees to catch birds.",
+                "a": [
+                        [
+                                "climb"
+                        ]
+                ],
+                "speech": "Cats often climb trees to catch birds.",
+                "verb": "climb",
+                "subject": "cats",
+                "expectedTense": "simple",
+                "clue": "often",
+                "clueExplanation": "Comportement habituel des chats.",
+                "spellingRule": "",
+                "hint": "'often' ➔ Simple Present : climb (sujet pluriel cats = they)."
+        },
+        {
+                "id": 56,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "We usually ___ (to walk) to school, but today we ___ (to take) the bus.",
+                "a": [
+                        [
+                                "walk"
+                        ],
+                        [
+                                "are taking",
+                                "'re taking"
+                        ]
+                ],
+                "speech": "We usually walk to school, but today we are taking the bus.",
+                "verb": [
+                        "walk",
+                        "take"
+                ],
+                "subject": [
+                        "we",
+                        "we"
+                ],
+                "expectedTense": [
+                        "simple",
+                        "continuous"
+                ],
+                "clue": [
+                        "usually",
+                        "today"
+                ],
+                "clueExplanation": [
+                        "'usually' = habitude ➔ Simple Present (walk)",
+                        "'today' = exception temporaire en cours aujourd'hui ➔ Present Continuous (are taking)"
+                ],
+                "spellingRule": [
+                        "",
+                        "e_drop"
+                ],
+                "hint": "'usually' ➔ Simple Present (walk) ; 'today' (action exceptionnelle) ➔ Présent Continu (are taking)."
+        },
+        {
+                "id": 57,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He usually ___ (to ride) a bike, but today he ___ (to run).",
+                "a": [
+                        [
+                                "rides"
+                        ],
+                        [
+                                "is running",
+                                "'s running"
+                        ]
+                ],
+                "speech": "He usually rides a bike, but today he is running.",
+                "verb": [
+                        "ride",
+                        "run"
+                ],
+                "subject": [
+                        "he",
+                        "he"
+                ],
+                "expectedTense": [
+                        "simple",
+                        "continuous"
+                ],
+                "clue": [
+                        "usually",
+                        "today"
+                ],
+                "clueExplanation": [
+                        "'usually' = habitude ➔ rides (avec -s)",
+                        "'today' = action temporaire aujourd'hui ➔ is running (double n)"
+                ],
+                "spellingRule": [
+                        "",
+                        "cvc"
+                ],
+                "hint": "'usually' ➔ rides ; 'today' ➔ is running (règle CVC : double n !)."
+        },
+        {
+                "id": 58,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "At the moment, they ___ (to build) a new sports centre.",
+                "a": [
+                        [
+                                "are building",
+                                "'re building"
+                        ]
+                ],
+                "speech": "At the moment, they are building a new sports centre.",
+                "verb": "build",
+                "subject": "they",
+                "expectedTense": "continuous",
+                "clue": "At the moment",
+                "clueExplanation": "'At the moment' indique une activité en cours actuellement.",
+                "spellingRule": "",
+                "hint": "'At the moment' ➔ Présent Continu : are building."
+        },
+        {
+                "id": 59,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "They always ___ (to build) strong houses in this region.",
+                "a": [
+                        [
+                                "build"
+                        ]
+                ],
+                "speech": "They always build strong houses in this region.",
+                "verb": "build",
+                "subject": "they",
+                "expectedTense": "simple",
+                "clue": "always",
+                "clueExplanation": "'always' signale une habitude constante.",
+                "spellingRule": "",
+                "hint": "'always' ➔ Simple Present : build."
+        },
+        {
+                "id": 60,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "I can't talk right now, I ___ (to study) for my exam.",
+                "a": [
+                        [
+                                "am studying",
+                                "'m studying"
+                        ]
+                ],
+                "speech": "I can't talk right now, I am studying for my exam.",
+                "verb": "study",
+                "subject": "I",
+                "expectedTense": "continuous",
+                "clue": "right now",
+                "clueExplanation": "'right now' indique que l'action occupe la personne à cet instant.",
+                "spellingRule": "",
+                "hint": "'right now' ➔ Présent Continu : am studying (study conserve son 'y' devant -ing)."
+        },
+        {
+                "id": 61,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "He never ___ (to watch) horror movies at night.",
+                "a": [
+                        [
+                                "watches"
+                        ]
+                ],
+                "speech": "He never watches horror movies at night.",
+                "verb": "watch",
+                "subject": "he",
+                "expectedTense": "simple",
+                "clue": "never",
+                "clueExplanation": "'never' est un adverbe de fréquence exprimant une habitude.",
+                "spellingRule": "",
+                "hint": "'never' ➔ Simple Present (terme en -ch prend -es : watches)."
+        },
+        {
+                "id": 62,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Hurry up! The train ___ (to arrive) at the station.",
+                "a": [
+                        [
+                                "is arriving",
+                                "'s arriving"
+                        ]
+                ],
+                "speech": "Hurry up! The train is arriving at the station.",
+                "verb": "arrive",
+                "subject": "the train",
+                "expectedTense": "continuous",
+                "clue": "Hurry up!",
+                "clueExplanation": "'Hurry up!' indique une action imminente en cours sous nos yeux.",
+                "spellingRule": "e_drop",
+                "hint": "'Hurry up!' ➔ Présent Continu : is arriving (le 'e' de arrive disparaît devant -ing)."
+        },
+        {
+                "id": 63,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "The train always ___ (to arrive) at 8:15 am.",
+                "a": [
+                        [
+                                "arrives"
+                        ]
+                ],
+                "speech": "The train always arrives at eight fifteen am.",
+                "verb": "arrive",
+                "subject": "the train",
+                "expectedTense": "simple",
+                "clue": "always / timetable",
+                "clueExplanation": "Horaire fixe / habitude quotidienne.",
+                "spellingRule": "",
+                "hint": "'always / horaire' ➔ Simple Present (arrives avec -s pour the train = it)."
+        },
+        {
+                "id": 64,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Look! Emily ___ (to make) a chocolate cake in the kitchen.",
+                "a": [
+                        [
+                                "is making",
+                                "'s making"
+                        ]
+                ],
+                "speech": "Look! Emily is making a chocolate cake in the kitchen.",
+                "verb": "make",
+                "subject": "Emily",
+                "expectedTense": "continuous",
+                "clue": "Look!",
+                "clueExplanation": "Action visible maintenant.",
+                "spellingRule": "e_drop",
+                "hint": "'Look!' ➔ is making (le 'e' muet de make s'efface devant -ing)."
+        },
+        {
+                "id": 65,
+                "category": "contrast",
+                "typeLabel": "⚖️ Quel temps choisir ?",
+                "badgeClass": "badge-mix",
+                "q": "Emily usually ___ (to make) pancakes on Sunday morning.",
+                "a": [
+                        [
+                                "makes"
+                        ]
+                ],
+                "speech": "Emily usually makes pancakes on Sunday morning.",
+                "verb": "make",
+                "subject": "Emily",
+                "expectedTense": "simple",
+                "clue": "usually / on Sunday morning",
+                "clueExplanation": "Habitude du dimanche matin.",
+                "spellingRule": "",
+                "hint": "'usually' ➔ Simple Present (makes avec -s pour Emily = she)."
+        },
+        {
+                "id": 66,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Are you writing an essay? — Yes, I ___ .",
+                "a": [
+                        [
+                                "am"
+                        ]
+                ],
+                "speech": "Are you writing an essay? Yes, I am.",
+                "verb": "be",
+                "subject": "I",
+                "expectedTense": "short",
+                "clue": "Question au Présent Continu (Are you...?)",
+                "clueExplanation": "Réponse courte affirmative avec 'to be' : forme pleine obligatoire (Yes, I am).",
+                "spellingRule": "",
+                "hint": "Forme pleine obligatoire à l'affirmatif : 'Yes, I am' (jamais 'Yes, I'm')."
+        },
+        {
+                "id": 67,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Are you watching TV right now? — No, I ___ .",
+                "a": [
+                        [
+                                "am not",
+                                "'m not"
+                        ]
+                ],
+                "speech": "Are you watching TV right now? No, I'm not.",
+                "verb": "be",
+                "subject": "I",
+                "expectedTense": "short",
+                "clue": "Question au Présent Continu (Are you...?)",
+                "clueExplanation": "Réponse courte négative : 'No, I'm not'.",
+                "spellingRule": "",
+                "hint": "Réponse courte négative : 'No, I'm not' (ou 'No, I am not')."
+        },
+        {
+                "id": 68,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Is your father working at the moment? — Yes, he ___ .",
+                "a": [
+                        [
+                                "is"
+                        ]
+                ],
+                "speech": "Is your father working at the moment? Yes, he is.",
+                "verb": "be",
+                "subject": "he",
+                "expectedTense": "short",
+                "clue": "Question avec Is your father...?",
+                "clueExplanation": "Réponse courte affirmative : forme pleine 'Yes, he is'.",
+                "spellingRule": "",
+                "hint": "Réponse affirmative : 'Yes, he is' (sans contraction)."
+        },
+        {
+                "id": 69,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Is your father working today? — No, he ___ .",
+                "a": [
+                        [
+                                "isn't",
+                                "is not"
+                        ]
+                ],
+                "speech": "Is your father working today? No, he isn't.",
+                "verb": "be",
+                "subject": "he",
+                "expectedTense": "short",
+                "clue": "Question avec Is your father...?",
+                "clueExplanation": "Réponse courte négative : 'No, he isn't'.",
+                "spellingRule": "",
+                "hint": "Réponse négative : 'No, he isn't'."
+        },
+        {
+                "id": 70,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Are the students listening to the teacher? — Yes, they ___ .",
+                "a": [
+                        [
+                                "are"
+                        ]
+                ],
+                "speech": "Are the students listening to the teacher? Yes, they are.",
+                "verb": "be",
+                "subject": "they",
+                "expectedTense": "short",
+                "clue": "Are the students...?",
+                "clueExplanation": "The students = they ➔ 'Yes, they are'.",
+                "spellingRule": "",
+                "hint": "The students = they ➔ 'Yes, they are' (forme pleine obligatoire)."
+        },
+        {
+                "id": 71,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Are they playing football in the garden? — No, they ___ .",
+                "a": [
+                        [
+                                "aren't",
+                                "are not"
+                        ]
+                ],
+                "speech": "Are they playing football in the garden? No, they aren't.",
+                "verb": "be",
+                "subject": "they",
+                "expectedTense": "short",
+                "clue": "Are they...?",
+                "clueExplanation": "Réponse courte négative plurielle : 'No, they aren't'.",
+                "spellingRule": "",
+                "hint": "Réponse négative au pluriel : 'No, they aren't'."
+        },
+        {
+                "id": 72,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Do you like classical music? — Yes, I ___ .",
+                "a": [
+                        [
+                                "do"
+                        ]
+                ],
+                "speech": "Do you like classical music? Yes, I do.",
+                "verb": "do",
+                "subject": "I",
+                "expectedTense": "short",
+                "clue": "Do you like...?",
+                "clueExplanation": "La question commence par 'Do' ➔ réponse courte avec 'do' : 'Yes, I do'.",
+                "spellingRule": "",
+                "hint": "Question au Simple Present avec 'Do' ➔ 'Yes, I do' (et non 'Yes, I am')."
+        },
+        {
+                "id": 73,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Do your friends play golf on Sundays? — No, they ___ .",
+                "a": [
+                        [
+                                "don't",
+                                "do not"
+                        ]
+                ],
+                "speech": "Do your friends play golf on Sundays? No, they don't.",
+                "verb": "do",
+                "subject": "they",
+                "expectedTense": "short",
+                "clue": "Do your friends...?",
+                "clueExplanation": "Auxiliaire négatif au pluriel : 'No, they don't'.",
+                "spellingRule": "",
+                "hint": "Auxiliaire négatif pluriel : 'No, they don't'."
+        },
+        {
+                "id": 74,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Does your brother live in London? — Yes, he ___ .",
+                "a": [
+                        [
+                                "does"
+                        ]
+                ],
+                "speech": "Does your brother live in London? Yes, he does.",
+                "verb": "do",
+                "subject": "he",
+                "expectedTense": "short",
+                "clue": "Does your brother...?",
+                "clueExplanation": "Question avec 'Does' ➔ 'Yes, he does'.",
+                "spellingRule": "",
+                "hint": "3e personne du singulier au Simple Present : 'Yes, he does'."
+        },
+        {
+                "id": 75,
+                "category": "short",
+                "typeLabel": "💬 Réponse courte",
+                "badgeClass": "badge-short",
+                "q": "Does she drink coffee in the evening? — No, she ___ .",
+                "a": [
+                        [
+                                "doesn't",
+                                "does not"
+                        ]
+                ],
+                "speech": "Does she drink coffee in the evening? No, she doesn't.",
+                "verb": "do",
+                "subject": "she",
+                "expectedTense": "short",
+                "clue": "Does she...?",
+                "clueExplanation": "Négation avec she : 'No, she doesn't'.",
+                "spellingRule": "",
+                "hint": "Négation à la 3e personne : 'No, she doesn't'."
+        },
+        {
+                "id": 76,
+                "category": "short",
+                "typeLabel": "❓ Question",
+                "badgeClass": "badge-short",
+                "q": "What ___ you ___ (to do) now?",
+                "a": [
+                        [
+                                "are"
+                        ],
+                        [
+                                "doing"
+                        ]
+                ],
+                "speech": "What are you doing now?",
+                "verb": [
+                        "be",
+                        "do"
+                ],
+                "subject": [
+                        "you",
+                        "you"
+                ],
+                "expectedTense": [
+                        "continuous",
+                        "continuous"
+                ],
+                "clue": [
+                        "now",
+                        "now"
+                ],
+                "clueExplanation": [
+                        "Indice 'now' ➔ Question au Présent Continu (What + are + you + doing ?)",
+                        ""
+                ],
+                "spellingRule": [
+                        "",
+                        ""
+                ],
+                "hint": "Question au Présent Continu avec 'now' : What + are + you + doing ?"
+        },
+        {
+                "id": 77,
+                "category": "short",
+                "typeLabel": "❓ Question",
+                "badgeClass": "badge-short",
+                "q": "Why ___ she ___ (to cry) at the moment?",
+                "a": [
+                        [
+                                "is"
+                        ],
+                        [
+                                "crying"
+                        ]
+                ],
+                "speech": "Why is she crying at the moment?",
+                "verb": [
+                        "be",
+                        "cry"
+                ],
+                "subject": [
+                        "she",
+                        "she"
+                ],
+                "expectedTense": [
+                        "continuous",
+                        "continuous"
+                ],
+                "clue": [
+                        "at the moment",
+                        "at the moment"
+                ],
+                "clueExplanation": [
+                        "Indice 'at the moment' ➔ Question au Présent Continu (Why + is + she + crying ?)",
+                        ""
+                ],
+                "spellingRule": [
+                        "",
+                        ""
+                ],
+                "hint": "Question au Présent Continu avec 'at the moment' : Why + is + she + crying ?"
+        },
+        {
+                "id": 78,
+                "category": "short",
+                "typeLabel": "❓ Question",
+                "badgeClass": "badge-short",
+                "q": "___ he ___ (to speak) English every day?",
+                "a": [
+                        [
+                                "Does",
+                                "does"
+                        ],
+                        [
+                                "speak"
+                        ]
+                ],
+                "speech": "Does he speak English every day?",
+                "verb": [
+                        "do",
+                        "speak"
+                ],
+                "subject": [
+                        "he",
+                        "he"
+                ],
+                "expectedTense": [
+                        "simple",
+                        "simple"
+                ],
+                "clue": [
+                        "every day",
+                        "every day"
+                ],
+                "clueExplanation": [
+                        "Indice 'every day' ➔ Question au Simple Present (Does + he + base verbale speak sans -s ?)",
+                        ""
+                ],
+                "spellingRule": [
+                        "",
+                        ""
+                ],
+                "hint": "Question au Simple Present avec 'every day' : Does + he + base verbale (speak sans -s) ?"
+        },
+        {
+                "id": 79,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Mum ___ (to have got) a car, but she (-) ___ a motorbike.",
+                "a": [
+                        [
+                                "has got",
+                                "'s got"
+                        ],
+                        [
+                                "hasn't got",
+                                "has not got"
+                        ]
+                ],
+                "speech": "Mum has got a car, but she hasn't got a motorbike.",
+                "verb": [
+                        "have got",
+                        "have got"
+                ],
+                "subject": [
+                        "Mum",
+                        "she"
+                ],
+                "expectedTense": [
+                        "havegot",
+                        "havegot"
+                ],
+                "clue": [
+                        "affirmative",
+                        "negative (-)"
+                ],
+                "clueExplanation": [
+                        "Mum = she ➔ 'has got'",
+                        "she (-) ➔ 'hasn't got'"
+                ],
+                "spellingRule": [
+                        "",
+                        ""
+                ],
+                "hint": "Mum = she ➔ 'has got' à l'affirmatif, et 'hasn't got' au négatif."
+        },
+        {
+                "id": 80,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Calvin Harris ___ my favourite pop star.",
+                "a": [
+                        [
+                                "is",
+                                "'s"
+                        ]
+                ],
+                "speech": "Calvin Harris is my favourite pop star.",
+                "verb": "be",
+                "subject": "Calvin Harris",
+                "expectedTense": "tobe",
+                "clue": "to be",
+                "clueExplanation": "Calvin Harris = he ➔ 'is'.",
+                "spellingRule": "",
+                "hint": "Calvin Harris = he ➔ 'is'."
+        },
+        {
+                "id": 81,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Are Vince and Sue twins? — Yes, they ___ .",
+                "a": [
+                        [
+                                "are"
+                        ]
+                ],
+                "speech": "Are Vince and Sue twins? Yes, they are.",
+                "verb": "be",
+                "subject": "they",
+                "expectedTense": "short",
+                "clue": "Are Vince and Sue twins?",
+                "clueExplanation": "Réponse courte affirmative : forme pleine 'Yes, they are'.",
+                "spellingRule": "",
+                "hint": "Réponse courte affirmative avec 'to be' : 'Yes, they are' (sans contraction)."
+        },
+        {
+                "id": 82,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "What ___ your address?",
+                "a": [
+                        [
+                                "is",
+                                "'s"
+                        ]
+                ],
+                "speech": "What is your address?",
+                "verb": "be",
+                "subject": "your address",
+                "expectedTense": "tobe",
+                "clue": "your address (singulier)",
+                "clueExplanation": "'your address' = it ➔ 'What is your address?'",
+                "spellingRule": "",
+                "hint": "'your address' est singulier (it) ➔ 'What is your address?'"
+        },
+        {
+                "id": 83,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "How much ___ these watches?",
+                "a": [
+                        [
+                                "are"
+                        ]
+                ],
+                "speech": "How much are these watches?",
+                "verb": "be",
+                "subject": "these watches",
+                "expectedTense": "tobe",
+                "clue": "these watches (pluriel)",
+                "clueExplanation": "'these watches' est pluriel (they) ➔ 'are'.",
+                "spellingRule": "",
+                "hint": "'these watches' est au pluriel (they) ➔ 'How much are these watches?'"
+        },
+        {
+                "id": 84,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Susan and John ___ our neighbours, too.",
+                "a": [
+                        [
+                                "are"
+                        ]
+                ],
+                "speech": "Susan and John are our neighbours, too.",
+                "verb": "be",
+                "subject": "Susan and John",
+                "expectedTense": "tobe",
+                "clue": "Susan and John (pluriel)",
+                "clueExplanation": "Susan and John = they ➔ 'are'.",
+                "spellingRule": "",
+                "hint": "Susan and John = they (pluriel) ➔ 'are'."
+        },
+        {
+                "id": 85,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "My sister and I ___ good friends.",
+                "a": [
+                        [
+                                "are"
+                        ]
+                ],
+                "speech": "My sister and I are good friends.",
+                "verb": "be",
+                "subject": "My sister and I",
+                "expectedTense": "tobe",
+                "clue": "My sister and I (= we)",
+                "clueExplanation": "'My sister and I' équivaut à 'we' ➔ 'are'.",
+                "spellingRule": "",
+                "hint": "'My sister and I' équivaut à 'we' (nous) ➔ 'are' !"
+        },
+        {
+                "id": 86,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Is Kelly your friend? — No, she ___ .",
+                "a": [
+                        [
+                                "isn't",
+                                "is not"
+                        ]
+                ],
+                "speech": "Is Kelly your friend? No, she isn't.",
+                "verb": "be",
+                "subject": "she",
+                "expectedTense": "short",
+                "clue": "Is Kelly...?",
+                "clueExplanation": "Réponse courte négative : 'No, she isn't'.",
+                "spellingRule": "",
+                "hint": "Réponse courte négative : 'No, she isn't'."
+        },
+        {
+                "id": 87,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "___ your teacher ___ (to have got) any children? — No, he ___ .",
+                "a": [
+                        [
+                                "Has",
+                                "has"
+                        ],
+                        [
+                                "got"
+                        ],
+                        [
+                                "hasn't",
+                                "has not"
+                        ]
+                ],
+                "speech": "Has your teacher got any children? No, he hasn't.",
+                "verb": [
+                        "have got",
+                        "have got",
+                        "have got"
+                ],
+                "subject": [
+                        "your teacher",
+                        "your teacher",
+                        "he"
+                ],
+                "expectedTense": [
+                        "havegot",
+                        "havegot",
+                        "short"
+                ],
+                "clue": [
+                        "question have got",
+                        "participe got",
+                        "réponse courte sans got"
+                ],
+                "clueExplanation": [
+                        "Your teacher = he ➔ Has your teacher got...?",
+                        "",
+                        "Pas de 'got' dans la réponse courte !"
+                ],
+                "spellingRule": [
+                        "",
+                        "",
+                        ""
+                ],
+                "hint": "Your teacher = he ➔ 'Has your teacher got...'. Pas de 'got' dans la réponse courte : 'No, he hasn't' !"
+        },
+        {
+                "id": 88,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "My parents (-) ___ (to have got) a big house.",
+                "a": [
+                        [
+                                "haven't got",
+                                "have not got"
+                        ]
+                ],
+                "speech": "My parents haven't got a big house.",
+                "verb": "have got",
+                "subject": "My parents",
+                "expectedTense": "havegot",
+                "clue": "(-) négation",
+                "clueExplanation": "My parents = they (pluriel) ➔ 'haven't got'.",
+                "spellingRule": "",
+                "hint": "My parents = they (pluriel) ➔ 'haven't got'."
+        },
+        {
+                "id": 89,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Kamala ___ (to have got) a shop in Hartfield.",
+                "a": [
+                        [
+                                "has got",
+                                "'s got"
+                        ]
+                ],
+                "speech": "Kamala has got a shop in Hartfield.",
+                "verb": "have got",
+                "subject": "Kamala",
+                "expectedTense": "havegot",
+                "clue": "affirmatif",
+                "clueExplanation": "Kamala = she ➔ 'has got'.",
+                "spellingRule": "",
+                "hint": "Kamala = she ➔ 'has got'."
+        },
+        {
+                "id": 90,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "___ your dad ___ (to have got) a computer at work? — Yes, he ___ .",
+                "a": [
+                        [
+                                "Has",
+                                "has"
+                        ],
+                        [
+                                "got"
+                        ],
+                        [
+                                "has"
+                        ]
+                ],
+                "speech": "Has your dad got a computer at work? Yes, he has.",
+                "verb": [
+                        "have got",
+                        "have got",
+                        "have got"
+                ],
+                "subject": [
+                        "your dad",
+                        "your dad",
+                        "he"
+                ],
+                "expectedTense": [
+                        "havegot",
+                        "havegot",
+                        "short"
+                ],
+                "clue": [
+                        "question have got",
+                        "participe got",
+                        "réponse courte sans got"
+                ],
+                "clueExplanation": [
+                        "Your dad = he ➔ Has your dad got...?",
+                        "",
+                        "Pas de 'got' dans la réponse courte affirmative : 'Yes, he has'."
+                ],
+                "spellingRule": [
+                        "",
+                        "",
+                        ""
+                ],
+                "hint": "Your dad = he ➔ 'Has your dad got...'. Réponse courte affirmative : 'Yes, he has' (sans got !)."
+        },
+        {
+                "id": 91,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "I (-) ___ a child! I am sixteen years old.",
+                "a": [
+                        [
+                                "am not",
+                                "'m not"
+                        ]
+                ],
+                "speech": "I am not a child! I am sixteen years old.",
+                "verb": "be",
+                "subject": "I",
+                "expectedTense": "tobe",
+                "clue": "(-) négation",
+                "clueExplanation": "Négation avec 'I' et 'to be' ➔ 'am not'.",
+                "spellingRule": "",
+                "hint": "Négation avec 'I' et 'to be' ➔ 'am not'."
+        },
+        {
+                "id": 92,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "They (-) ___ my favourite pop group.",
+                "a": [
+                        [
+                                "aren't",
+                                "are not"
+                        ]
+                ],
+                "speech": "They aren't my favourite pop group.",
+                "verb": "be",
+                "subject": "they",
+                "expectedTense": "tobe",
+                "clue": "(-) négation",
+                "clueExplanation": "Négation avec 'they' et 'to be' ➔ 'aren't'.",
+                "spellingRule": "",
+                "hint": "Négation avec 'they' et 'to be' ➔ 'aren't'."
+        },
+        {
+                "id": 93,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "We ___ (to have got) two cars.",
+                "a": [
+                        [
+                                "have got",
+                                "'ve got"
+                        ]
+                ],
+                "speech": "We have got two cars.",
+                "verb": "have got",
+                "subject": "we",
+                "expectedTense": "havegot",
+                "clue": "affirmatif",
+                "clueExplanation": "Avec 'we' ➔ 'have got'.",
+                "spellingRule": "",
+                "hint": "Avec 'we' ➔ 'have got'."
+        },
+        {
+                "id": 94,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "I (-) ___ (to have got) any money in my pocket.",
+                "a": [
+                        [
+                                "haven't got",
+                                "have not got"
+                        ]
+                ],
+                "speech": "I haven't got any money in my pocket.",
+                "verb": "have got",
+                "subject": "I",
+                "expectedTense": "havegot",
+                "clue": "(-) négation",
+                "clueExplanation": "Négation de 'have got' avec 'I' ➔ 'haven't got'.",
+                "spellingRule": "",
+                "hint": "Exercice de la feuille de Louis : 'I haven't got any money'."
+        },
+        {
+                "id": 95,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "___ your sister ___ (to have got) a new bike? — No, she ___ .",
+                "a": [
+                        [
+                                "Has",
+                                "has"
+                        ],
+                        [
+                                "got"
+                        ],
+                        [
+                                "hasn't",
+                                "has not"
+                        ]
+                ],
+                "speech": "Has your sister got a new bike? No, she hasn't.",
+                "verb": [
+                        "have got",
+                        "have got",
+                        "have got"
+                ],
+                "subject": [
+                        "your sister",
+                        "your sister",
+                        "she"
+                ],
+                "expectedTense": [
+                        "havegot",
+                        "havegot",
+                        "short"
+                ],
+                "clue": [
+                        "question have got",
+                        "participe got",
+                        "réponse courte sans got"
+                ],
+                "clueExplanation": [
+                        "Your sister = she ➔ Has your sister got...?",
+                        "",
+                        "Pas de 'got' dans la réponse courte négative : 'No, she hasn't'."
+                ],
+                "spellingRule": [
+                        "",
+                        "",
+                        ""
+                ],
+                "hint": "Your sister = she ➔ 'Has your sister got... No, she hasn't'."
+        },
+        {
+                "id": 96,
+                "category": "tobe_have",
+                "typeLabel": "🏷️ To Be & Have Got",
+                "badgeClass": "badge-tb",
+                "q": "Brooke ___ (to have got) a boyfriend? — Yes, she ___ .",
+                "a": [
+                        [
+                                "has got",
+                                "has"
+                        ],
+                        [
+                                "has"
+                        ]
+                ],
+                "speech": "Brooke has got a boyfriend? Yes, she has.",
+                "verb": [
+                        "have got",
+                        "have got"
+                ],
+                "subject": [
+                        "Brooke",
+                        "she"
+                ],
+                "expectedTense": [
+                        "havegot",
+                        "short"
+                ],
+                "clue": [
+                        "affirmatif have got",
+                        "réponse courte sans got"
+                ],
+                "clueExplanation": [
+                        "Brooke = she ➔ 'has got'.",
+                        "Réponse courte affirmative : 'Yes, she has' (sans got !)."
+                ],
+                "spellingRule": [
+                        "",
+                        ""
+                ],
+                "hint": "Brooke = she ➔ 'has got'. Réponse courte : 'Yes, she has'."
         }
-    ];
+];
 
     let currentFilter = 'all';
     let currentQuestions = [];
@@ -1256,7 +2985,7 @@
         const btn = document.getElementById('toggleCheatBtn');
         if (sheet.classList.contains('show')) {
             sheet.classList.remove('show');
-            btn.innerHTML = "📘 Afficher l'aide-mémoire (Règles, Mots-clés & Astuces)";
+            btn.innerHTML = "📘 Afficher l'aide-mémoire (Indices, Formules & Règles)";
         } else {
             sheet.classList.add('show');
             btn.innerHTML = "✖️ Masquer l'aide-mémoire";
@@ -1277,7 +3006,9 @@
     function setFilter(filterName) {
         currentFilter = filterName;
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        if (typeof event !== 'undefined' && event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        }
         newQuiz();
     }
 
@@ -1376,13 +3107,387 @@
         }
     }
 
+    // =========================================================================
+    // INTELLIGENT ERROR ANALYZER (Spécialement conçu pour expliquer la confusion
+    // entre le Simple Present et le Present Continuous, ainsi que la formation)
+    // =========================================================================
+    function analyzeTenseMistake(userVal, expectedList, item, bIdx) {
+        const rawUser = userVal.trim();
+        const cleanUser = normalize(userVal);
+        const expectedPrimary = expectedList[0];
+
+        if (!cleanUser) {
+            return `
+                <div class="feedback-tense-card warn-formation">
+                    <div class="formation-banner">
+                        <span class="warn-badge-pill">⚠️ Champ vide</span>
+                        <span class="warn-title-text">Tu n'as rien écrit !</span>
+                    </div>
+                    <div class="tense-error-body">
+                        <div class="fb-row">
+                            <span class="fb-label">👉 Bonne réponse :</span>
+                            <span class="fb-val"><strong class="ans-green">${expectedPrimary}</strong></span>
+                        </div>
+                        <div class="fb-row">
+                            <span class="fb-label">🔍 Conseil :</span>
+                            <span class="fb-val">Regarde bien la phrase pour repérer le mot-clé (ex: <em>Look!</em>, <em>every day</em>, <em>now</em>...) et déterminer s'il s'agit d'une habitude (Simple Present) ou d'une action en direct (Présent Continu).</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const expTense = (Array.isArray(item.expectedTense)) ? item.expectedTense[bIdx] : item.expectedTense;
+        const verb = (Array.isArray(item.verb)) ? item.verb[bIdx] : (item.verb || "");
+        const subject = (Array.isArray(item.subject)) ? item.subject[bIdx] : (item.subject || "");
+        const clue = (Array.isArray(item.clue)) ? item.clue[bIdx] : (item.clue || "");
+        const spellingRule = (Array.isArray(item.spellingRule)) ? item.spellingRule[bIdx] : (item.spellingRule || "");
+
+        // -------------------------------------------------------------
+        // CAS 1 : LE TEMPS ATTENDU ÉTAIT LE PRÉSENT CONTINU
+        // -------------------------------------------------------------
+        if (expTense === 'continuous') {
+            const hasIng = cleanUser.includes("ing") || cleanUser.includes("in'");
+            const startsWithBe = cleanUser.startsWith("am ") || cleanUser.startsWith("is ") || cleanUser.startsWith("are ") ||
+                                 cleanUser.startsWith("'m ") || cleanUser.startsWith("'s ") || cleanUser.startsWith("'re ");
+
+            // 1A. ERREUR DE TEMPS MAJEURE : L'élève a utilisé le Simple Present
+            if (!hasIng) {
+                return `
+                    <div class="feedback-tense-card error-tense">
+                        <div class="tense-error-banner">
+                            <span class="error-badge-pill">🚨 ERREUR DE TEMPS</span>
+                            <span class="error-title-text">Tu as utilisé le <strong>Simple Present</strong> au lieu du <strong>Present Continuous</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code> ➔ C'est du <strong>Simple Present</strong>.</span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">🔍 L'indice dans la phrase :</span>
+                                <span class="fb-val">Le mot-repère <mark class="clue-tag">« ${clue} »</mark> montre que l'action est <strong>en train de se dérouler sous nos yeux en ce moment même</strong>.</span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 La règle à appliquer :</span>
+                                <span class="fb-val">Pour une action en cours maintenant, tu dois utiliser le <strong>Présent Continu</strong> :<br>
+                                <span class="formula-box">am / is / are + Base verbale-ing</span> ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                            <div class="fb-row reminder-row">
+                                <span class="fb-label">💡 Pourquoi ton choix était faux :</span>
+                                <span class="fb-val">Le Simple Present (<em>${rawUser}</em>) exprime une <strong>habitude régulière</strong> (ex: <em>every day</em>, <em>usually</em>) ou une vérité générale, JAMAIS une action qui se passe en direct sous nos yeux !</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 1B. L'élève a pensé au Présent Continu, mais a oublié l'auxiliaire 'be' (ex: cooking)
+            if (hasIng && !startsWithBe) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ AUXILIAIRE OUBLIÉ</span>
+                            <span class="warn-title-text">Tu as pensé au Présent Continu (-ing), mais il manque l'auxiliaire <strong>be</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code> (le verbe seul avec -ing).</span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Formule complète obligatoire :</span>
+                                <span class="fb-val">Le Présent Continu a TOUJOURS deux morceaux :<br>
+                                <span class="formula-box">Sujet + am / is / are + V-ing</span> ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                            <div class="fb-row reminder-row">
+                                <span class="fb-label">💡 Astuce :</span>
+                                <span class="fb-val">Avec le sujet <em>« ${subject} »</em>, l'auxiliaire approprié est <strong>${expectedPrimary.split(" ")[0]}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 1C. Mauvais choix de l'auxiliaire 'be' (ex: are cooking avec she)
+            const userAux = cleanUser.split(" ")[0];
+            if (["am", "is", "are", "'m", "'s", "'re"].includes(userAux) && !expectedPrimary.startsWith(userAux)) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ MAUVAIS AUXILIAIRE</span>
+                            <span class="warn-title-text">L'auxiliaire 'be' ne correspond pas au sujet <strong>« ${subject} »</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code></span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Rappel de conjugaison de 'be' :</span>
+                                <span class="fb-val">• I ➔ <strong>am</strong> | • You / We / They ➔ <strong>are</strong> | • He / She / It ➔ <strong>is</strong>.<br>
+                                Avec <em>« ${subject} »</em>, il fallait donc : <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 1D. Règles d'orthographe sur -ing (CVC, -e muet, pas de doublement)
+            if (spellingRule === 'cvc' && (cleanUser.includes("runing") || cleanUser.includes("swiming") || cleanUser.includes("stoping") || cleanUser.includes("siting") || cleanUser.includes("puting"))) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ RÈGLE D'ORTHOGRAPHE (CVC)</span>
+                            <span class="warn-title-text">Tu as oublié de doubler la consonne finale devant -ing !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code></span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle CVC :</span>
+                                <span class="fb-val"><em>« ${verb} »</em> est un verbe court d'une seule syllabe terminé par <strong>Consonne - Voyelle - Consonne</strong>.<br>
+                                On doit obligatoirement <strong>doubler</strong> la consonne finale devant <em>-ing</em> ➔ <strong class="ans-green">${expectedPrimary}</strong> (avec 2 consonnes).</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (spellingRule === 'e_drop' && (cleanUser.includes("danceing") || cleanUser.includes("typeing") || cleanUser.includes("writeing") || cleanUser.includes("hideing") || cleanUser.includes("makeing") || cleanUser.includes("comeing") || cleanUser.includes("rideing") || cleanUser.includes("takeing"))) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ RÈGLE D'ORTHOGRAPHE (-e muet)</span>
+                            <span class="warn-title-text">Le 'e' muet final doit disparaître devant -ing !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code></span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle du 'e' muet :</span>
+                                <span class="fb-val">Quand le verbe se termine par un <em>-e</em> muet (comme <em>${verb}</em>), le <strong>'e' saute</strong> quand on ajoute <em>-ing</em> ➔ <strong class="ans-green">${expectedPrimary}</strong> (et non <s>${verb}ing</s>).</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (spellingRule === 'no_double' && (cleanUser.includes("eatting") || cleanUser.includes("waitting") || cleanUser.includes("writting"))) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ RÈGLE D'ORTHOGRAPHE</span>
+                            <span class="warn-title-text">Pas de double consonne pour ce verbe !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Explication :</span>
+                                <span class="fb-val"><em>« ${verb} »</em> contient déjà deux voyelles successives avant la consonne, ce n'est donc pas la règle CVC. La consonne reste simple ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // -------------------------------------------------------------
+        // CAS 2 : LE TEMPS ATTENDU ÉTAIT LE SIMPLE PRESENT
+        // -------------------------------------------------------------
+        if (expTense === 'simple') {
+            const hasIng = cleanUser.includes("ing") || cleanUser.includes("in'");
+            const startsWithBe = cleanUser.startsWith("am ") || cleanUser.startsWith("is ") || cleanUser.startsWith("are ") ||
+                                 cleanUser.startsWith("'m ") || cleanUser.startsWith("'s ") || cleanUser.startsWith("'re ");
+
+            // 2A. ERREUR DE TEMPS MAJEURE : L'élève a utilisé le Present Continuous
+            if (hasIng || startsWithBe) {
+                return `
+                    <div class="feedback-tense-card error-tense">
+                        <div class="tense-error-banner">
+                            <span class="error-badge-pill">🚨 ERREUR DE TEMPS</span>
+                            <span class="error-title-text">Tu as utilisé le <strong>Present Continuous</strong> au lieu du <strong>Simple Present</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code> ➔ C'est du <strong>Present Continuous</strong>.</span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">🔍 L'indice dans la phrase :</span>
+                                <span class="fb-val">L'expression <mark class="clue-tag">« ${clue} »</mark> indique une <strong>habitude, routine régulière ou vérité générale</strong>.</span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 La règle à appliquer :</span>
+                                <span class="fb-val">Pour une habitude, répétition ou fait permanent, tu dois employer le <strong>Simple Present</strong> :<br>
+                                <span class="formula-box">Base verbale (+ -s ou -es avec he/she/it)</span> ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                            <div class="fb-row reminder-row">
+                                <span class="fb-label">💡 Pourquoi ton choix était faux :</span>
+                                <span class="fb-val">Le Present Continuous (<em>${rawUser}</em>) est réservé aux actions qui se déroulent <strong>en direct maintenant</strong> (ex: <em>Look!</em>, <em>right now</em>). Pour les habitudes (<em>${clue}</em>), utilise toujours le <strong>Simple Present</strong> !</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 2B. Oubli du -s à la 3e personne du singulier
+            const isThirdSingular = ["he", "she", "it", "my brother", "my dog", "the car", "water", "emily", "grandpa", "the baby", "the train", "the bus"].some(s => subject.toLowerCase().includes(s));
+            if (isThirdSingular && (expectedPrimary.endsWith("s") || expectedPrimary.endsWith("es")) && !cleanUser.endsWith("s") && !cleanUser.endsWith("es")) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ -S DE LA 3e PERSONNE OUBLIÉ</span>
+                            <span class="warn-title-text">Bon choix de temps (Simple Present), mais attention au sujet <strong>« ${subject} »</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code></span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle du Simple Present :</span>
+                                <span class="fb-val">Avec <strong>he, she, it</strong> (ou un nom singulier comme <em>${subject}</em>), on ajoute impérativement un <strong>-s</strong> ou <strong>-es</strong> au verbe ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 2C. -s en trop avec I, you, we, they
+            const isPluralOrI = ["i", "you", "we", "they", "the children", "cats", "lions", "dogs"].some(s => subject.toLowerCase().trim() === s);
+            if (isPluralOrI && !expectedPrimary.endsWith("s") && (cleanUser.endsWith("s") || cleanUser.endsWith("es"))) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ -S EN TROP</span>
+                            <span class="warn-title-text">On n'ajoute pas de -s avec <strong>« ${subject} »</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle :</span>
+                                <span class="fb-val">Au Simple Present, le <strong>-s</strong> s'ajoute UNIQUEMENT avec <em>he, she, it</em>. Avec <em>« ${subject} »</em>, la base verbale reste telle quelle ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // -------------------------------------------------------------
+        // CAS 3 : RÉPONSES COURTES (Short answers)
+        // -------------------------------------------------------------
+        if (item.category === 'short' || expTense === 'short') {
+            // Contraction à l'affirmatif : "Yes, I'm" / "Yes, he's"
+            if (cleanUser.includes("'m") || cleanUser.includes("'s") || cleanUser.includes("'re")) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ CONTRACTION INTERDITE</span>
+                            <span class="warn-title-text">JAMAIS de contraction dans une réponse courte affirmative !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">❌ Ce que tu as écrit :</span>
+                                <span class="fb-val"><code class="code-wrong">${rawUser}</code></span>
+                            </div>
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle d'or :</span>
+                                <span class="fb-val">Dans une réponse courte affirmative, on écrit TOUJOURS la forme pleine ➔ <strong class="ans-green">${expectedPrimary}</strong> (et jamais <s>${rawUser}</s>).</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // 'got' dans la réponse courte : "Yes, I have got" / "No, he hasn't got"
+            if (cleanUser.includes("got")) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ PAS DE « GOT »</span>
+                            <span class="warn-title-text">Règle de Louis : N.B. Pas de « got » dans les réponses courtes !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle :</span>
+                                <span class="fb-val">Dans les réponses courtes avec <em>have got</em>, on s'arrête à l'auxiliaire <em>have / has / haven't / hasn't</em> ➔ <strong class="ans-green">${expectedPrimary}</strong> (sans 'got').</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Confusion be vs do
+            if ((expectedPrimary === "am" || expectedPrimary === "is" || expectedPrimary === "are" || expectedPrimary === "isn't" || expectedPrimary === "aren't") && (cleanUser.includes("do") || cleanUser.includes("does"))) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ AUXILIAIRE INCOHÉRENT</span>
+                            <span class="warn-title-text">La question utilise le verbe <strong>be</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle :</span>
+                                <span class="fb-val">Si la question commence par <em>Are you...?</em> ou <em>Is he...?</em>, la réponse courte reprend <strong>be</strong> (<code>Yes, I am</code> / <code>No, he isn't</code>), et non pas <em>do/does</em> ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if ((expectedPrimary === "do" || expectedPrimary === "does" || expectedPrimary === "don't" || expectedPrimary === "doesn't") && (cleanUser.includes("am") || cleanUser.includes("is") || cleanUser.includes("are"))) {
+                return `
+                    <div class="feedback-tense-card warn-formation">
+                        <div class="formation-banner">
+                            <span class="warn-badge-pill">⚠️ AUXILIAIRE INCOHÉRENT</span>
+                            <span class="warn-title-text">La question utilise l'auxiliaire <strong>do / does</strong> !</span>
+                        </div>
+                        <div class="tense-error-body">
+                            <div class="fb-row">
+                                <span class="fb-label">📌 Règle :</span>
+                                <span class="fb-val">Si la question commence par <em>Do you...?</em> ou <em>Does he...?</em>, réponds avec <strong>do / does</strong> (<code>Yes, I do</code> / <code>No, she doesn't</code>), et non pas <em>be</em> ➔ <strong class="ans-green">${expectedPrimary}</strong>.</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // -------------------------------------------------------------
+        // RETOUR GÉNÉRAL PAR DÉFAUT
+        // -------------------------------------------------------------
+        return `
+            <div class="feedback-tense-card warn-formation">
+                <div class="formation-banner">
+                    <span class="warn-badge-pill">⚠️ CORRECTION</span>
+                    <span class="warn-title-text">Forme attendue : <strong class="ans-green">${expectedPrimary}</strong></span>
+                </div>
+                <div class="tense-error-body">
+                    <div class="fb-row">
+                        <span class="fb-label">❌ Tu as écrit :</span>
+                        <span class="fb-val"><code class="code-wrong">${rawUser || '(vide)'}</code></span>
+                    </div>
+                    ${clue ? `
+                    <div class="fb-row">
+                        <span class="fb-label">🔍 Indice :</span>
+                        <span class="fb-val">L'indice <mark class="clue-tag">« ${clue} »</mark> indique le temps approprié (${expTense === 'continuous' ? 'Présent Continu' : 'Simple Present'}).</span>
+                    </div>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
     // Check Answers
     function checkAnswers() {
         let score = 0;
 
         currentQuestions.forEach((item, qIdx) => {
             let questionAllCorrect = true;
-            let feedbackDetails = [];
+            let feedbackHtmlList = [];
 
             item.a.forEach((acceptableList, bIdx) => {
                 const inputEl = document.getElementById(`input-${qIdx}-${bIdx}`);
@@ -1393,14 +3498,19 @@
 
                 if (isCorrect) {
                     inputEl.className = "input-correct";
-                    feedbackDetails.push(`<span class="ans-tag-correct">✓ ${acceptableList[0]}</span>`);
+                    const clue = (Array.isArray(item.clue)) ? item.clue[bIdx] : (item.clue || "");
+                    const expTense = (Array.isArray(item.expectedTense)) ? item.expectedTense[bIdx] : item.expectedTense;
+                    const tenseName = (expTense === 'continuous') ? 'Présent Continu' : (expTense === 'simple' ? 'Simple Present' : '');
+                    feedbackHtmlList.push(`
+                        <div class="feedback-correct-box">
+                            <span class="correct-icon">✓</span>
+                            <span><strong>Bravo !</strong> <strong class="ans-green">${acceptableList[0]}</strong> est exact ${tenseName ? `(${tenseName})` : ''} ${clue ? `➔ indice <mark class="clue-tag">« ${clue} »</mark>` : ''}.</span>
+                        </div>
+                    `);
                 } else {
                     questionAllCorrect = false;
                     inputEl.className = "input-wrong";
-                    const displayUser = inputEl.value.trim() ? inputEl.value.trim() : "(vide)";
-                    feedbackDetails.push(
-                        `<span class="ans-tag-wrong">${displayUser}</span> <span class="ans-tag-expected">➔ ${acceptableList[0]}</span>`
-                    );
+                    feedbackHtmlList.push(analyzeTenseMistake(inputEl.value, acceptableList, item, bIdx));
                 }
             });
 
@@ -1411,17 +3521,7 @@
             // Display item feedback
             const fbBox = document.getElementById(`feedback-${qIdx}`);
             fbBox.className = "feedback-box show";
-            let html = "";
-            if (questionAllCorrect) {
-                html = `<span class="ans-tag-correct">✓ Bravo, c'est exact !</span>`;
-            } else {
-                html = `Correction : ${feedbackDetails.join(' | ')}`;
-            }
-
-            if (item.hint) {
-                html += `<div class="grammar-hint">💡 <strong>Explication :</strong> ${item.hint}</div>`;
-            }
-            fbBox.innerHTML = html;
+            fbBox.innerHTML = feedbackHtmlList.join("");
         });
 
         // Display Score Banner
@@ -1435,13 +3535,13 @@
         const pct = Math.round((score / currentQuestions.length) * 100);
         if (score === currentQuestions.length) {
             banner.className = "score-10";
-            scoreMsg.innerHTML = `🎉 <strong>Félicitations Louis ! 100% de réussite !</strong> Tu maîtrises parfaitement la différence entre le Simple Present et le Present Continuous.`;
+            scoreMsg.innerHTML = `🎉 <strong>Félicitations Louis ! 100% de réussite !</strong> Tu sais parfaitement repérer les indices pour choisir entre le Simple Present et le Present Continuous.`;
         } else if (pct >= 70) {
             banner.className = "score-good";
-            scoreMsg.innerHTML = `👍 <strong>Très bon résultat (${score}/10) !</strong> Regarde bien les petites corrections ci-dessus pour viser le 10/10 à la prochaine série.`;
+            scoreMsg.innerHTML = `👍 <strong>Très bon résultat (${score}/10) !</strong> Regarde bien les justifications ci-dessus (notamment si tu as confondu Simple Present et Present Continuous) pour viser le 10/10 à la prochaine série !`;
         } else {
             banner.className = "score-low";
-            scoreMsg.innerHTML = `💪 <strong>Score : ${score}/10 (${pct}%).</strong> Prends le temps de lire les explications ci-dessus et ouvre le volet "Aide-mémoire" pour réviser les règles !`;
+            scoreMsg.innerHTML = `💪 <strong>Score : ${score}/10 (${pct}%).</strong> Prends le temps de lire attentivement les explications d'erreurs ci-dessus et ouvre l'Aide-mémoire pour revoir les mots-clés !`;
         }
 
         banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -1457,8 +3557,13 @@
             });
             const fbBox = document.getElementById(`feedback-${qIdx}`);
             fbBox.className = "feedback-box show";
-            fbBox.innerHTML = `<span class="ans-tag-correct">Solution affichée</span>` + 
-                (item.hint ? `<div class="grammar-hint">💡 <strong>Explication :</strong> ${item.hint}</div>` : '');
+            fbBox.innerHTML = `
+                <div class="feedback-correct-box">
+                    <span class="correct-icon">💡</span>
+                    <span><strong>Solution :</strong> ${item.speech}</span>
+                </div>
+                ${item.hint ? `<div style="margin-top:6px; font-size:13px; color:#475569; padding:6px 10px; background:#f8fafc; border-left:3px solid #2563eb; border-radius:0 4px 4px 0;">💡 <strong>Règle :</strong> ${item.hint}</div>` : ''}
+            `;
         });
 
         const banner = document.getElementById('result-banner');
