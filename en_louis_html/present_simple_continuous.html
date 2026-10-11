@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test : Simple Present vs Present Continuous</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #7c3aed;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --error: #dc2626;
+            --error-bg: #fee2e2;
+            --warning: #d97706;
+            --warning-bg: #fef3c7;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --badge-mix-bg: #f3e8ff;
+            --badge-mix-text: #6b21a8;
+            --badge-cont-bg: #dbeafe;
+            --badge-cont-text: #1e40af;
+            --badge-simp-bg: #ffedd5;
+            --badge-simp-text: #9a3412;
+            --badge-short-bg: #ecfdf5;
+            --badge-short-text: #065f46;
+            --badge-tb-bg: #fef9c3;
+            --badge-tb-text: #854d0e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 25px 15px 50px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: 35px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+            max-width: 820px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 15px;
+            line-height: 1.5;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Category Filter Tabs */
+        .filters-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .filter-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            border: 2px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+        }
+
+        .filter-btn .count {
+            background: rgba(0,0,0,0.08);
+            padding: 2px 7px;
+            border-radius: 12px;
+            font-size: 11px;
+        }
+        .filter-btn.active .count {
+            background: rgba(255,255,255,0.25);
+            color: white;
+        }
+
+        /* Grammar Cheat Sheet Accordion */
+        .cheat-sheet-toggle {
+            display: block;
+            width: 100%;
+            background: #f1f5f9;
+            border: 1px dashed #cbd5e1;
+            padding: 11px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #334155;
+            cursor: pointer;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .cheat-sheet-toggle:hover {
+            background: #e2e8f0;
+            color: var(--primary);
+        }
+
+        .cheat-sheet {
+            display: none;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .cheat-sheet.show {
+            display: block;
+        }
+
+        .cheat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
+
+        .cheat-card {
+            background: white;
+            padding: 14px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            font-size: 13px;
+        }
+
+        .cheat-card.card-contrast { border-left-color: #7c3aed; }
+        .cheat-card.card-spelling { border-left-color: #2563eb; }
+        .cheat-card.card-short { border-left-color: #059669; }
+        .cheat-card.card-tb { border-left-color: #d97706; }
+
+        .cheat-card h4 {
+            margin-bottom: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cheat-card p {
+            margin-bottom: 6px;
+            line-height: 1.45;
+        }
+        .cheat-card code {
+            background: #edf2f7;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: inherit;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        /* Quiz Item */
+        .quiz-item {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            line-height: 1.8;
+            font-size: 16px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .quiz-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .quiz-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+
+        .item-num {
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .type-badge {
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .badge-mix { background-color: var(--badge-mix-bg); color: var(--badge-mix-text); }
+        .badge-cont { background-color: var(--badge-cont-bg); color: var(--badge-cont-text); }
+        .badge-simp { background-color: var(--badge-simp-bg); color: var(--badge-simp-text); }
+        .badge-short { background-color: var(--badge-short-bg); color: var(--badge-short-text); }
+        .badge-tb { background-color: var(--badge-tb-bg); color: var(--badge-tb-text); }
+
+        .sentence-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        input[type="text"] {
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 15px;
+            font-family: inherit;
+            min-width: 90px;
+            max-width: 175px;
+            text-align: center;
+            transition: all 0.2s;
+            background: #fff;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+        }
+
+        input.input-correct {
+            border-color: var(--success) !important;
+            background-color: var(--success-bg) !important;
+            color: #15803d !important;
+            font-weight: 600;
+        }
+
+        input.input-wrong {
+            border-color: var(--error) !important;
+            background-color: var(--error-bg) !important;
+            color: #b91c1c !important;
+            font-weight: 600;
+        }
+
+        .speaker-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 6px;
+            padding: 4px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.15s, background 0.15s;
+            vertical-align: middle;
+            color: #64748b;
+        }
+
+        .speaker-btn:hover {
+            transform: scale(1.15);
+            background: #f1f5f9;
+            color: var(--primary);
+        }
+
+        .feedback-box {
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+            font-size: 14px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        .ans-tag-correct {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .ans-tag-wrong {
+            color: var(--error);
+            text-decoration: line-through;
+            margin-right: 6px;
+        }
+
+        .ans-tag-expected {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .grammar-hint {
+            margin-top: 5px;
+            font-size: 13px;
+            color: #475569;
+            background: #f8fafc;
+            border-left: 3px solid #cbd5e1;
+            padding: 4px 8px;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Controls */
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button.action-btn {
+            padding: 12px 24px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button.action-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-correct {
+            background-color: var(--success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+        }
+        .btn-correct:hover {
+            background-color: #15803d;
+        }
+
+        .btn-new {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .btn-new:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+            color: #1e293b;
+        }
+
+        /* Result summary banner */
+        #result-banner {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .score-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .score-msg {
+            font-size: 15px;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        .score-10 {
+            background-color: #ecfdf5;
+            border: 2px solid #a7f3d0;
+            color: #065f46;
+        }
+        .score-good {
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            color: #1e40af;
+        }
+        .score-low {
+            background-color: #fff1f2;
+            border: 2px solid #fecdd3;
+            color: #9f1239;
+        }
+
+        .nav-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .nav-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .nav-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px 14px; }
+            h1 { font-size: 21px; }
+            input[type="text"] { min-width: 75px; font-size: 14px; padding: 5px 8px; }
+            .quiz-item { font-size: 15px; }
+            button.action-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🇬🇧 Simple Present vs Present Continuous</h1>
+        <p class="subtitle">Entraînement complet pour le test de Louis : conjugaison, règles d'orthographe (<em>-ing</em>), choix du bon temps (habitudes vs action en cours), <em>to be</em>, <em>have got</em> et réponses courtes.</p>
+    </header>
+
+    <!-- Filters -->
+    <div class="filters-wrapper">
+        <div class="filter-label">Thème de travail :</div>
+        <div class="filters">
+            <button class="filter-btn active" onclick="setFilter('all')">
+                <span>🔀 Mixte (Grand Test)</span>
+                <span class="count" id="count-all">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('contrast')">
+                <span>⚖️ Simple vs Continuous</span>
+                <span class="count" id="count-contrast">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('spelling')">
+                <span>🏃 Présent Continu (-ing)</span>
+                <span class="count" id="count-spelling">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('short')">
+                <span>💬 Réponses courtes</span>
+                <span class="count" id="count-short">0</span>
+            </button>
+            <button class="filter-btn" onclick="setFilter('tobe_have')">
+                <span>🏷️ To Be & Have got</span>
+                <span class="count" id="count-tobe_have">0</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Collapsible Grammar Cheat Sheet -->
+    <button class="cheat-sheet-toggle" onclick="toggleCheatSheet()" id="toggleCheatBtn">
+        📘 Afficher l'aide-mémoire (Règles, Mots-clés & Astuces)
+    </button>
+
+    <div class="cheat-sheet" id="cheatSheet">
+        <div class="cheat-grid">
+            <div class="cheat-card card-contrast">
+                <h4>⚖️ Quel temps choisir ?</h4>
+                <p>• <strong>Présent Continu :</strong> action <em>en train de se dérouler maintenant</em>.<br>
+                   🚩 <em>Mots repères :</em> <code>now</code>, <code>at the moment</code>, <code>right now</code>, <code>Look!</code>, <code>Listen!</code>, <code>Shh!</code>.<br>
+                   Formule : <code>am / is / are + V-ing</code>.</p>
+                <p>• <strong>Simple Present :</strong> habitude, routine, vérité générale, goûts.<br>
+                   🚩 <em>Mots repères :</em> <code>every day</code>, <code>always</code>, <code>often</code>, <code>usually</code>, <code>never</code>, <code>on Sundays</code>.<br>
+                   Formule : Base verbale (<code>+ -s</code> à la 3e pers. du singulier <em>he/she/it</em>).</p>
+            </div>
+
+            <div class="cheat-card card-spelling">
+                <h4>🏃 Orthographe du suffixe -ing</h4>
+                <p>• <strong>Cas général :</strong> on ajoute simplement <code>-ing</code>.<br>
+                   <em>cook ➔ cooking</em>, <em>eat ➔ eating</em>, <em>wait ➔ waiting</em>.</p>
+                <p>• <strong>Verbe terminé par -e muet :</strong> le 'e' disparaît !<br>
+                   <em>dance ➔ dancing</em>, <em>type ➔ typing</em>, <em>write ➔ writing</em>.</p>
+                <p>• <strong>1 syllabe + Consonne-Voyelle-Consonne (CVC) :</strong> on <strong>double</strong> la consonne finale !<br>
+                   <em>run ➔ running</em>, <em>swim ➔ swimming</em>, <em>stop ➔ stopping</em>, <em>sit ➔ sitting</em>.</p>
+                <p>⚠️ <em>eat</em> a 2 voyelles (ea) et <em>wait</em> en a 2 (ai) ➔ on ne double PAS !</p>
+            </div>
+
+            <div class="cheat-card card-short">
+                <h4>💬 Réponses courtes (Short answers)</h4>
+                <p>• <strong>Présent continu :</strong><br>
+                   - <em>Are you writing?</em> ➔ <code>Yes, I am.</code> / <code>No, I'm not.</code><br>
+                   - <em>Is he working?</em> ➔ <code>Yes, he is.</code> / <code>No, he isn't.</code></p>
+                <p>• <strong>Simple present :</strong><br>
+                   - <em>Do you play tennis?</em> ➔ <code>Yes, I do.</code> / <code>No, I don't.</code><br>
+                   - <em>Does she speak French?</em> ➔ <code>Yes, she does.</code> / <code>No, she doesn't.</code></p>
+                <p>⚠️ <strong>Règle d'or :</strong> <em>JAMAIS</em> de contraction dans les réponses affirmatives (<code>Yes, I am</code> et NON <s>Yes, I'm</s>).</p>
+            </div>
+
+            <div class="cheat-card card-tb">
+                <h4>🏷️ To Be & Have got</h4>
+                <p>• <strong>To be :</strong> <code>am / is / are</code><br>
+                   Négation : <code>I'm not</code>, <code>isn't</code>, <code>aren't</code>.<br>
+                   Court : <em>Yes, he is.</em> / <em>No, he isn't.</em></p>
+                <p>• <strong>Have got :</strong> <code>have got / has got</code><br>
+                   Négation : <code>haven't got / hasn't got</code>.<br>
+                   Court : <em>Yes, I have.</em> / <em>No, he hasn't.</em> (⚠️ <strong>JAMAIS de "got"</strong> dans la réponse courte !).</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz list -->
+    <div id="quiz-container"></div>
+
+    <!-- Result Banner -->
+    <div id="result-banner">
+        <div class="score-title" id="score-text"></div>
+        <div class="score-msg" id="score-msg"></div>
+    </div>
+
+    <!-- Action Controls -->
+    <div class="controls">
+        <button class="action-btn btn-correct" onclick="checkAnswers()">
+            <span>✓</span> Corriger
+        </button>
+        <button class="action-btn btn-new" onclick="newQuiz()">
+            <span>🔄</span> Nouvelle série (10 questions)
+        </button>
+        <button class="action-btn btn-secondary" onclick="revealAnswers()">
+            <span>💡</span> Voir les solutions
+        </button>
+    </div>
+
+    <div class="nav-footer">
+        <span>Exercices anglais pour Louis :</span>
+        <a href="present_simple.html">Simple Present complet (+, -, ?)</a>
+        <a href="simple_present.html">Simple Present à trous</a>
+        <a href="simple_present_traduction.html">Traduction FR ➔ EN</a>
+        <a href="to_be_to_have.html">To Be & To Have basique</a>
+    </div>
+</div>
+
+<script>
+    // Comprehensive database of Simple Present & Present Continuous questions
+    const database = [
+        // ================= 1. SPELLING & PRESENT CONTINUOUS CONJUGATION =================
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "She ___ (to cook) dinner in the kitchen.",
+            a: [["is cooking", "'s cooking"]],
+            speech: "She is cooking dinner in the kitchen.",
+            hint: "Règle générale : auxiliaire be (is) + verbe avec -ing (cooking)."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "I ___ (to dance) to my favourite song.",
+            a: [["am dancing", "'m dancing"]],
+            speech: "I am dancing to my favourite song.",
+            hint: "Le 'e' muet final de 'dance' disparaît devant -ing : dancing !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "He ___ (to eat) a delicious apple.",
+            a: [["is eating", "'s eating"]],
+            speech: "He is eating a delicious apple.",
+            hint: "'eat' contient deux voyelles (ea) : on ne double PAS la consonne t -> eating !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "You ___ (to run) very fast in the park.",
+            a: [["are running", "'re running"]],
+            speech: "You are running very fast in the park.",
+            hint: "'run' est un verbe d'une syllabe CVC (consonne-voyelle-consonne) : on double le n -> running !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "We ___ (to drink) cold water after the match.",
+            a: [["are drinking", "'re drinking"]],
+            speech: "We are drinking cold water after the match.",
+            hint: "Auxiliaire be avec 'we' (are) + drink-ing."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "You ___ (to type) an email on your laptop.",
+            a: [["are typing", "'re typing"]],
+            speech: "You are typing an email on your laptop.",
+            hint: "'type' se termine par un 'e' muet qui saute devant -ing -> typing !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "I ___ (to swim) in the lake today.",
+            a: [["am swimming", "'m swimming"]],
+            speech: "I am swimming in the lake today.",
+            hint: "'swim' est un mot court CVC : on double le m -> swimming !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "They ___ (to wait) for the 8 o'clock bus.",
+            a: [["are waiting", "'re waiting"]],
+            speech: "They are waiting for the eight o'clock bus.",
+            hint: "'wait' a deux voyelles (ai) : pas de doublement de consonne -> waiting !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "Look! The car ___ (to stop) in front of the house.",
+            a: [["is stopping", "'s stopping"]],
+            speech: "Look! The car is stopping in front of the house.",
+            hint: "'stop' est un verbe court CVC : on double le p -> stopping !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "I ___ (to watch) now my favourite movie.",
+            a: [["am watching", "'m watching"]],
+            speech: "I am watching now my favourite movie.",
+            hint: "Exercice de la feuille : 'I am watching' avec l'indicateur 'now'."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "He ___ (to listen) to the news on the radio.",
+            a: [["is listening", "'s listening"]],
+            speech: "He is listening to the news on the radio.",
+            hint: "Auxiliaire 'is' + listening."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "They ___ (to speak) Spanish with a friend.",
+            a: [["are speaking", "'re speaking"]],
+            speech: "They are speaking Spanish with a friend.",
+            hint: "Auxiliaire 'are' + speaking (speak a deux voyelles 'ea' -> pas de double consonne)."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "He ___ (to swim) to prepare the competition.",
+            a: [["is swimming", "'s swimming"]],
+            speech: "He is swimming to prepare the competition.",
+            hint: "Double 'm' pour swim : 'is swimming'."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "I ___ (to do) a puzzle in my room.",
+            a: [["am doing", "'m doing"]],
+            speech: "I am doing a puzzle in my room.",
+            hint: "Auxiliaire 'am' + doing."
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "The children ___ (to sit) on the sofa.",
+            a: [["are sitting", "'re sitting"]],
+            speech: "The children are sitting on the sofa.",
+            hint: "'sit' est court CVC : on double le t -> sitting !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "He ___ (to put) on his warm coat.",
+            a: [["is putting", "'s putting"]],
+            speech: "He is putting on his warm coat.",
+            hint: "'put' est court CVC : on double le t -> putting !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "She ___ (to write) a letter to her grandmother.",
+            a: [["is writing", "'s writing"]],
+            speech: "She is writing a letter to her grandmother.",
+            hint: "'write' perd son 'e' final devant -ing -> writing (avec un seul t) !"
+        },
+        {
+            category: "spelling",
+            typeLabel: "Présent Continu (-ing)",
+            badgeClass: "badge-cont",
+            q: "Look! My dog ___ (to hide) behind the tree.",
+            a: [["is hiding", "'s hiding"]],
+            speech: "Look! My dog is hiding behind the tree.",
+            hint: "'hide' se termine par -e muet -> hiding !"
+        },
+
+        // ================= 2. CONTRAST: SIMPLE PRESENT VS PRESENT CONTINUOUS =================
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Listen! Somebody ___ (to sing) in the shower.",
+            a: [["is singing", "'s singing"]],
+            speech: "Listen! Somebody is singing in the shower.",
+            hint: "L'indicateur 'Listen!' montre que l'action se passe maintenant ➔ Présent Continu (is singing)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "My brother ___ (to play) basketball every Saturday.",
+            a: [["plays"]],
+            speech: "My brother plays basketball every Saturday.",
+            hint: "'every Saturday' indique une habitude régulière ➔ Simple Present (plays avec -s)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Look outside! It ___ (to rain) again.",
+            a: [["is raining", "'s raining"]],
+            speech: "Look outside! It is raining again.",
+            hint: "'Look outside!' signale une action visible en cours ➔ Présent Continu (is raining)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "It often ___ (to rain) in Scotland.",
+            a: [["rains"]],
+            speech: "It often rains in Scotland.",
+            hint: "'often' (souvent) est un adverbe de fréquence / vérité générale ➔ Simple Present (rains)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Right now, she ___ (to do) her English homework.",
+            a: [["is doing", "'s doing"]],
+            speech: "Right now, she is doing her English homework.",
+            hint: "'Right now' (en ce moment précis) ➔ Présent Continu (is doing)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "She always ___ (to do) her homework before dinner.",
+            a: [["does"]],
+            speech: "She always does her homework before dinner.",
+            hint: "'always' (toujours) indique une routine ➔ Simple Present ('does' pour la 3e personne)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Shh! Be quiet! The baby ___ (to sleep).",
+            a: [["is sleeping", "'s sleeping"]],
+            speech: "Shh! Be quiet! The baby is sleeping.",
+            hint: "'Shh! Be quiet!' indique que l'action se passe sous nos yeux en ce moment ➔ is sleeping."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Water ___ (to boil) at 100 degrees Celsius.",
+            a: [["boils"]],
+            speech: "Water boils at one hundred degrees Celsius.",
+            hint: "Vérité générale / fait scientifique permanent ➔ Simple Present (boils)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Turn off the gas! The water ___ (to boil)!",
+            a: [["is boiling", "'s boiling"]],
+            speech: "Turn off the gas! The water is boiling!",
+            hint: "L'eau est en train de bouillir maintenant ➔ Présent Continu (is boiling)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Lions ___ (to live) in Africa.",
+            a: [["live"]],
+            speech: "Lions live in Africa.",
+            hint: "Vérité générale / état permanent (feuille de cours) ➔ Simple Present (live)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "I ___ (to like) chocolate ice cream very much.",
+            a: [["like"]],
+            speech: "I like chocolate ice cream very much.",
+            hint: "'like' exprime un goût / sentiment permanent (verbe d'état) ➔ Simple Present !"
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "She ___ (to prefer) Taylor Swift to other singers.",
+            a: [["prefers"]],
+            speech: "She prefers Taylor Swift to other singers.",
+            hint: "'prefer' exprime une opinion/goût ➔ toujours Simple Present ('prefers' avec -s)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Where is dad? He ___ (to wash) his car in the garage.",
+            a: [["is washing", "'s washing"]],
+            speech: "Where is dad? He is washing his car in the garage.",
+            hint: "Action en cours à la question 'où est-il ?' ➔ Présent Continu (is washing)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "He ___ (to wash) his car every Sunday morning.",
+            a: [["washes"]],
+            speech: "He washes his car every Sunday morning.",
+            hint: "'every Sunday morning' = habitude ➔ Simple Present (terme en -sh prend -es : washes)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "Look! The cat ___ (to climb) up the tall tree.",
+            a: [["is climbing", "'s climbing"]],
+            speech: "Look! The cat is climbing up the tall tree.",
+            hint: "'Look!' appelle l'attention sur une action en cours ➔ is climbing."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "We usually ___ (to walk) to school, but today we ___ (to take) the bus.",
+            a: [["walk"], ["are taking", "'re taking"]],
+            speech: "We usually walk to school, but today we are taking the bus.",
+            hint: "'usually' ➔ Simple Present (walk) ; 'today' (exception temporaire) ➔ Présent Continu (are taking)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "He usually ___ (to ride) a bike, but today he ___ (to run).",
+            a: [["rides"], ["is running", "'s running"]],
+            speech: "He usually rides a bike, but today he is running.",
+            hint: "'usually' ➔ rides (avec -s) ; 'today' ➔ is running (double n !)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "At the moment, they ___ (to build) a new sports centre.",
+            a: [["are building", "'re building"]],
+            speech: "At the moment, they are building a new sports centre.",
+            hint: "'At the moment' (en ce moment) ➔ Présent Continu (are building)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "I can't talk right now, I ___ (to study) for my exam.",
+            a: [["am studying", "'m studying"]],
+            speech: "I can't talk right now, I am studying for my exam.",
+            hint: "'right now' ➔ Présent Continu : am studying (study garde son 'y' devant -ing !)."
+        },
+        {
+            category: "contrast",
+            typeLabel: "Choix du temps",
+            badgeClass: "badge-mix",
+            q: "He never ___ (to watch) horror movies at night.",
+            a: [["watches"]],
+            speech: "He never watches horror movies at night.",
+            hint: "'never' = fréquence ➔ Simple Present (verbe en -ch prend -es : watches)."
+        },
+
+        // ================= 3. SHORT ANSWERS & QUESTIONS =================
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Are you writing an essay? — Yes, I ___.",
+            a: [["am"]],
+            speech: "Are you writing an essay? Yes, I am.",
+            hint: "Réponse courte affirmative avec 'to be' : toujours sous forme entière 'Yes, I am' (jamais contracté 'Yes, I'm')."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Are you watching TV right now? — No, I ___.",
+            a: [["am not", "'m not"]],
+            speech: "Are you watching TV right now? No, I'm not.",
+            hint: "Réponse courte négative : 'No, I'm not' (ou 'No, I am not')."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Is your father working at the moment? — Yes, he ___.",
+            a: [["is"]],
+            speech: "Is your father working at the moment? Yes, he is.",
+            hint: "Réponse courte affirmative : 'Yes, he is' (forme pleine obligatoire)."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Is your father working today? — No, he ___.",
+            a: [["isn't", "is not"]],
+            speech: "Is your father working today? No, he isn't.",
+            hint: "Réponse courte négative : 'No, he isn't' (forme contractée usuelle)."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Are the students listening to the teacher? — Yes, they ___.",
+            a: [["are"]],
+            speech: "Are the students listening to the teacher? Yes, they are.",
+            hint: "The students = they ➔ 'Yes, they are'."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Are they playing football in the garden? — No, they ___.",
+            a: [["aren't", "are not"]],
+            speech: "Are they playing football in the garden? No, they aren't.",
+            hint: "Réponse courte négative au pluriel : 'No, they aren't'."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Do you like classical music? — Yes, I ___.",
+            a: [["do"]],
+            speech: "Do you like classical music? Yes, I do.",
+            hint: "Réponse courte au Simple Present : on reprend l'auxiliaire 'do' ➔ 'Yes, I do'."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Do your friends play golf on Sundays? — No, they ___.",
+            a: [["don't", "do not"]],
+            speech: "Do your friends play golf on Sundays? No, they don't.",
+            hint: "Auxiliaire négatif au pluriel : 'No, they don't'."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Does your brother live in London? — Yes, he ___.",
+            a: [["does"]],
+            speech: "Does your brother live in London? Yes, he does.",
+            hint: "À la 3e personne du singulier au Simple Present : 'Yes, he does'."
+        },
+        {
+            category: "short",
+            typeLabel: "Réponse courte",
+            badgeClass: "badge-short",
+            q: "Does she drink coffee in the evening? — No, she ___.",
+            a: [["doesn't", "does not"]],
+            speech: "Does she drink coffee in the evening? No, she doesn't.",
+            hint: "Négation à la 3e personne : 'No, she doesn't'."
+        },
+        {
+            category: "short",
+            typeLabel: "Question",
+            badgeClass: "badge-short",
+            q: "What ___ you ___ (to do) now?",
+            a: [["are"], ["doing"]],
+            speech: "What are you doing now?",
+            hint: "Question au Présent Continu : What + are + you + doing ?"
+        },
+        {
+            category: "short",
+            typeLabel: "Question",
+            badgeClass: "badge-short",
+            q: "Why ___ she ___ (to cry) at the moment?",
+            a: [["is"], ["crying"]],
+            speech: "Why is she crying at the moment?",
+            hint: "Question au Présent Continu : Why + is + she + crying ?"
+        },
+        {
+            category: "short",
+            typeLabel: "Question",
+            badgeClass: "badge-short",
+            q: "___ he ___ (to speak) English every day?",
+            a: [["Does", "does"], ["speak"]],
+            speech: "Does he speak English every day?",
+            hint: "Question au Simple Present : Does + he + base verbale (speak sans -s) ?"
+        },
+
+        // ================= 4. TO BE & HAVE GOT (FROM LOUIS'S EXERCISE SHEETS) =================
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Mum ___ (to have got) a car, but she (-) ___ a motorbike.",
+            a: [["has got", "'s got"], ["hasn't got", "has not got"]],
+            speech: "Mum has got a car, but she hasn't got a motorbike.",
+            hint: "Mum = she ➔ 'has got' à l'affirmatif, et 'hasn't got' au négatif."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Calvin Harris ___ my favourite pop star.",
+            a: [["is", "'s"]],
+            speech: "Calvin Harris is my favourite pop star.",
+            hint: "Calvin Harris = he ➔ 'is'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Are Vince and Sue twins? — Yes, they ___.",
+            a: [["are"]],
+            speech: "Are Vince and Sue twins? Yes, they are.",
+            hint: "Réponse courte affirmative avec 'to be' : 'Yes, they are' (sans contraction)."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "What ___ your address?",
+            a: [["is", "'s"]],
+            speech: "What is your address?",
+            hint: "'your address' est singulier (it) ➔ 'What is your address?'"
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "How much ___ these watches?",
+            a: [["are"]],
+            speech: "How much are these watches?",
+            hint: "'these watches' est au pluriel (they) ➔ 'How much are these watches?'"
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Susan and John ___ our neighbours, too.",
+            a: [["are"]],
+            speech: "Susan and John are our neighbours, too.",
+            hint: "Susan and John = they (pluriel) ➔ 'are'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "My sister and I ___ good friends.",
+            a: [["are"]],
+            speech: "My sister and I are good friends.",
+            hint: "'My sister and I' équivaut à 'we' (nous) ➔ 'are' !"
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Is Kelly your friend? — No, she ___.",
+            a: [["isn't", "is not"]],
+            speech: "Is Kelly your friend? No, she isn't.",
+            hint: "Réponse courte négative : 'No, she isn't'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "___ your teacher ___ (to have got) any children? — No, he ___.",
+            a: [["Has", "has"], ["got"], ["hasn't", "has not"]],
+            speech: "Has your teacher got any children? No, he hasn't.",
+            hint: "Your teacher = he ➔ 'Has your teacher got...'. Pas de 'got' dans la réponse courte : 'No, he hasn't' !"
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "My parents (-) ___ (to have got) a big house.",
+            a: [["haven't got", "have not got"]],
+            speech: "My parents haven't got a big house.",
+            hint: "My parents = they (pluriel) ➔ 'haven't got'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Kamala ___ (to have got) a shop in Hartfield.",
+            a: [["has got", "'s got"]],
+            speech: "Kamala has got a shop in Hartfield.",
+            hint: "Kamala = she ➔ 'has got'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "___ your dad ___ (to have got) a computer at work? — Yes, he ___.",
+            a: [["Has", "has"], ["got"], ["has"]],
+            speech: "Has your dad got a computer at work? Yes, he has.",
+            hint: "Your dad = he ➔ 'Has your dad got...'. Réponse courte affirmative : 'Yes, he has' (sans got !)."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "I (-) ___ a child! I am sixteen years old.",
+            a: [["am not", "'m not"]],
+            speech: "I am not a child! I am sixteen years old.",
+            hint: "Négation avec 'I' et 'to be' ➔ 'am not'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "They (-) ___ my favourite pop group.",
+            a: [["aren't", "are not"]],
+            speech: "They aren't my favourite pop group.",
+            hint: "Négation avec 'they' et 'to be' ➔ 'aren't'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "We ___ (to have got) two cars.",
+            a: [["have got", "'ve got"]],
+            speech: "We have got two cars.",
+            hint: "Avec 'we' ➔ 'have got'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "I (-) ___ (to have got) any money in my pocket.",
+            a: [["haven't got", "have not got"]],
+            speech: "I haven't got any money in my pocket.",
+            hint: "Exercice de la feuille : 'I haven't got any money'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "___ your sister ___ (to have got) a new bike? — No, she ___.",
+            a: [["Has", "has"], ["got"], ["hasn't", "has not"]],
+            speech: "Has your sister got a new bike? No, she hasn't.",
+            hint: "Your sister = she ➔ 'Has your sister got... No, she hasn't'."
+        },
+        {
+            category: "tobe_have",
+            typeLabel: "To Be & Have Got",
+            badgeClass: "badge-tb",
+            q: "Brooke ___ (to have got) a boyfriend? — Yes, she ___.",
+            a: [["has got", "has"], ["has"]],
+            speech: "Brooke has got a boyfriend? Yes, she has.",
+            hint: "Brooke = she ➔ 'has got'. Réponse courte : 'Yes, she has'."
+        }
+    ];
+
+    let currentFilter = 'all';
+    let currentQuestions = [];
+
+    // Helper: Normalize strings for tolerant matching
+    function normalize(str) {
+        if (!str) return "";
+        return str
+            .trim()
+            .toLowerCase()
+            .replace(/[’`]/g, "'") // Normalize apostrophes
+            .replace(/\s+/g, ' '); // Normalize spaces
+    }
+
+    // Toggle cheat sheet
+    function toggleCheatSheet() {
+        const sheet = document.getElementById('cheatSheet');
+        const btn = document.getElementById('toggleCheatBtn');
+        if (sheet.classList.contains('show')) {
+            sheet.classList.remove('show');
+            btn.innerHTML = "📘 Afficher l'aide-mémoire (Règles, Mots-clés & Astuces)";
+        } else {
+            sheet.classList.add('show');
+            btn.innerHTML = "✖️ Masquer l'aide-mémoire";
+        }
+    }
+
+    // Text-to-speech pronunciation
+    function speakSentence(text) {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-GB';
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // Filter changer
+    function setFilter(filterName) {
+        currentFilter = filterName;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        newQuiz();
+    }
+
+    // Update count badges
+    function updateCounts() {
+        document.getElementById('count-all').textContent = database.length;
+        document.getElementById('count-contrast').textContent = database.filter(i => i.category === 'contrast').length;
+        document.getElementById('count-spelling').textContent = database.filter(i => i.category === 'spelling').length;
+        document.getElementById('count-short').textContent = database.filter(i => i.category === 'short').length;
+        document.getElementById('count-tobe_have').textContent = database.filter(i => i.category === 'tobe_have').length;
+    }
+
+    // Initialize or Reset Quiz
+    function newQuiz() {
+        // Hide result banner
+        const banner = document.getElementById('result-banner');
+        banner.style.display = 'none';
+
+        // Filter pool
+        let pool = (currentFilter === 'all') 
+            ? [...database] 
+            : database.filter(item => item.category === currentFilter);
+
+        // Shuffle
+        pool.sort(() => 0.5 - Math.random());
+
+        // Select 10 questions
+        currentQuestions = pool.slice(0, 10);
+
+        // Render questions
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = "";
+
+        currentQuestions.forEach((item, qIdx) => {
+            const div = document.createElement('div');
+            div.className = 'quiz-item';
+
+            const parts = item.q.split("___");
+            let sentenceHtml = `<span class="sentence-row">`;
+
+            for (let b = 0; b < parts.length; b++) {
+                sentenceHtml += `<span>${parts[b]}</span>`;
+                if (b < item.a.length) {
+                    sentenceHtml += `
+                        <input type="text" 
+                               id="input-${qIdx}-${b}" 
+                               data-q="${qIdx}" 
+                               data-b="${b}"
+                               placeholder="réponse"
+                               autocomplete="off" 
+                               autocorrect="off" 
+                               autocapitalize="off" 
+                               spellcheck="false"
+                               onkeydown="handleKey(event, ${qIdx}, ${b})">
+                    `;
+                }
+            }
+
+            // Audio button
+            const cleanSpeechSentence = item.speech.replace(/'/g, "\\'");
+            sentenceHtml += `
+                <button type="button" class="speaker-btn" title="Écouter en anglais" onclick="speakSentence('${cleanSpeechSentence}')">
+                    🔊
+                </button>
+            </span>`;
+
+            div.innerHTML = `
+                <div class="quiz-item-header">
+                    <span class="item-num">Question ${qIdx + 1} / ${currentQuestions.length}</span>
+                    <span class="type-badge ${item.badgeClass}">${item.typeLabel}</span>
+                </div>
+                ${sentenceHtml}
+                <div id="feedback-${qIdx}" class="feedback-box"></div>
+            `;
+            container.appendChild(div);
+        });
+
+        // Focus first field
+        const first = document.getElementById('input-0-0');
+        if (first) first.focus();
+    }
+
+    // Handle enter key navigation
+    function handleKey(event, qIdx, bIdx) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            let next = document.getElementById(`input-${qIdx}-${bIdx + 1}`);
+            if (!next) {
+                next = document.getElementById(`input-${qIdx + 1}-0`);
+            }
+            if (next) {
+                next.focus();
+            } else {
+                checkAnswers();
+            }
+        }
+    }
+
+    // Check Answers
+    function checkAnswers() {
+        let score = 0;
+
+        currentQuestions.forEach((item, qIdx) => {
+            let questionAllCorrect = true;
+            let feedbackDetails = [];
+
+            item.a.forEach((acceptableList, bIdx) => {
+                const inputEl = document.getElementById(`input-${qIdx}-${bIdx}`);
+                const userVal = normalize(inputEl.value);
+
+                // Check against list of acceptable answers
+                const isCorrect = acceptableList.some(ans => normalize(ans) === userVal);
+
+                if (isCorrect) {
+                    inputEl.className = "input-correct";
+                    feedbackDetails.push(`<span class="ans-tag-correct">✓ ${acceptableList[0]}</span>`);
+                } else {
+                    questionAllCorrect = false;
+                    inputEl.className = "input-wrong";
+                    const displayUser = inputEl.value.trim() ? inputEl.value.trim() : "(vide)";
+                    feedbackDetails.push(
+                        `<span class="ans-tag-wrong">${displayUser}</span> <span class="ans-tag-expected">➔ ${acceptableList[0]}</span>`
+                    );
+                }
+            });
+
+            if (questionAllCorrect) {
+                score++;
+            }
+
+            // Display item feedback
+            const fbBox = document.getElementById(`feedback-${qIdx}`);
+            fbBox.className = "feedback-box show";
+            let html = "";
+            if (questionAllCorrect) {
+                html = `<span class="ans-tag-correct">✓ Bravo, c'est exact !</span>`;
+            } else {
+                html = `Correction : ${feedbackDetails.join(' | ')}`;
+            }
+
+            if (item.hint) {
+                html += `<div class="grammar-hint">💡 <strong>Explication :</strong> ${item.hint}</div>`;
+            }
+            fbBox.innerHTML = html;
+        });
+
+        // Display Score Banner
+        const banner = document.getElementById('result-banner');
+        const scoreText = document.getElementById('score-text');
+        const scoreMsg = document.getElementById('score-msg');
+        banner.style.display = "block";
+
+        scoreText.textContent = `Ton score : ${score} / ${currentQuestions.length}`;
+
+        const pct = Math.round((score / currentQuestions.length) * 100);
+        if (score === currentQuestions.length) {
+            banner.className = "score-10";
+            scoreMsg.innerHTML = `🎉 <strong>Félicitations Louis ! 100% de réussite !</strong> Tu maîtrises parfaitement la différence entre le Simple Present et le Present Continuous.`;
+        } else if (pct >= 70) {
+            banner.className = "score-good";
+            scoreMsg.innerHTML = `👍 <strong>Très bon résultat (${score}/10) !</strong> Regarde bien les petites corrections ci-dessus pour viser le 10/10 à la prochaine série.`;
+        } else {
+            banner.className = "score-low";
+            scoreMsg.innerHTML = `💪 <strong>Score : ${score}/10 (${pct}%).</strong> Prends le temps de lire les explications ci-dessus et ouvre le volet "Aide-mémoire" pour réviser les règles !`;
+        }
+
+        banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Reveal Answers
+    function revealAnswers() {
+        currentQuestions.forEach((item, qIdx) => {
+            item.a.forEach((acceptableList, bIdx) => {
+                const inputEl = document.getElementById(`input-${qIdx}-${bIdx}`);
+                inputEl.value = acceptableList[0];
+                inputEl.className = "input-correct";
+            });
+            const fbBox = document.getElementById(`feedback-${qIdx}`);
+            fbBox.className = "feedback-box show";
+            fbBox.innerHTML = `<span class="ans-tag-correct">Solution affichée</span>` + 
+                (item.hint ? `<div class="grammar-hint">💡 <strong>Explication :</strong> ${item.hint}</div>` : '');
+        });
+
+        const banner = document.getElementById('result-banner');
+        banner.style.display = "block";
+        banner.className = "score-good";
+        document.getElementById('score-text').textContent = "Solutions affichées";
+        document.getElementById('score-msg').textContent = "Observe attentivement les temps et les terminaisons avant de relancer une nouvelle série !";
+    }
+
+    // Launch
+    updateCounts();
+    newQuiz();
+</script>
+
+</body>
+</html>
