@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictée 3 : Accord de l'adjectif, Accord du verbe et Vocabulaire</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1d4ed8;
+            --secondary: #0ea5e9;
+            --success: #15803d;
+            --success-bg: #dcfce7;
+            --error: #b91c1c;
+            --error-bg: #fee2e2;
+            --warning-bg: #fef3c7;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --audio: #7c3aed;
+            --audio-hover: #6d28d9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 15px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        /* En-tête */
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 28px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+        }
+
+        header h1 {
+            font-size: 1.85rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        /* Fiche Mémo repliable */
+        .memo-details {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .memo-summary {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 16px 20px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            color: var(--primary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .memo-summary:hover {
+            background-color: #f1f5f9;
+        }
+
+        .memo-content {
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-gap: 20px;
+        }
+
+        .memo-section {
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .memo-section h3 {
+            font-size: 1.05rem;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .memo-section p, .memo-section ul {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-left: 18px;
+        }
+
+        .memo-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .chip {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .chip.verb {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .chip.invar {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .chip.adj {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        /* Sélecteur de mode */
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2);
+        }
+
+        /* Questions */
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .q-number {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .badge-adjectif {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-conjugaison {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-audio {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .question-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #0f172a;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .q-text {
+            display: inline;
+        }
+
+        .q-hint {
+            font-style: italic;
+            color: #2563eb;
+            font-weight: 700;
+            background: #eff6ff;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+        }
+
+        input[type="text"] {
+            font-size: 1.05rem;
+            font-family: inherit;
+            padding: 6px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.2s;
+            min-width: 150px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        input[type="text"]:disabled {
+            background-color: #f1f5f9;
+            color: #334155;
+            cursor: not-allowed;
+        }
+
+        /* Bouton Audio */
+        .btn-audio {
+            background-color: var(--audio);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 6px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-audio:hover {
+            background-color: var(--audio-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-audio:active {
+            transform: translateY(1px);
+        }
+
+        /* États de correction */
+        .quiz-card.correct {
+            border-color: #22c55e;
+            background-color: #f0fdf4;
+        }
+
+        .quiz-card.incorrect {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .correction-feedback {
+            margin-top: 10px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            line-height: 1.4;
+            display: none;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-card.correct .correction-feedback {
+            display: block;
+            color: var(--success);
+        }
+
+        .quiz-card.incorrect .correction-feedback {
+            display: block;
+            color: var(--error);
+        }
+
+        .rule-tip {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.88rem;
+            font-weight: normal;
+            color: #475569;
+        }
+
+        /* Zone de score */
+        #score-banner {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .score-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .score-msg {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        /* Boutons d'action */
+        .actions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-main:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-main:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e40af;
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: #dbeafe;
+        }
+
+        .btn-restart {
+            display: none;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+        }
+
+        /* Canvas Confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.45rem; }
+            .question-body { font-size: 1.05rem; }
+            input[type="text"] { width: 100%; min-width: unset; }
+            .memo-content { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <header>
+        <h1>📝 Dictée 3 : Entraînement & Quiz</h1>
+        <p>Accord de l'adjectif (fiche 51), Accord du verbe (fiche 54) & Vocabulaire</p>
+    </header>
+
+    <!-- Fiche mémo de révision -->
+    <details class="memo-details">
+        <summary class="memo-summary">
+            <span>📖 Consulter la fiche mémo (Règles & Vocabulaire de la Dictée 3)</span>
+            <span style="font-size: 0.85em; opacity: 0.8;">▼ Cliquer pour ouvrir</span>
+        </summary>
+        <div class="memo-content">
+            <div class="memo-section">
+                <h3>⚖️ Règles d'orthographe</h3>
+                <p>• <strong>L'adjectif (entraînement ORTH, fiche 51)</strong> : L'adjectif s'accorde en <strong>genre</strong> (masculin / féminin) et en <strong>nombre</strong> (singulier / pluriel) avec le nom auquel il se rapporte.<br>
+                <em>Attention : il peut être collé au nom (de <strong>belles</strong> poupées) ou séparé par un verbe d'état (les élèves de cette classe sont <strong>bavards</strong>).</em></p>
+                <p style="margin-top: 8px;">• <strong>Le verbe (1) (entraînement ORTH, fiche 54)</strong> : Le verbe s'accorde en <strong>nombre</strong> et en <strong>personne</strong> avec son <strong>sujet</strong>.<br>
+                <em>Piège classique : ne t'accorde jamais avec les pronoms compléments (<strong>lui, la, les, leur</strong>) placés juste devant le verbe ! Pose-toi toujours la question « Qui est-ce qui... ? » (Ex : Elle <u>les</u> <strong>regarde</strong> &rarr; c'est « elle » qui regarde !).</em></p>
+            </div>
+
+            <div class="memo-section">
+                <h3>📚 Les 22 Noms à connaître</h3>
+                <div class="memo-chips">
+                    <span class="chip">un musicien</span>
+                    <span class="chip">un soliste</span>
+                    <span class="chip">un voyageur</span>
+                    <span class="chip">un recoin</span>
+                    <span class="chip">un vieillard</span>
+                    <span class="chip">un hangar</span>
+                    <span class="chip">un taillis</span>
+                    <span class="chip">une mûre</span>
+                    <span class="chip">un touriste</span>
+                    <span class="chip">un clocher</span>
+                    <span class="chip">une cathédrale</span>
+                    <span class="chip">un vallon</span>
+                    <span class="chip">une quantité</span>
+                    <span class="chip">un insecte</span>
+                    <span class="chip">une clientèle</span>
+                    <span class="chip">un comptoir</span>
+                    <span class="chip">un fonctionnaire</span>
+                    <span class="chip">un dossier</span>
+                    <span class="chip">un public</span>
+                    <span class="chip">un athlète</span>
+                    <span class="chip">une fleur</span>
+                    <span class="chip">un parfum</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>🎨 Les 19 Adjectifs</h3>
+                <div class="memo-chips">
+                    <span class="chip adj">sympathique</span>
+                    <span class="chip adj">extraordinaire</span>
+                    <span class="chip adj">infatigable</span>
+                    <span class="chip adj">inconnu</span>
+                    <span class="chip adj">patient</span>
+                    <span class="chip adj">carré</span>
+                    <span class="chip adj">désert</span>
+                    <span class="chip adj">succulent</span>
+                    <span class="chip adj">bruyant</span>
+                    <span class="chip adj">ensoleillé</span>
+                    <span class="chip adj">familier (familière)</span>
+                    <span class="chip adj">immobile</span>
+                    <span class="chip adj">appétissant</span>
+                    <span class="chip adj">affairé</span>
+                    <span class="chip adj">important</span>
+                    <span class="chip adj">enthousiaste</span>
+                    <span class="chip adj">impressionnant</span>
+                    <span class="chip adj">splendide</span>
+                    <span class="chip adj">suave</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>✍️ Les 10 Verbes de la dictée (+ ceux de l'exercice)</h3>
+                <p style="margin-bottom: 6px;"><em>Attention aux particularités au présent : <strong>cueillir</strong> (je cueille, tu cueilles, il cueille - comme le 1<sup>er</sup> groupe !), <strong>découvrir / offrir</strong> (je découvre, tu offres, il découvre), <strong>apercevoir</strong> (j'aperçois, il aperçoit, ils aperçoivent avec cédille !), <strong>attendre</strong> (j'attends, il attend - avec d), <strong>applaudir</strong> (j'applaudis, il applaudit, nous applaudissons, ils applaudissent).</em></p>
+                <div class="memo-chips">
+                    <span class="chip verb">accompagner</span>
+                    <span class="chip verb">découvrir</span>
+                    <span class="chip verb">causer</span>
+                    <span class="chip verb">cueillir</span>
+                    <span class="chip verb">apercevoir</span>
+                    <span class="chip verb">abriter</span>
+                    <span class="chip verb">attendre</span>
+                    <span class="chip verb">traiter</span>
+                    <span class="chip verb">applaudir</span>
+                    <span class="chip verb">exhaler</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>📌 Les Mots invariables</h3>
+                <div class="memo-chips">
+                    <span class="chip invar">près de</span>
+                    <span class="chip invar">tout autour</span>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Choix de mode -->
+    <div class="mode-selector">
+        <button class="mode-btn active" onclick="changerMode('mixte')">🌟 Quiz Mixte (10 questions)</button>
+        <button class="mode-btn" onclick="changerMode('exercices')">📋 Les 10 questions de la feuille</button>
+        <button class="mode-btn" onclick="changerMode('adjectifs')">🎨 Accord de l'adjectif (10)</button>
+        <button class="mode-btn" onclick="changerMode('conjugaison')">⚡ Accord du verbe (10)</button>
+        <button class="mode-btn" onclick="changerMode('audio')">🔊 Dictée Vocabulaire (10)</button>
+    </div>
+
+    <!-- Conteneur des 10 questions -->
+    <div id="quiz-container"></div>
+
+    <!-- Bannière de score -->
+    <div id="score-banner">
+        <div class="score-number" id="score-display">0 / 10</div>
+        <div class="score-msg" id="score-message">Bravo !</div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="actions-container">
+        <button id="btn-submit" class="btn-main" onclick="corrigerQuiz()">✅ Corriger mon quiz (sur 10)</button>
+        <button id="btn-retry" class="btn-secondary" style="display: none;" onclick="reessayerMemeQuiz()">🔁 Réessayer ce même quiz</button>
+        <button id="btn-new-quiz" class="btn-main btn-restart" onclick="nouveauQuiz()">🔄 Faire un autre quiz (10 nouvelles questions)</button>
+    </div>
+</div>
+
+<script>
+    /* =========================================================
+       BANQUE COMPLÈTE DE QUESTIONS POUR LA DICTÉE 3
+       ========================================================= */
+
+    // Les 10 questions exactes de la feuille d'exercices
+    const EXERCICES_FEUILLE = [
+        // Exercice 1 : Conjugue les verbes entre parenthèses
+        {
+            type: "indice",
+            badge: "📋 Ex. 1 · Conjugaison",
+            badgeClass: "badge-conjugaison",
+            hint: "offrir",
+            debut: "Tu lui ",
+            fin: " un bouquet de roses pour la Saint Valentin.",
+            reponses: ["offres"],
+            astuce: "Le sujet est « Tu » (ne t'accorde pas avec « lui »). Offrir se conjugue comme un verbe en -er au présent : tu offres (-es)."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 1 · Conjugaison",
+            badgeClass: "badge-conjugaison",
+            hint: "réclamer",
+            debut: "Ses parents la ",
+            fin: " à l'accueil du grand magasin.",
+            reponses: ["réclament"],
+            astuce: "Qui est-ce qui réclame ? Ce sont « Ses parents » (3e pers. du pluriel) -> ils réclament (-ent)."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 1 · Conjugaison",
+            badgeClass: "badge-conjugaison",
+            hint: "vouloir",
+            debut: "Julie a découvert les cadeaux, elle les ",
+            fin: " sans plus attendre.",
+            reponses: ["veut"],
+            astuce: "Piège ! Le sujet est « elle » (Julie), et non « les » (les cadeaux) : elle veut (-t)."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 1 · Conjugaison",
+            badgeClass: "badge-conjugaison",
+            hint: "regarder",
+            debut: "Mamie a de nombreuses photos, elle les ",
+            fin: " souvent, avec nostalgie.",
+            reponses: ["regarde"],
+            astuce: "Piège ! Le sujet est « elle » (Mamie), et non « les » (les photos) : elle regarde (-e)."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 1 · Conjugaison",
+            badgeClass: "badge-conjugaison",
+            hint: "voir",
+            debut: "Ses parents, elle les ",
+            fin: " chaque week-end.",
+            reponses: ["voit"],
+            astuce: "Qui est-ce qui voit ses parents ? C'est « elle » (3e pers. du singulier) : elle voit (-t)."
+        },
+        // Exercice 2 : Accorde les adjectifs entre parenthèses
+        {
+            type: "indice",
+            badge: "📋 Ex. 2 · Adjectif",
+            badgeClass: "badge-adjectif",
+            hint: "belle",
+            debut: "Les enfants ont de ",
+            fin: " poupées.",
+            reponses: ["belles"],
+            astuce: "L'adjectif s'accorde avec « poupées » (féminin pluriel) : belles (-s)."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 2 · Adjectif",
+            badgeClass: "badge-adjectif",
+            hint: "nouveau",
+            debut: "Les ",
+            fin: " élèves sont au nombre de cent.",
+            reponses: ["nouveaux"],
+            astuce: "L'adjectif s'accorde avec « élèves » (pluriel). Les adjectifs en -eau prennent un -x au pluriel : nouveaux."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 2 · Adjectif",
+            badgeClass: "badge-adjectif",
+            hint: "bavard",
+            debut: "Les élèves de cette classe sont trop ",
+            fin: ".",
+            reponses: ["bavards"],
+            astuce: "Attention : ce n'est pas la classe qui est bavarde, ce sont « Les élèves » (masculin pluriel) -> bavards (-s)."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 2 · Adjectif",
+            badgeClass: "badge-adjectif",
+            hint: "beau",
+            debut: "La femme de Jules est vraiment ",
+            fin: ".",
+            reponses: ["belle"],
+            astuce: "Attention : qui est-ce qui est beau ? C'est « La femme » (féminin singulier), pas Jules -> belle."
+        },
+        {
+            type: "indice",
+            badge: "📋 Ex. 2 · Adjectif",
+            badgeClass: "badge-adjectif",
+            hint: "poilu",
+            debut: "Le chien du directeur est très ",
+            fin: ".",
+            reponses: ["poilu"],
+            astuce: "L'adjectif s'accorde avec « Le chien » (masculin singulier) -> poilu."
+        }
+    ];
+
+    const BANQUE = {
+        exercices: EXERCICES_FEUILLE,
+
+        // --- 1. ACCORD DE L'ADJECTIF (FICHE 51 + VOCABULAIRE DICTÉE 3) ---
+        adjectifs: [
+            ...EXERCICES_FEUILLE.slice(5),
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "succulent",
+                debut: "Dans les taillis, nous cueillons des mûres ",
+                fin: " et bien sucrées.",
+                reponses: ["succulentes"],
+                astuce: "S'accorde avec « des mûres » (féminin pluriel) : succulentes (-es)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "appétissant",
+                debut: "Ces fruits des bois sont vraiment ",
+                fin: " !",
+                reponses: ["appétissants"],
+                astuce: "S'accorde avec « Ces fruits » (masculin pluriel) : appétissants (-s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "familier",
+                debut: "Ces recoins de la forêt nous sont ",
+                fin: ".",
+                reponses: ["familiers"],
+                astuce: "S'accorde avec « Ces recoins » (masculin pluriel) : familiers (-s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "familier",
+                debut: "Cette mélodie du musicien m'est très ",
+                fin: ".",
+                reponses: ["familière"],
+                astuce: "S'accorde avec « Cette mélodie » (féminin singulier) : les adjectifs en -ier font -ière au féminin -> familière."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "impressionnant",
+                debut: "Cette vieille cathédrale est ",
+                fin: " avec son haut clocher.",
+                reponses: ["impressionnante"],
+                astuce: "S'accorde avec « Cette vieille cathédrale » (féminin singulier) : impressionnante (-e, deux n)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "ensoleillé",
+                debut: "Les voyageurs traversent des vallons ",
+                fin: ".",
+                reponses: ["ensoleillés"],
+                astuce: "S'accorde avec « des vallons » (masculin pluriel) : ensoleillés (-és)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "ensoleillé",
+                debut: "Les touristes flânent sur les places ",
+                fin: " du village.",
+                reponses: ["ensoleillées"],
+                astuce: "S'accorde avec « les places » (féminin pluriel) : ensoleillées (-ées)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "patient",
+                debut: "Derrière le comptoir, la clientèle reste très ",
+                fin: ".",
+                reponses: ["patiente"],
+                astuce: "S'accorde avec « la clientèle » (féminin singulier) : patiente (-e)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "affairé",
+                debut: "Les fonctionnaires du bureau semblent très ",
+                fin: ".",
+                reponses: ["affairés"],
+                astuce: "S'accorde avec « Les fonctionnaires » (masculin pluriel) : affairés (deux f, -és)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "important",
+                debut: "Le fonctionnaire traite des dossiers très ",
+                fin: ".",
+                reponses: ["importants"],
+                astuce: "S'accorde avec « des dossiers » (masculin pluriel) : importants (-s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "important",
+                debut: "Dans le taillis, on trouve une quantité ",
+                fin: " de mûres.",
+                reponses: ["importante"],
+                astuce: "S'accorde avec « une quantité » (féminin singulier) : importante (-e)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "inconnu",
+                debut: "L'explorateur observe des fleurs ",
+                fin: " au parfum suave.",
+                reponses: ["inconnues"],
+                astuce: "S'accorde avec « des fleurs » (féminin pluriel) : inconnues (-es, deux n)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "inconnu",
+                debut: "Nous découvrons un insecte ",
+                fin: " caché sous une feuille.",
+                reponses: ["inconnu"],
+                astuce: "S'accorde avec « un insecte » (masculin singulier) : inconnu."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "carré",
+                debut: "Le clocher ",
+                fin: " de la cathédrale domine tout le vallon.",
+                reponses: ["carré"],
+                astuce: "S'accorde avec « Le clocher » (masculin singulier) : carré (deux r, -é)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "carré",
+                debut: "Le vieux hangar possède deux grandes fenêtres ",
+                fin: ".",
+                reponses: ["carrées"],
+                astuce: "S'accorde avec « deux grandes fenêtres » (féminin pluriel) : carrées (-ées)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "désert",
+                debut: "En hiver, les ruelles autour de la cathédrale sont ",
+                fin: ".",
+                reponses: ["désertes"],
+                astuce: "S'accorde avec « les ruelles » (féminin pluriel) : désertes (-es)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "bruyant",
+                debut: "Les touristes ",
+                fin: " arrivent près du monument.",
+                reponses: ["bruyants"],
+                astuce: "S'accorde avec « Les touristes » (pluriel) : bruyants (-s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "infatigable",
+                debut: "Ces athlètes ",
+                fin: " courent depuis deux heures.",
+                reponses: ["infatigables"],
+                astuce: "S'accorde avec « Ces athlètes » (pluriel) : infatigables (-s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "enthousiaste",
+                debut: "Le public ",
+                fin: " applaudit longuement le soliste.",
+                reponses: ["enthousiaste"],
+                astuce: "Attention : « Le public » est un nom masculin singulier -> enthousiaste (sans s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "extraordinaire",
+                debut: "Les musiciens jouent des mélodies ",
+                fin: ".",
+                reponses: ["extraordinaires"],
+                astuce: "S'accorde avec « des mélodies » (féminin pluriel) : extraordinaires (-s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "immobile",
+                debut: "Les insectes restent ",
+                fin: " sur les pétales de la fleur.",
+                reponses: ["immobiles"],
+                astuce: "S'accorde avec « Les insectes » (masculin pluriel) : immobiles (deux m, -s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-adjectif",
+                hint: "splendide",
+                debut: "Ces fleurs exhalent des parfums ",
+                fin: " et suaves.",
+                reponses: ["splendides"],
+                astuce: "S'accorde avec « des parfums » (masculin pluriel) : splendides (-s)."
+            }
+        ],
+
+        // --- 2. ACCORD DU VERBE (FICHE 54 + 10 VERBES DE LA LISTE) ---
+        conjugaison: [
+            ...EXERCICES_FEUILLE.slice(0, 5),
+            // 1. accompagner
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "accompagner",
+                audioText: "Verbe accompagner : Les musiciens accompagnent le soliste avec talent.",
+                debut: "Les musiciens ",
+                fin: " le soliste avec talent.",
+                reponses: ["accompagnent"],
+                astuce: "Le sujet est « Les musiciens » (3e pers. du pluriel) : ils accompagnent (deux c, -ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "accompagner",
+                audioText: "Verbe accompagner : Le pianiste les accompagne sur scène.",
+                debut: "Le pianiste les ",
+                fin: " sur scène.",
+                reponses: ["accompagne"],
+                astuce: "Piège du pronom « les » ! Le sujet est « Le pianiste » (singulier) : il accompagne (-e)."
+            },
+            // 2. découvrir
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "découvrir",
+                audioText: "Verbe découvrir : Le voyageur découvre un vallon ensoleillé.",
+                debut: "Le voyageur ",
+                fin: " un vallon ensoleillé.",
+                reponses: ["découvre"],
+                astuce: "découvrir se conjugue comme un verbe du 1er groupe au présent : il découvre (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "découvrir",
+                audioText: "Verbe découvrir : Tu les découvres dans un recoin sombre du hangar.",
+                debut: "Tu les ",
+                fin: " dans un recoin sombre du hangar.",
+                reponses: ["découvres"],
+                astuce: "Le sujet est « Tu » (ne t'accorde pas avec « les ») : tu découvres (-es)."
+            },
+            // 3. causer
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "causer",
+                audioText: "Verbe causer : Le vieillard cause volontiers avec les voyageurs.",
+                debut: "Le vieillard ",
+                fin: " volontiers avec les voyageurs.",
+                reponses: ["cause"],
+                astuce: "Le sujet est « Le vieillard » (singulier) : il cause (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "causer",
+                audioText: "Verbe causer : Ces insectes causent parfois des dégâts dans les jardins.",
+                debut: "Ces insectes ",
+                fin: " parfois des dégâts dans les jardins.",
+                reponses: ["causent"],
+                astuce: "Le sujet est « Ces insectes » (pluriel) : ils causent (-ent)."
+            },
+            // 4. cueillir
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "cueillir",
+                audioText: "Verbe cueillir : Tu cueilles des mûres succulentes dans le taillis.",
+                debut: "Tu ",
+                fin: " des mûres succulentes dans le taillis.",
+                reponses: ["cueilles"],
+                astuce: "Attention à l'orthographe (-euil-) et à la terminaison : cueillir se conjugue comme le 1er groupe -> tu cueilles (-es)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "cueillir",
+                audioText: "Verbe cueillir : Ces belles fleurs, elle les cueille près du vallon.",
+                debut: "Ces belles fleurs, elle les ",
+                fin: " près du vallon.",
+                reponses: ["cueille"],
+                astuce: "Piège ! Le sujet est « elle », pas « les fleurs » : elle cueille (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "cueillir",
+                audioText: "Verbe cueillir : Nous cueillons une grande quantité de fruits.",
+                debut: "Nous ",
+                fin: " une grande quantité de fruits.",
+                reponses: ["cueillons"],
+                astuce: "Le sujet est « Nous » : nous cueillons (-ons)."
+            },
+            // 5. apercevoir
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "apercevoir",
+                audioText: "Verbe apercevoir : Au loin, le touriste aperçoit le clocher de la cathédrale.",
+                debut: "Au loin, le touriste ",
+                fin: " le clocher de la cathédrale.",
+                reponses: ["aperçoit"],
+                astuce: "Attention à la cédille devant le o et au seul p : il aperçoit (-oit)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "apercevoir",
+                audioText: "Verbe apercevoir : Les voyageurs les aperçoivent tout autour du vallon.",
+                debut: "Les voyageurs les ",
+                fin: " tout autour du vallon.",
+                reponses: ["aperçoivent"],
+                astuce: "Le sujet est « Les voyageurs » (pluriel) : ils aperçoivent (avec ç et -ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "apercevoir",
+                audioText: "Verbe apercevoir : J'aperçois un athlète infatigable sur le sentier.",
+                debut: "J'",
+                fin: " un athlète infatigable sur le sentier.",
+                reponses: ["aperçois"],
+                astuce: "Avec « je », apercevoir prend une cédille et un -s : j'aperçois."
+            },
+            // 6. abriter
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "abriter",
+                audioText: "Verbe abriter : Ce vieux hangar abrite les voyageurs pendant l'orage.",
+                debut: "Ce vieux hangar ",
+                fin: " les voyageurs pendant l'orage.",
+                reponses: ["abrite"],
+                astuce: "Qui est-ce qui abrite ? C'est « Ce vieux hangar » (singulier) : il abrite (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "abriter",
+                audioText: "Verbe abriter : Les taillis épais les abritent du vent.",
+                debut: "Les taillis épais les ",
+                fin: " du vent.",
+                reponses: ["abritent"],
+                astuce: "Le sujet est « Les taillis » (pluriel) : ils abritent (-ent)."
+            },
+            // 7. attendre
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "attendre",
+                audioText: "Verbe attendre : La clientèle patiente attend devant le comptoir.",
+                debut: "La clientèle patiente ",
+                fin: " devant le comptoir.",
+                reponses: ["attend"],
+                astuce: "Verbe en -dre à la 3e pers. du singulier : elle attend (se termine par un d)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "attendre",
+                audioText: "Verbe attendre : Ses amis, il les attend près de la cathédrale.",
+                debut: "Ses amis, il les ",
+                fin: " près de la cathédrale.",
+                reponses: ["attend"],
+                astuce: "Piège ! Le sujet est « il », et non « Ses amis / les » : il attend (-d)."
+            },
+            // 8. traiter
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "traiter",
+                audioText: "Verbe traiter : Le fonctionnaire affairé les traite avec beaucoup de sérieux.",
+                debut: "Le fonctionnaire affairé les ",
+                fin: " avec beaucoup de sérieux.",
+                reponses: ["traite"],
+                astuce: "Piège du pronom « les » ! Le sujet est « Le fonctionnaire » (singulier) : il traite (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "traiter",
+                audioText: "Verbe traiter : Les employés traitent plusieurs dossiers importants.",
+                debut: "Les employés ",
+                fin: " plusieurs dossiers importants.",
+                reponses: ["traitent"],
+                astuce: "Le sujet est « Les employés » (pluriel) : ils traitent (-ent)."
+            },
+            // 9. applaudir
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "applaudir",
+                audioText: "Verbe applaudir : Le public enthousiaste l'applaudit chaleureusement.",
+                debut: "Le public enthousiaste l'",
+                fin: " chaleureusement.",
+                reponses: ["applaudit"],
+                astuce: "Le sujet est « Le public » (3e pers. du singulier) : il applaudit (deux p, -it)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "applaudir",
+                audioText: "Verbe applaudir : Les spectateurs applaudissent l'athlète et le musicien.",
+                debut: "Les spectateurs ",
+                fin: " l'athlète et le musicien.",
+                reponses: ["applaudissent"],
+                astuce: "Verbe du 2e groupe au pluriel : ils applaudissent (-issent)."
+            },
+            // 10. exhaler
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "exhaler",
+                audioText: "Verbe exhaler : Ces fleurs splendides exhalent un parfum suave.",
+                debut: "Ces fleurs splendides ",
+                fin: " un parfum suave.",
+                reponses: ["exhalent"],
+                astuce: "Attention au h muet (exhaler) ! Le sujet est « Ces fleurs » (pluriel) : elles exhalent (-ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Accord du verbe",
+                badgeClass: "badge-conjugaison",
+                hint: "exhaler",
+                audioText: "Verbe exhaler : La rose du jardin exhale une odeur extraordinaire.",
+                debut: "La rose du jardin ",
+                fin: " une odeur extraordinaire.",
+                reponses: ["exhale"],
+                astuce: "Attention au h muet (exhaler) ! Le sujet est « La rose » (singulier) : elle exhale (-e)."
+            }
+        ],
+
+        // --- 3. DICTÉE AUDIO : NOMS, ADJECTIFS, VERBES & MOTS INVARIABLES ---
+        audio: [
+            // Noms (22)
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un musicien", reponses: ["un musicien"], consigne: "Écris le groupe nominal entendu :", astuce: "S'écrit avec -cien à la fin." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un soliste", reponses: ["un soliste"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un voyageur", reponses: ["un voyageur"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un recoin", reponses: ["un recoin"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un vieillard", reponses: ["un vieillard"], consigne: "Écris le groupe nominal entendu (attention à la lettre muette finale) :", astuce: "vieillard prend -eil-, deux l et un d muet à la fin (comme vieille / vieillesse)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un hangar", reponses: ["un hangar"], consigne: "Écris le groupe nominal entendu (attention au h au début) :", astuce: "hangar commence par un h et se termine par -gar (sans lettre muette)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un taillis", reponses: ["un taillis"], consigne: "Écris le groupe nominal entendu (attention à la lettre muette finale) :", astuce: "un taillis prend un s muet même au singulier !" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une mûre", reponses: ["une mûre"], consigne: "Écris le groupe nominal entendu (le fruit de la ronce, attention à l'accent) :", astuce: "une mûre prend un accent circonflexe sur le û !" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un touriste", reponses: ["un touriste"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un clocher", reponses: ["un clocher"], consigne: "Écris le groupe nominal entendu :", astuce: "un clocher se termine par -er." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une cathédrale", reponses: ["une cathédrale"], consigne: "Écris le groupe nominal entendu (attention au th) :", astuce: "cathédrale s'écrit avec th !" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un vallon", reponses: ["un vallon"], consigne: "Écris le groupe nominal entendu (comme vallée, attention aux deux l) :", astuce: "un vallon prend deux l (comme une vallée)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une quantité", reponses: ["une quantité"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un insecte", reponses: ["un insecte"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une clientèle", reponses: ["une clientèle"], consigne: "Écris le groupe nominal entendu (attention à l'accent grave) :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un comptoir", reponses: ["un comptoir"], consigne: "Écris le groupe nominal entendu (comme compter, attention à la lettre muette au milieu) :", astuce: "un comptoir s'écrit avec m-p-t (comme compter) et -oir sans e." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un fonctionnaire", reponses: ["un fonctionnaire"], consigne: "Écris le groupe nominal entendu (attention aux deux n) :", astuce: "fonctionnaire prend deux n." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un dossier", reponses: ["un dossier"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un public", reponses: ["un public"], consigne: "Écris le groupe nominal entendu :", astuce: "un public se termine par -c." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un athlète", reponses: ["un athlète"], consigne: "Écris le groupe nominal entendu (attention au th) :", astuce: "un athlète s'écrit avec th et un accent grave è." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une fleur", reponses: ["une fleur"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un parfum", reponses: ["un parfum"], consigne: "Écris le groupe nominal entendu (attention à la fin du mot) :", astuce: "un parfum se termine par -um (comme parfumer)." },
+
+            // Adjectifs et expressions (19)
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "sympathique", reponses: ["sympathique"], consigne: "Écris l'adjectif entendu (attention au y et au th) :", astuce: "s-y-m-p-a-t-h-i-q-u-e." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "extraordinaire", reponses: ["extraordinaire"], consigne: "Écris l'adjectif entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "infatigable", reponses: ["infatigable"], consigne: "Écris l'adjectif entendu (sans u après le g !) :", astuce: "infatigable s'écrit -ga- (sans u)." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "succulent", reponses: ["succulent"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux deux c) :", astuce: "succulent prend deux c et se termine par -ent." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "appétissant", reponses: ["appétissant"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux consonnes doubles) :", astuce: "appétissant prend deux p et deux s." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "affairé", reponses: ["affairé"], consigne: "Écris l'adjectif masculin singulier entendu (comme une affaire) :", astuce: "affairé prend deux f." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "enthousiaste", reponses: ["enthousiaste"], consigne: "Écris l'adjectif entendu (attention au th) :", astuce: "enthousiaste s'écrit avec en-th-ou-s-i-a-s-t-e." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "impressionnant", reponses: ["impressionnant"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux deux s et aux deux n) :", astuce: "impressionnant prend m devant p, deux s et deux n." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "splendide", reponses: ["splendide"], consigne: "Écris l'adjectif entendu (attention à -en-) :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "suave", reponses: ["suave"], consigne: "Écris l'adjectif entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "bruyant", reponses: ["bruyant"], consigne: "Écris l'adjectif masculin singulier entendu (attention au y) :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "ensoleillé", reponses: ["ensoleillé"], consigne: "Écris l'adjectif masculin singulier entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "immobile", reponses: ["immobile"], consigne: "Écris l'adjectif entendu (attention aux deux m) :" },
+
+            // Verbes difficiles & Mots invariables
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "cueillir", reponses: ["cueillir"], consigne: "Écris ce verbe à l'infinitif (attention à l'ordre du u et du e) :", astuce: "c-u-e-i-l-l-i-r (le u avant le e pour faire le son [k])." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "exhaler", reponses: ["exhaler"], consigne: "Écris ce verbe à l'infinitif (attention au h muet) :", astuce: "e-x-h-a-l-e-r." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "apercevoir", reponses: ["apercevoir"], consigne: "Écris ce verbe à l'infinitif (attention : un seul p !) :", astuce: "apercevoir ne prend qu'un seul p." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "applaudir", reponses: ["applaudir"], consigne: "Écris ce verbe à l'infinitif (attention aux deux p) :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "près de", reponses: ["près de"], consigne: "Écris les deux mots invariables entendus (attention à l'accent grave) :" },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "tout autour", reponses: ["tout autour"], consigne: "Écris les deux mots invariables entendus :", astuce: "tout autour (sans s à la fin)." }
+        ]
+    };
+
+    /* =========================================================
+       LOGIQUE DU QUIZ
+       ========================================================= */
+    let modeActuel = 'mixte';
+    let questionsActuelles = [];
+    let voixFrancaise = null;
+
+    // Initialisation Voix Synthèse Vocale
+    function initialiserVoix() {
+        if ('speechSynthesis' in window) {
+            const charger = () => {
+                const voix = window.speechSynthesis.getVoices();
+                voixFrancaise = voix.find(v => v.lang === 'fr-FR' || v.lang.startsWith('fr'));
+            };
+            window.speechSynthesis.onvoiceschanged = charger;
+            charger();
+        }
+    }
+
+    function ecouter(texte) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'fr-FR';
+            utterance.rate = 0.82; // Rythme posé pour dictée scolaire
+            utterance.pitch = 1.0;
+            if (voixFrancaise) utterance.voice = voixFrancaise;
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Désolé, ton navigateur ne supporte pas la synthèse vocale.");
+        }
+    }
+
+    function changerMode(mode) {
+        modeActuel = mode;
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        const btnActif = Array.from(document.querySelectorAll('.mode-btn')).find(b => b.getAttribute('onclick').includes(`'${mode}'`));
+        if (btnActif) btnActif.classList.add('active');
+        nouveauQuiz();
+    }
+
+    function melanger(tableau) {
+        const arr = [...tableau];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function selectionnerQuestions() {
+        if (modeActuel === 'mixte') {
+            // Répartition sur 10 questions : 4 accords d'adjectifs + 4 accords du verbe + 2 dictées vocabulaire
+            const adj = melanger(BANQUE.adjectifs).slice(0, 4);
+            const conj = melanger(BANQUE.conjugaison).slice(0, 4);
+            const aud = melanger(BANQUE.audio).slice(0, 2);
+            return melanger([...adj, ...conj, ...aud]);
+        } else if (modeActuel === 'exercices') {
+            // Les 10 questions exactes de la feuille dans l'ordre (5 verbes + 5 adjectifs)
+            return [...BANQUE.exercices];
+        } else {
+            // Mode spécifique : 10 questions de la catégorie choisie
+            return melanger(BANQUE[modeActuel]).slice(0, 10);
+        }
+    }
+
+    function genererAffichageQuiz() {
+        const conteneur = document.getElementById('quiz-container');
+        conteneur.innerHTML = '';
+
+        // Masquer le score et basculer les boutons
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.id = `card-${idx}`;
+
+            const topHtml = `
+                <div class="card-top">
+                    <span class="q-number">Question ${idx + 1} / 10</span>
+                    <span class="badge ${q.badgeClass}">${q.badge}</span>
+                </div>
+            `;
+
+            let bodyHtml = '';
+
+            if (q.type === 'audio') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        ${q.consigne}
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${q.audioText.replace(/'/g, "\\'")}')" title="Cliquer pour écouter">
+                            🔊 Écouter
+                        </button>
+                        <input type="text" id="input-${idx}" placeholder="Écris ici..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                    </div>
+                `;
+            } else if (q.type === 'conjugaison') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        Conjugue le verbe entre parenthèses au présent (tu peux aussi cliquer sur <strong>🔊 Écouter</strong>) :
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${q.audioText.replace(/'/g, "\\'")}')" title="Cliquer pour écouter la phrase">
+                            🔊 Écouter
+                        </button>
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <span class="q-hint">(${q.hint})</span>
+                        <input type="text" id="input-${idx}" placeholder="verbe accordé..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            } else if (q.type === 'indice') {
+                bodyHtml = `
+                    <div class="question-body">
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <span class="q-hint">(${q.hint})</span>
+                        <input type="text" id="input-${idx}" placeholder="Écris ta réponse..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            const feedbackHtml = `
+                <div id="feedback-${idx}" class="correction-feedback"></div>
+            `;
+
+            card.innerHTML = topHtml + bodyHtml + feedbackHtml;
+            conteneur.appendChild(card);
+        });
+
+        // Focus direct sur la première question
+        setTimeout(() => {
+            const premierInput = document.getElementById('input-0');
+            if (premierInput) premierInput.focus();
+        }, 100);
+    }
+
+    function gererToucheEntree(event, idx) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const suivant = document.getElementById(`input-${idx + 1}`);
+            if (suivant) {
+                suivant.focus();
+            } else {
+                corrigerQuiz();
+            }
+        }
+    }
+
+    function normaliser(str) {
+        if (!str) return "";
+        return str
+            .replace(/[’']/g, "'") // Harmonise apostrophes
+            .replace(/\s+/g, ' ')  // Harmonise espaces
+            .trim()
+            .toLowerCase()
+            .replace(/\.$/, '');   // Enlève point final accidentel
+    }
+
+    function corrigerQuiz() {
+        let score = 0;
+        let nonRepondues = 0;
+
+        // Vérifier s'il reste des questions vides
+        for (let i = 0; i < questionsActuelles.length; i++) {
+            const input = document.getElementById(`input-${i}`);
+            if (input.value.trim() === '') {
+                nonRepondues++;
+            }
+        }
+
+        if (nonRepondues > 0) {
+            const confirmMsg = `Il te reste ${nonRepondues} question(s) sans réponse.\nVeux-tu quand même corriger ton quiz maintenant ?`;
+            if (!confirm(confirmMsg)) {
+                for (let i = 0; i < questionsActuelles.length; i++) {
+                    const input = document.getElementById(`input-${i}`);
+                    if (input.value.trim() === '') {
+                        input.focus();
+                        break;
+                    }
+                }
+                return;
+            }
+        }
+
+        // Évaluation des questions
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            const saisie = normaliser(input.value);
+            const reponsesNormalisees = q.reponses.map(r => normaliser(r));
+
+            const estCorrect = reponsesNormalisees.includes(saisie);
+            input.disabled = true;
+
+            card.classList.remove('correct', 'incorrect');
+
+            if (estCorrect) {
+                score++;
+                card.classList.add('correct');
+                feedback.innerHTML = `✔ Bravo ! Bonne réponse.`;
+            } else {
+                card.classList.add('incorrect');
+                const bonneReponseAffichee = q.reponses[0];
+                let msg = `✘ Oups ! Réponse attendue : <strong>« ${bonneReponseAffichee} »</strong>`;
+                if (q.astuce) {
+                    msg += `<span class="rule-tip">💡 Astuce : ${q.astuce}</span>`;
+                }
+                feedback.innerHTML = msg;
+            }
+        });
+
+        // Affichage du résultat
+        const banner = document.getElementById('score-banner');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreMessage = document.getElementById('score-message');
+
+        scoreDisplay.textContent = `${score} / 10`;
+
+        if (score === 10) {
+            banner.style.backgroundColor = 'var(--success-bg)';
+            banner.style.color = 'var(--success)';
+            scoreMessage.innerHTML = '🎉 <strong>Score parfait ! 10 sur 10 !</strong> Tu es parfaitement prêt pour la Dictée 3 !';
+            lancerConfettis();
+        } else if (score >= 8) {
+            banner.style.backgroundColor = '#ecfdf5';
+            banner.style.color = '#047857';
+            scoreMessage.innerHTML = '👏 <strong>Très bon score !</strong> Encore un tout petit effort pour le sans-faute !';
+        } else if (score >= 5) {
+            banner.style.backgroundColor = 'var(--warning-bg)';
+            banner.style.color = '#b45309';
+            scoreMessage.innerHTML = '👍 <strong>Pas mal !</strong> Revois tes erreurs et retente ta chance pour t\'améliorer !';
+        } else {
+            banner.style.backgroundColor = 'var(--error-bg)';
+            banner.style.color = 'var(--error)';
+            scoreMessage.innerHTML = '💪 <strong>Ne te décourage pas !</strong> Ouvre la fiche mémo en haut pour réviser et relance un quiz.';
+        }
+
+        banner.style.display = 'block';
+
+        // Basculer les boutons
+        document.getElementById('btn-submit').style.display = 'none';
+        document.getElementById('btn-retry').style.display = 'block';
+        document.getElementById('btn-new-quiz').style.display = 'block';
+
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function reessayerMemeQuiz() {
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            input.disabled = false;
+            input.value = '';
+            card.classList.remove('correct', 'incorrect');
+            feedback.innerHTML = '';
+        });
+
+        const premier = document.getElementById('input-0');
+        if (premier) premier.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nouveauQuiz() {
+        questionsActuelles = selectionnerQuestions();
+        genererAffichageQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       CONFETTIS (Pur JavaScript sans dépendance)
+       ========================================================= */
+    function lancerConfettis() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particules = [];
+        const couleurs = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+        for (let i = 0; i < 90; i++) {
+            particules.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height * 0.4,
+                w: Math.random() * 9 + 5,
+                h: Math.random() * 5 + 4,
+                couleur: couleurs[Math.floor(Math.random() * couleurs.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 4 + 2,
+                rotation: Math.random() * 360,
+                vRot: (Math.random() - 0.5) * 8
+            });
+        }
+
+        let animationFrame;
+        let duree = 0;
+
+        function animer() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particules.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.vRot;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.couleur;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+
+            duree++;
+            if (duree < 140) {
+                animationFrame = requestAnimationFrame(animer);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animationFrame);
+            }
+        }
+
+        animer();
+    }
+
+    // Lancement au chargement
+    window.addEventListener('DOMContentLoaded', () => {
+        initialiserVoix();
+        nouveauQuiz();
+    });
+</script>
+
+</body>
+</html>
