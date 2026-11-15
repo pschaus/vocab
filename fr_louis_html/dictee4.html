@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictée 4 : Chaque/Chacun, Quel/Qu'elle, Conjugaison et Vocabulaire</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1d4ed8;
+            --secondary: #0ea5e9;
+            --success: #15803d;
+            --success-bg: #dcfce7;
+            --error: #b91c1c;
+            --error-bg: #fee2e2;
+            --warning-bg: #fef3c7;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --audio: #7c3aed;
+            --audio-hover: #6d28d9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 15px 60px;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        /* En-tête */
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 28px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+        }
+
+        header h1 {
+            font-size: 1.85rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            opacity: 0.95;
+        }
+
+        /* Fiche Mémo repliable */
+        .memo-details {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .memo-summary {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 16px 20px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            color: var(--primary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .memo-summary:hover {
+            background-color: #f1f5f9;
+        }
+
+        .memo-content {
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-gap: 20px;
+        }
+
+        .memo-section {
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .memo-section h3 {
+            font-size: 1.05rem;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .memo-section p, .memo-section ul {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-left: 18px;
+        }
+
+        .memo-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .chip {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 500;
+        }
+
+        .chip.verb {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .chip.invar {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .chip.adj {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        /* Sélecteur de mode */
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2);
+        }
+
+        /* Questions */
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .q-number {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .badge-quel {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-chaque {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge-conjugaison {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-audio {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .question-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #0f172a;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .q-text {
+            display: inline;
+        }
+
+        .q-hint {
+            font-style: italic;
+            color: #2563eb;
+            font-weight: 700;
+            background: #eff6ff;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+        }
+
+        input[type="text"] {
+            font-size: 1.05rem;
+            font-family: inherit;
+            padding: 6px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.2s;
+            min-width: 150px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        input[type="text"]:disabled {
+            background-color: #f1f5f9;
+            color: #334155;
+            cursor: not-allowed;
+        }
+
+        /* Bouton Audio */
+        .btn-audio {
+            background-color: var(--audio);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 6px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-audio:hover {
+            background-color: var(--audio-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-audio:active {
+            transform: translateY(1px);
+        }
+
+        /* États de correction */
+        .quiz-card.correct {
+            border-color: #22c55e;
+            background-color: #f0fdf4;
+        }
+
+        .quiz-card.incorrect {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .correction-feedback {
+            margin-top: 10px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            line-height: 1.4;
+            display: none;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-card.correct .correction-feedback {
+            display: block;
+            color: var(--success);
+        }
+
+        .quiz-card.incorrect .correction-feedback {
+            display: block;
+            color: var(--error);
+        }
+
+        .rule-tip {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.88rem;
+            font-weight: normal;
+            color: #475569;
+        }
+
+        /* Zone de score */
+        #score-banner {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .score-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .score-msg {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        /* Boutons d'action */
+        .actions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-main:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-main:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e40af;
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: #dbeafe;
+        }
+
+        .btn-restart {
+            display: none;
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+        }
+
+        /* Canvas Confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.45rem; }
+            .question-body { font-size: 1.05rem; }
+            input[type="text"] { width: 100%; min-width: unset; }
+            .memo-content { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <header>
+        <h1>📝 Dictée 4 : Entraînement & Quiz</h1>
+        <p>Chaque / Chacun, Quel / Qu'elle, Conjugaison & Vocabulaire</p>
+    </header>
+
+    <!-- Fiche mémo de révision -->
+    <details class="memo-details">
+        <summary class="memo-summary">
+            <span>📖 Consulter la fiche mémo (Règles & Vocabulaire de la Dictée 4)</span>
+            <span style="font-size: 0.85em; opacity: 0.8;">▼ Cliquer pour ouvrir</span>
+        </summary>
+        <div class="memo-content">
+            <div class="memo-section">
+                <h3>⚖️ Règles d'orthographe</h3>
+                <p>• <strong>Chaque - chacun</strong> :<br>
+                &rarr; Le déterminant <strong>chaque</strong> est toujours accompagné d'un <strong>nom au singulier</strong> (et ne prend jamais d'<em>s</em> !). Ex : <em>chaque cycliste, chaque véhicule</em>.<br>
+                &rarr; Le verbe qui a le pronom <strong>chacun</strong> comme sujet se conjugue obligatoirement au <strong>singulier</strong> (3<sup>e</sup> personne du singulier). Ex : <em>Chacun participe au défilé.</em></p>
+                <p style="margin-top: 10px;">• <strong>Quel / quelle / quels / quelles / qu'elle / qu'elles</strong> :<br>
+                &rarr; Le déterminant <strong>quel</strong> s'accorde en genre et en nombre avec le nom qu'il accompagne : <strong>quel</strong> (masc. sing.), <strong>quelle</strong> (fém. sing.), <strong>quels</strong> (masc. plur.), <strong>quelles</strong> (fém. plur.).<br>
+                &rarr; Les graphies <strong>qu'elle</strong> et <strong>qu'elles</strong> existent également mais tu les retrouves facilement : tu peux les remplacer par <strong>qu'il</strong> ou <strong>qu'ils</strong> ! (Ex : <em>Je crois <strong>qu'elle</strong> arrive &rarr; Je crois <strong>qu'il</strong> arrive.</em>)</p>
+            </div>
+
+            <div class="memo-section">
+                <h3>📚 Les 22 Noms à connaître</h3>
+                <div class="memo-chips">
+                    <span class="chip">un brigand</span>
+                    <span class="chip">un revolver</span>
+                    <span class="chip">une ceinture</span>
+                    <span class="chip">un véhicule</span>
+                    <span class="chip">un défilé</span>
+                    <span class="chip">un langage</span>
+                    <span class="chip">une vitesse</span>
+                    <span class="chip">une guimbarde</span>
+                    <span class="chip">une marraine</span>
+                    <span class="chip">un ustensile</span>
+                    <span class="chip">un patient</span>
+                    <span class="chip">une sonnerie</span>
+                    <span class="chip">un téléphone</span>
+                    <span class="chip">une direction</span>
+                    <span class="chip">un vandale</span>
+                    <span class="chip">un silence</span>
+                    <span class="chip">une vallée</span>
+                    <span class="chip">une arrivée</span>
+                    <span class="chip">un sommet</span>
+                    <span class="chip">un cycliste</span>
+                    <span class="chip">une descente</span>
+                    <span class="chip">un paysage</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>🎨 Les 4 Adjectifs</h3>
+                <div class="memo-chips">
+                    <span class="chip adj">différent (différente, différents, différentes)</span>
+                    <span class="chip adj">habile (habiles)</span>
+                    <span class="chip adj">affreux (affreuse, affreuses)</span>
+                    <span class="chip adj">étonnant (étonnante, étonnants, étonnantes)</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>✍️ Les 10 Verbes de la dictée</h3>
+                <p style="margin-bottom: 6px;"><em>Attention aux particularités au présent : <strong>redescendre</strong> (je redescends, il redescend avec d), <strong>attraper</strong> (un seul p !), <strong>courir</strong> (je cours, tu cours, il court, ils courent avec un seul r au présent), <strong>régner</strong> (il règne, ils règnent avec un accent grave è), <strong>aller</strong> (je vais, tu vas, il va, nous allons, vous allez, ils vont), <strong>photographier</strong> (je photographie, il photographie, ils photographient).</em></p>
+                <div class="memo-chips">
+                    <span class="chip verb">participer</span>
+                    <span class="chip verb">redescendre</span>
+                    <span class="chip verb">attraper</span>
+                    <span class="chip verb">sursauter</span>
+                    <span class="chip verb">courir</span>
+                    <span class="chip verb">régner</span>
+                    <span class="chip verb">dévaler</span>
+                    <span class="chip verb">demander</span>
+                    <span class="chip verb">aller</span>
+                    <span class="chip verb">photographier</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>📌 Les 10 Mots invariables</h3>
+                <div class="memo-chips">
+                    <span class="chip invar">auparavant</span>
+                    <span class="chip invar">ensuite</span>
+                    <span class="chip invar">quelquefois</span>
+                    <span class="chip invar">tout à fait</span>
+                    <span class="chip invar">à peu près</span>
+                    <span class="chip invar">alors</span>
+                    <span class="chip invar">violemment</span>
+                    <span class="chip invar">d'abord</span>
+                    <span class="chip invar">déjà</span>
+                    <span class="chip invar">là-dessus</span>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Choix de mode -->
+    <div class="mode-selector">
+        <button class="mode-btn active" onclick="changerMode('mixte')">🌟 Quiz Mixte (10 questions)</button>
+        <button class="mode-btn" onclick="changerMode('quel')">❓ Quel / Quelle / Qu'elle... (10)</button>
+        <button class="mode-btn" onclick="changerMode('chaque')">⚖️ Chaque / Chacun & Accords (10)</button>
+        <button class="mode-btn" onclick="changerMode('conjugaison')">⚡ Conjugaison des Verbes (10)</button>
+        <button class="mode-btn" onclick="changerMode('audio')">🔊 Dictée Vocabulaire (10)</button>
+    </div>
+
+    <!-- Conteneur des 10 questions -->
+    <div id="quiz-container"></div>
+
+    <!-- Bannière de score -->
+    <div id="score-banner">
+        <div class="score-number" id="score-display">0 / 10</div>
+        <div class="score-msg" id="score-message">Bravo !</div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="actions-container">
+        <button id="btn-submit" class="btn-main" onclick="corrigerQuiz()">✅ Corriger mon quiz (sur 10)</button>
+        <button id="btn-retry" class="btn-secondary" style="display: none;" onclick="reessayerMemeQuiz()">🔁 Réessayer ce même quiz</button>
+        <button id="btn-new-quiz" class="btn-main btn-restart" onclick="nouveauQuiz()">🔄 Faire un autre quiz (10 nouvelles questions)</button>
+    </div>
+</div>
+
+<script>
+    /* =========================================================
+       BANQUE COMPLÈTE DE QUESTIONS POUR LA DICTÉE 4
+       ========================================================= */
+
+    const BANQUE = {
+        // --- 1. QUEL / QUELLE / QUELS / QUELLES / QU'ELLE / QU'ELLES ---
+        quel: [
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " magnifique paysage on découvre depuis le sommet !",
+                reponses: ["quel"],
+                astuce: "Déterminant exclamatif qui s'accorde avec « paysage » (masculin singulier) -> Quel."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " vitesse étonnante dans cette descente !",
+                reponses: ["quelle"],
+                astuce: "S'accorde avec « vitesse » (féminin singulier) -> Quelle."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Dans ",
+                fin: " direction les cyclistes sont-ils partis ?",
+                reponses: ["quelle"],
+                astuce: "S'accorde avec « direction » (féminin singulier) -> quelle."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " véhicules anciens participent à ce défilé ?",
+                reponses: ["quels"],
+                astuce: "S'accorde avec « véhicules » (masculin pluriel) -> Quels."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " vallées les coureurs vont-ils traverser ensuite ?",
+                reponses: ["quelles"],
+                astuce: "S'accorde avec « vallées » (féminin pluriel) -> Quelles."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Ma marraine m'a dit ",
+                fin: " avait déjà photographié toute la vallée.",
+                reponses: ["qu'elle", "qu’elle"],
+                astuce: "On peut remplacer par « qu'il » (Ma marraine m'a dit qu'il avait...) -> qu'elle."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Les jumelles affirment ",
+                fin: " participeront au prochain défilé.",
+                reponses: ["qu'elles", "qu’elles"],
+                astuce: "On peut remplacer par « qu'ils » (Les jumeaux affirment qu'ils participeront...) -> qu'elles (au pluriel)."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " affreux brigand avec ce revolver à la ceinture !",
+                reponses: ["quel"],
+                astuce: "S'accorde avec « brigand » (masculin singulier) -> Quel."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " ustensiles étonnants utilises-tu dans ta cuisine ?",
+                reponses: ["quels"],
+                astuce: "S'accorde avec « ustensiles » (masculin pluriel) -> Quels."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Je me demande ",
+                fin: " sonnerie elle a choisie pour son téléphone.",
+                reponses: ["quelle"],
+                astuce: "S'accorde avec « sonnerie » (féminin singulier) -> quelle. (On ne peut pas dire « qu'il sonnerie » !)"
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Cette vieille guimbarde est plus rapide ",
+                fin: " n'en a l'air !",
+                reponses: ["qu'elle", "qu’elle"],
+                astuce: "On peut remplacer par « qu'il » (Ce vieux véhicule est plus rapide qu'il n'en a l'air) -> qu'elle."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " silence impressionnant règne au sommet de la montagne !",
+                reponses: ["quel"],
+                astuce: "S'accorde avec « silence » (nom masculin singulier : un silence) -> Quel."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Les côtes ",
+                fin: " dévalent à vélo sont vraiment raides.",
+                reponses: ["qu'elles", "qu’elles"],
+                astuce: "On peut remplacer par « qu'ils dévalent » -> qu'elles (au pluriel)."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "",
+                fin: " belles descentes les cyclistes ont effectuées aujourd'hui !",
+                reponses: ["quelles"],
+                astuce: "S'accorde avec « descentes » (féminin pluriel) -> Quelles."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Sais-tu ",
+                fin: " langage étonnant parlent ces voyageurs ?",
+                reponses: ["quel"],
+                astuce: "S'accorde avec « langage » (nom masculin singulier : un langage) -> quel."
+            },
+            {
+                type: "quel",
+                badge: "❓ Quel / Qu'elle...",
+                badgeClass: "badge-quel",
+                debut: "Dès ",
+                fin: " entend la sonnerie du téléphone, elle sursaute.",
+                reponses: ["qu'elle", "qu’elle"],
+                astuce: "On peut remplacer par « Dès qu'il entend la sonnerie » -> qu'elle."
+            }
+        ],
+
+        // --- 2. CHAQUE / CHACUN & ACCORDS (NOMS + ADJECTIFS DE LA DICTÉE 4) ---
+        chaque: [
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chaque »",
+                badgeClass: "badge-chaque",
+                hint: "cycliste",
+                debut: "Avant le départ, chaque ",
+                fin: " vérifie son vélo avec soin.",
+                reponses: ["cycliste"],
+                astuce: "Le déterminant « chaque » est toujours suivi d'un nom au singulier : cycliste (sans s)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chaque »",
+                badgeClass: "badge-chaque",
+                hint: "véhicule",
+                debut: "Pendant le défilé, chaque ",
+                fin: " roule à faible vitesse.",
+                reponses: ["véhicule"],
+                astuce: "Après « chaque », le nom est toujours au singulier : véhicule (sans s)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chaque »",
+                badgeClass: "badge-chaque",
+                hint: "patient",
+                debut: "Dans le cabinet médical, chaque ",
+                fin: " attend son tour en silence.",
+                reponses: ["patient"],
+                astuce: "Après « chaque », le nom reste toujours au singulier : patient (sans s)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chaque »",
+                badgeClass: "badge-chaque",
+                hint: "ustensile",
+                debut: "Ma marraine range chaque ",
+                fin: " à sa place.",
+                reponses: ["ustensile"],
+                astuce: "Après « chaque », le nom s'écrit toujours au singulier : ustensile."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chaque »",
+                badgeClass: "badge-chaque",
+                hint: "brigand",
+                debut: "Dans ce film, chaque ",
+                fin: " porte un revolver à sa ceinture.",
+                reponses: ["brigand"],
+                astuce: "Après « chaque », le nom est au singulier : brigand (avec un d muet, sans s)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chacun »",
+                badgeClass: "badge-chaque",
+                hint: "participer",
+                debut: "Les habitants sont ravis : chacun ",
+                fin: " volontiers au grand défilé.",
+                reponses: ["participe"],
+                astuce: "Le verbe qui a le pronom « chacun » comme sujet se conjugue obligatoirement au singulier : participe (-e)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chacun »",
+                badgeClass: "badge-chaque",
+                hint: "sursauter",
+                debut: "Quand la sonnerie retentit violemment, chacun ",
+                fin: " dans la pièce.",
+                reponses: ["sursaute"],
+                astuce: "Avec le sujet « chacun », le verbe se conjugue toujours à la 3e personne du singulier : sursaute (-e)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chacun »",
+                badgeClass: "badge-chaque",
+                hint: "photographier",
+                debut: "Arrivés au sommet, chacun ",
+                fin: " le magnifique paysage de la vallée.",
+                reponses: ["photographie"],
+                astuce: "Avec le sujet « chacun », le verbe est au singulier : photographie (-ie)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chacun »",
+                badgeClass: "badge-chaque",
+                hint: "aller",
+                debut: "Après l'arrivée, chacun ",
+                fin: " dans une direction différente.",
+                reponses: ["va"],
+                astuce: "Avec le sujet « chacun », le verbe aller se conjugue à la 3e personne du singulier : chacun va."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chacun »",
+                badgeClass: "badge-chaque",
+                hint: "courir",
+                debut: "Dès le signal, chacun ",
+                fin: " à toute vitesse vers la ligne d'arrivée.",
+                reponses: ["court"],
+                astuce: "Le sujet « chacun » impose le singulier : chacun court (-t)."
+            },
+            {
+                type: "indice",
+                badge: "⚖️ Règle de « chacun »",
+                badgeClass: "badge-chaque",
+                hint: "redescendre",
+                debut: "La course est finie, chacun ",
+                fin: " calmement vers la vallée.",
+                reponses: ["redescend"],
+                astuce: "Avec « chacun », le verbe est au singulier : chacun redescend (-d)."
+            },
+            // Accords des 4 adjectifs de la dictée 4
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-chaque",
+                hint: "différent",
+                debut: "Les cyclistes partent dans des directions ",
+                fin: ".",
+                reponses: ["différentes"],
+                astuce: "S'accorde avec « des directions » (féminin pluriel) : différentes (deux f, -entes)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-chaque",
+                hint: "habile",
+                debut: "Ces coureurs très ",
+                fin: " dévalent la descente à toute vitesse.",
+                reponses: ["habiles"],
+                astuce: "S'accorde avec « Ces coureurs » (masculin pluriel) : habiles (avec h muet et -s)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-chaque",
+                hint: "affreux",
+                debut: "Cette vieille guimbarde fait une ",
+                fin: " fumée noire !",
+                reponses: ["affreuse"],
+                astuce: "Au masculin « affreux », mais au féminin singulier (avec « une fumée ») -> affreuse (deux f, -euse)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-chaque",
+                hint: "étonnant",
+                debut: "Ma marraine possède des ustensiles tout à fait ",
+                fin: ".",
+                reponses: ["étonnants"],
+                astuce: "S'accorde avec « des ustensiles » (masculin pluriel) : étonnants (deux n, -ants)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Accord de l'adjectif",
+                badgeClass: "badge-chaque",
+                hint: "étonnant",
+                debut: "Ces vieilles guimbardes roulent à une vitesse ",
+                fin: " !",
+                reponses: ["étonnante"],
+                astuce: "S'accorde avec « une vitesse » (féminin singulier) : étonnante (deux n, -ante)."
+            }
+        ],
+
+        // --- 3. CONJUGAISON DES 10 VERBES DE LA DICTÉE 4 ---
+        conjugaison: [
+            // 1. participer
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "participer",
+                audioText: "Verbe participer : De vieilles guimbardes participent au défilé du village.",
+                debut: "De vieilles guimbardes ",
+                fin: " au défilé du village.",
+                reponses: ["participent"],
+                astuce: "Le sujet est « De vieilles guimbardes » (pluriel) : elles participent (-ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "participer",
+                audioText: "Verbe participer : Chaque cycliste participe à cette course difficile.",
+                debut: "Chaque cycliste ",
+                fin: " à cette course difficile.",
+                reponses: ["participe"],
+                astuce: "Après « chaque », le sujet est au singulier : il participe (-e)."
+            },
+            // 2. redescendre
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "redescendre",
+                audioText: "Verbe redescendre : Après l'arrivée au sommet, le cycliste redescend dans la vallée.",
+                debut: "Après l'arrivée au sommet, le cycliste ",
+                fin: " dans la vallée.",
+                reponses: ["redescend"],
+                astuce: "Verbe en -dre à la 3e personne du singulier : il redescend (se termine par un -d)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "redescendre",
+                audioText: "Verbe redescendre : Les voyageurs redescendent à peu près en même temps.",
+                debut: "Les voyageurs ",
+                fin: " à peu près en même temps.",
+                reponses: ["redescendent"],
+                astuce: "Le sujet est « Les voyageurs » (pluriel) : ils redescendent (-ent)."
+            },
+            // 3. attraper
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "attraper",
+                audioText: "Verbe attraper : Le brigand attrape le revolver accroché à sa ceinture.",
+                debut: "Le brigand ",
+                fin: " le revolver accroché à sa ceinture.",
+                reponses: ["attrape"],
+                astuce: "Attention : attraper prend deux t mais un seul p -> il attrape (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "attraper",
+                audioText: "Verbe attraper : Les policiers attrapent les vandales qui courent dans la rue.",
+                debut: "Les policiers ",
+                fin: " les vandales qui courent dans la rue.",
+                reponses: ["attrapent"],
+                astuce: "Sujet au pluriel + deux t et un seul p -> ils attrapent (-ent)."
+            },
+            // 4. sursauter
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "sursauter",
+                audioText: "Verbe sursauter : Les patients sursautent lorsque la sonnerie du téléphone retentit.",
+                debut: "Les patients ",
+                fin: " lorsque la sonnerie du téléphone retentit.",
+                reponses: ["sursautent"],
+                astuce: "Le sujet est « Les patients » (pluriel) : ils sursautent (-ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "sursauter",
+                audioText: "Verbe sursauter : Ma marraine sursaute à cause de ce bruit affreux.",
+                debut: "Ma marraine ",
+                fin: " à cause de ce bruit affreux.",
+                reponses: ["sursaute"],
+                astuce: "Le sujet est « Ma marraine » (singulier) : elle sursaute (-e)."
+            },
+            // 5. courir
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "courir",
+                audioText: "Verbe courir : Le vandale court à toute vitesse dans une autre direction.",
+                debut: "Le vandale ",
+                fin: " à toute vitesse dans une autre direction.",
+                reponses: ["court"],
+                astuce: "Au présent, courir ne prend qu'un seul r : je cours, tu cours, il court (-t)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "courir",
+                audioText: "Verbe courir : Les brigands courent vers leur véhicule.",
+                debut: "Les brigands ",
+                fin: " vers leur véhicule.",
+                reponses: ["courent"],
+                astuce: "Le sujet est « Les brigands » (pluriel) : ils courent (un seul r, -ent)."
+            },
+            // 6. régner
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "régner",
+                audioText: "Verbe régner : Un grand silence règne dans toute la vallée.",
+                debut: "Un grand silence ",
+                fin: " dans toute la vallée.",
+                reponses: ["règne"],
+                astuce: "Attention à l'accent grave sur le è au présent : il règne (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "régner",
+                audioText: "Verbe régner : Le calme et le silence règnent au sommet de la montagne.",
+                debut: "Le calme et le silence ",
+                fin: " au sommet de la montagne.",
+                reponses: ["règnent"],
+                astuce: "Deux sujets (« Le calme et le silence » = pluriel) et accent grave è : ils règnent (-ent)."
+            },
+            // 7. dévaler
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "dévaler",
+                audioText: "Verbe dévaler : Les cyclistes habiles dévalent la descente à toute vitesse.",
+                debut: "Les cyclistes habiles ",
+                fin: " la descente à toute vitesse.",
+                reponses: ["dévalent"],
+                astuce: "Le sujet est « Les cyclistes habiles » (pluriel) : ils dévalent (-ent)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "dévaler",
+                audioText: "Verbe dévaler : Tu dévales la pente beaucoup trop vite !",
+                debut: "Tu ",
+                fin: " la pente beaucoup trop vite !",
+                reponses: ["dévales"],
+                astuce: "Avec « Tu », le verbe du 1er groupe prend -es : tu dévales."
+            },
+            // 8. demander
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "demander",
+                audioText: "Verbe demander : Le patient demande un renseignement au médecin.",
+                debut: "Le patient ",
+                fin: " un renseignement au médecin.",
+                reponses: ["demande"],
+                astuce: "Le sujet est « Le patient » (singulier) : il demande (-e)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "demander",
+                audioText: "Verbe demander : Les touristes leur demandent quelle direction prendre.",
+                debut: "Les touristes leur ",
+                fin: " quelle direction prendre.",
+                reponses: ["demandent"],
+                astuce: "Le sujet est « Les touristes » (pluriel, ne t'accorde pas avec « leur ») : ils demandent (-ent)."
+            },
+            // 9. aller
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "aller",
+                audioText: "Verbe aller : Ces véhicules vont tous dans la même direction.",
+                debut: "Ces véhicules ",
+                fin: " tous dans la même direction.",
+                reponses: ["vont"],
+                astuce: "Verbe aller à la 3e personne du pluriel au présent : ils vont."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "aller",
+                audioText: "Verbe aller : Nous allons quelquefois rendre visite à ma marraine.",
+                debut: "Nous ",
+                fin: " quelquefois rendre visite à ma marraine.",
+                reponses: ["allons"],
+                astuce: "Verbe aller à la 1re personne du pluriel : nous allons."
+            },
+            // 10. photographier
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "photographier",
+                audioText: "Verbe photographier : Les spectateurs photographient l'arrivée des cyclistes.",
+                debut: "Les spectateurs ",
+                fin: " l'arrivée des cyclistes.",
+                reponses: ["photographient"],
+                astuce: "Verbe en -ier à la 3e personne du pluriel : ils photographient (-ient)."
+            },
+            {
+                type: "conjugaison",
+                badge: "⚡ Conjugaison",
+                badgeClass: "badge-conjugaison",
+                hint: "photographier",
+                audioText: "Verbe photographier : Ma marraine photographie le paysage depuis le sommet.",
+                debut: "Ma marraine ",
+                fin: " le paysage depuis le sommet.",
+                reponses: ["photographie"],
+                astuce: "Verbe en -ier à la 3e personne du singulier : elle photographie (-ie)."
+            }
+        ],
+
+        // --- 4. DICTÉE AUDIO : NOMS, ADJECTIFS, VERBES & MOTS INVARIABLES ---
+        audio: [
+            // Les 22 Noms
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un brigand", reponses: ["un brigand"], consigne: "Écris le groupe nominal entendu (attention à la lettre muette finale) :", astuce: "un brigand prend un d muet à la fin (comme brigander)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un revolver", reponses: ["un revolver"], consigne: "Écris le groupe nominal entendu :", astuce: "un revolver s'écrit sans accent et se termine par -er." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une ceinture", reponses: ["une ceinture"], consigne: "Écris le groupe nominal entendu (attention au son [ein]) :", astuce: "une ceinture s'écrit avec c-e-i-n-t-u-r-e." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un véhicule", reponses: ["un véhicule"], consigne: "Écris le groupe nominal entendu (attention au h muet au milieu) :", astuce: "un véhicule prend un h entre le é et le i." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un défilé", reponses: ["un défilé"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un langage", reponses: ["un langage"], consigne: "Écris le groupe nominal entendu (sans u après le premier g !) :", astuce: "Contrairement à « langue », un langage s'écrit sans u après le g : l-a-n-g-a-g-e." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une vitesse", reponses: ["une vitesse"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une guimbarde", reponses: ["une guimbarde"], consigne: "Écris le groupe nominal entendu (une vieille voiture, attention au m devant le b) :", astuce: "une guimbarde s'écrit g-u-i-m-b-a-r-d-e (m devant b)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une marraine", reponses: ["une marraine"], consigne: "Écris le groupe nominal entendu (attention aux deux r) :", astuce: "une marraine prend deux r (comme parrain)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un ustensile", reponses: ["un ustensile"], consigne: "Écris le groupe nominal entendu (attention à -en- et au s) :", astuce: "un ustensile s'écrit u-s-t-e-n-s-i-l-e." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un patient", reponses: ["un patient"], consigne: "Écris le groupe nominal entendu (la personne soignée par le médecin) :", astuce: "un patient s'écrit avec -tient à la fin." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une sonnerie", reponses: ["une sonnerie"], consigne: "Écris le groupe nominal entendu (attention aux deux n et au e final) :", astuce: "une sonnerie prend deux n et se termine par -ie." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un téléphone", reponses: ["un téléphone"], consigne: "Écris le groupe nominal entendu (attention au ph) :", astuce: "un téléphone s'écrit avec deux accents aigus et ph." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une direction", reponses: ["une direction"], consigne: "Écris le groupe nominal entendu :" },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un vandale", reponses: ["un vandale"], consigne: "Écris le groupe nominal entendu (attention à -an-) :", astuce: "un vandale s'écrit v-a-n-d-a-l-e." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un silence", reponses: ["un silence"], consigne: "Écris le groupe nominal entendu (attention à -ence) :", astuce: "un silence s'écrit avec s au début et -ence à la fin." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une vallée", reponses: ["une vallée"], consigne: "Écris le groupe nominal entendu (attention aux deux l et à la terminaison) :", astuce: "une vallée prend deux l et se termine par -ée." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une arrivée", reponses: ["une arrivée"], consigne: "Écris le groupe nominal entendu (attention aux deux r et à -ée) :", astuce: "une arrivée prend deux r et se termine par -ée." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un sommet", reponses: ["un sommet"], consigne: "Écris le groupe nominal entendu (attention aux deux m) :", astuce: "un sommet prend deux m et un t final." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un cycliste", reponses: ["un cycliste"], consigne: "Écris le groupe nominal entendu (attention au y) :", astuce: "un cycliste s'écrit avec un y (comme bicyclette)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une descente", reponses: ["une descente"], consigne: "Écris le groupe nominal entendu (comme descendre, attention au sc) :", astuce: "une descente s'écrit avec s-c (d-e-s-c-e-n-t-e)." },
+            { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un paysage", reponses: ["un paysage"], consigne: "Écris le groupe nominal entendu (comme un pays) :", astuce: "un paysage s'écrit p-a-y-s-a-g-e." },
+
+            // Les 4 Adjectifs
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "différent", reponses: ["différent"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux deux f) :", astuce: "différent prend deux f et se termine par -ent." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "habile", reponses: ["habile"], consigne: "Écris l'adjectif entendu (attention au h muet au début) :", astuce: "habile commence par un h muet et ne prend qu'un seul l." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "affreux", reponses: ["affreux"], consigne: "Écris l'adjectif masculin entendu (attention aux deux f et à la fin) :", astuce: "affreux prend deux f et se termine par -eux." },
+            { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "étonnant", reponses: ["étonnant"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux deux n) :", astuce: "étonnant prend deux n et se termine par -ant." },
+
+            // Verbes à l'infinitif (pièges orthographiques)
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "attraper", reponses: ["attraper"], consigne: "Écris ce verbe à l'infinitif (attention aux consonnes : 2 t mais un seul p !) :", astuce: "attraper prend deux t et un seul p." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "redescendre", reponses: ["redescendre"], consigne: "Écris ce verbe à l'infinitif (attention au sc) :", astuce: "redescendre s'écrit avec s-c et -dre." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "photographier", reponses: ["photographier"], consigne: "Écris ce verbe à l'infinitif (attention aux deux ph) :", astuce: "p-h-o-t-o-g-r-a-p-h-i-e-r." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "courir", reponses: ["courir"], consigne: "Écris ce verbe à l'infinitif (attention : un seul r !) :", astuce: "courir ne prend qu'un seul r à l'infinitif et au présent." },
+
+            // Les 10 Mots invariables
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "auparavant", reponses: ["auparavant"], consigne: "Écris le mot invariable entendu (en un seul mot) :", astuce: "a-u-p-a-r-a-v-a-n-t (en un seul mot, terminé par t)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "ensuite", reponses: ["ensuite"], consigne: "Écris le mot invariable entendu (en un seul mot) :", astuce: "ensuite s'écrit en un seul mot." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "quelquefois", reponses: ["quelquefois"], consigne: "Écris le mot invariable entendu (en un seul mot, sans s au milieu) :", astuce: "quelquefois s'écrit en un seul mot et avec un s uniquement à la fin." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "tout à fait", reponses: ["tout à fait"], consigne: "Écris l'expression invariable entendue (en 3 mots, attention à l'accent) :", astuce: "tout à fait (avec accent grave sur à)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "à peu près", reponses: ["à peu près"], consigne: "Écris l'expression invariable entendue (en 3 mots, attention aux accents) :", astuce: "à peu près (accents graves sur à et sur près, terminé par s)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "alors", reponses: ["alors"], consigne: "Écris le mot invariable entendu (attention à la lettre finale) :", astuce: "alors prend toujours un s à la fin." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "violemment", reponses: ["violemment"], consigne: "Écris l'adverbe invariable entendu (formé sur violent -> attention à -emment !) :", astuce: "violemment s'écrit avec -emment (un e et deux m)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "d'abord", reponses: ["d'abord"], consigne: "Écris le mot invariable entendu (attention à l'apostrophe et à la lettre muette finale) :", astuce: "d'abord prend une apostrophe et un d muet à la fin." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "déjà", reponses: ["déjà"], consigne: "Écris le mot invariable entendu (attention aux deux accents) :", astuce: "déjà prend un accent aigu sur le é et un accent grave sur le à." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "là-dessus", reponses: ["là-dessus"], consigne: "Écris le mot invariable entendu (attention à l'accent et au trait d'union) :", astuce: "là-dessus prend un accent grave sur là et un trait d'union." }
+        ]
+    };
+
+    /* =========================================================
+       LOGIQUE DU QUIZ
+       ========================================================= */
+    let modeActuel = 'mixte';
+    let questionsActuelles = [];
+    let voixFrancaise = null;
+
+    // Initialisation Voix Synthèse Vocale
+    function initialiserVoix() {
+        if ('speechSynthesis' in window) {
+            const charger = () => {
+                const voix = window.speechSynthesis.getVoices();
+                voixFrancaise = voix.find(v => v.lang === 'fr-FR' || v.lang.startsWith('fr'));
+            };
+            window.speechSynthesis.onvoiceschanged = charger;
+            charger();
+        }
+    }
+
+    function ecouter(texte) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'fr-FR';
+            utterance.rate = 0.82; // Rythme posé pour dictée scolaire
+            utterance.pitch = 1.0;
+            if (voixFrancaise) utterance.voice = voixFrancaise;
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Désolé, ton navigateur ne supporte pas la synthèse vocale.");
+        }
+    }
+
+    function changerMode(mode) {
+        modeActuel = mode;
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        const btnActif = Array.from(document.querySelectorAll('.mode-btn')).find(b => b.getAttribute('onclick').includes(`'${mode}'`));
+        if (btnActif) btnActif.classList.add('active');
+        nouveauQuiz();
+    }
+
+    function melanger(tableau) {
+        const arr = [...tableau];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function selectionnerQuestions() {
+        if (modeActuel === 'mixte') {
+            // Répartition équilibrée sur 10 questions :
+            // 3 Quel/Qu'elle + 3 Chaque/Chacun & Adjectifs + 2 Conjugaisons + 2 Dictées audio vocabulaire
+            const qQuel = melanger(BANQUE.quel).slice(0, 3);
+            const qChaque = melanger(BANQUE.chaque).slice(0, 3);
+            const qConj = melanger(BANQUE.conjugaison).slice(0, 2);
+            const qAudio = melanger(BANQUE.audio).slice(0, 2);
+            return melanger([...qQuel, ...qChaque, ...qConj, ...qAudio]);
+        } else {
+            return melanger(BANQUE[modeActuel]).slice(0, 10);
+        }
+    }
+
+    function genererAffichageQuiz() {
+        const conteneur = document.getElementById('quiz-container');
+        conteneur.innerHTML = '';
+
+        // Masquer le score et basculer les boutons
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.id = `card-${idx}`;
+
+            const topHtml = `
+                <div class="card-top">
+                    <span class="q-number">Question ${idx + 1} / 10</span>
+                    <span class="badge ${q.badgeClass}">${q.badge}</span>
+                </div>
+            `;
+
+            let bodyHtml = '';
+
+            if (q.type === 'audio') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        ${q.consigne}
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${q.audioText.replace(/'/g, "\\'")}')" title="Cliquer pour écouter">
+                            🔊 Écouter
+                        </button>
+                        <input type="text" id="input-${idx}" placeholder="Écris ici..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                    </div>
+                `;
+            } else if (q.type === 'conjugaison') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        Conjugue le verbe entre parenthèses au présent (tu peux aussi cliquer sur <strong>🔊 Écouter</strong>) :
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${q.audioText.replace(/'/g, "\\'")}')" title="Cliquer pour écouter la phrase">
+                            🔊 Écouter
+                        </button>
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <span class="q-hint">(${q.hint})</span>
+                        <input type="text" id="input-${idx}" placeholder="verbe conjugué..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            } else if (q.type === 'quel') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        Complète avec <strong>quel, quelle, quels, quelles, qu'elle</strong> ou <strong>qu'elles</strong> :
+                    </div>
+                    <div class="question-body">
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <input type="text" id="input-${idx}" placeholder="quel / qu'elle..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            } else if (q.type === 'indice') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        Accorde ou conjugue correctement le mot entre parenthèses :
+                    </div>
+                    <div class="question-body">
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <span class="q-hint">(${q.hint})</span>
+                        <input type="text" id="input-${idx}" placeholder="Écris ta réponse..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            const feedbackHtml = `
+                <div id="feedback-${idx}" class="correction-feedback"></div>
+            `;
+
+            card.innerHTML = topHtml + bodyHtml + feedbackHtml;
+            conteneur.appendChild(card);
+        });
+
+        // Focus direct sur la première question
+        setTimeout(() => {
+            const premierInput = document.getElementById('input-0');
+            if (premierInput) premierInput.focus();
+        }, 100);
+    }
+
+    function gererToucheEntree(event, idx) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const suivant = document.getElementById(`input-${idx + 1}`);
+            if (suivant) {
+                suivant.focus();
+            } else {
+                corrigerQuiz();
+            }
+        }
+    }
+
+    function normaliser(str) {
+        if (!str) return "";
+        return str
+            .replace(/[’']/g, "'") // Harmonise apostrophes
+            .replace(/\s+/g, ' ')  // Harmonise espaces
+            .trim()
+            .toLowerCase()
+            .replace(/\.$/, '');   // Enlève point final accidentel
+    }
+
+    function corrigerQuiz() {
+        let score = 0;
+        let nonRepondues = 0;
+
+        // Vérifier s'il reste des questions vides
+        for (let i = 0; i < questionsActuelles.length; i++) {
+            const input = document.getElementById(`input-${i}`);
+            if (input.value.trim() === '') {
+                nonRepondues++;
+            }
+        }
+
+        if (nonRepondues > 0) {
+            const confirmMsg = `Il te reste ${nonRepondues} question(s) sans réponse.\nVeux-tu quand même corriger ton quiz maintenant ?`;
+            if (!confirm(confirmMsg)) {
+                for (let i = 0; i < questionsActuelles.length; i++) {
+                    const input = document.getElementById(`input-${i}`);
+                    if (input.value.trim() === '') {
+                        input.focus();
+                        break;
+                    }
+                }
+                return;
+            }
+        }
+
+        // Évaluation des questions
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            const saisie = normaliser(input.value);
+            const reponsesNormalisees = q.reponses.map(r => normaliser(r));
+
+            const estCorrect = reponsesNormalisees.includes(saisie);
+            input.disabled = true;
+
+            card.classList.remove('correct', 'incorrect');
+
+            if (estCorrect) {
+                score++;
+                card.classList.add('correct');
+                feedback.innerHTML = `✔ Bravo ! Bonne réponse.`;
+            } else {
+                card.classList.add('incorrect');
+                const bonneReponseAffichee = q.reponses[0];
+                let msg = `✘ Oups ! Réponse attendue : <strong>« ${bonneReponseAffichee} »</strong>`;
+                if (q.astuce) {
+                    msg += `<span class="rule-tip">💡 Astuce : ${q.astuce}</span>`;
+                }
+                feedback.innerHTML = msg;
+            }
+        });
+
+        // Affichage du résultat
+        const banner = document.getElementById('score-banner');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreMessage = document.getElementById('score-message');
+
+        scoreDisplay.textContent = `${score} / 10`;
+
+        if (score === 10) {
+            banner.style.backgroundColor = 'var(--success-bg)';
+            banner.style.color = 'var(--success)';
+            scoreMessage.innerHTML = '🎉 <strong>Score parfait ! 10 sur 10 !</strong> Tu es parfaitement prêt pour la Dictée 4 !';
+            lancerConfettis();
+        } else if (score >= 8) {
+            banner.style.backgroundColor = '#ecfdf5';
+            banner.style.color = '#047857';
+            scoreMessage.innerHTML = '👏 <strong>Très bon score !</strong> Encore un tout petit effort pour le sans-faute !';
+        } else if (score >= 5) {
+            banner.style.backgroundColor = 'var(--warning-bg)';
+            banner.style.color = '#b45309';
+            scoreMessage.innerHTML = '👍 <strong>Pas mal !</strong> Revois tes erreurs et retente ta chance pour t\'améliorer !';
+        } else {
+            banner.style.backgroundColor = 'var(--error-bg)';
+            banner.style.color = 'var(--error)';
+            scoreMessage.innerHTML = '💪 <strong>Ne te décourage pas !</strong> Ouvre la fiche mémo en haut pour réviser et relance un quiz.';
+        }
+
+        banner.style.display = 'block';
+
+        // Basculer les boutons
+        document.getElementById('btn-submit').style.display = 'none';
+        document.getElementById('btn-retry').style.display = 'block';
+        document.getElementById('btn-new-quiz').style.display = 'block';
+
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function reessayerMemeQuiz() {
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            input.disabled = false;
+            input.value = '';
+            card.classList.remove('correct', 'incorrect');
+            feedback.innerHTML = '';
+        });
+
+        const premier = document.getElementById('input-0');
+        if (premier) premier.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nouveauQuiz() {
+        questionsActuelles = selectionnerQuestions();
+        genererAffichageQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       CONFETTIS (Pur JavaScript sans dépendance)
+       ========================================================= */
+    function lancerConfettis() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particules = [];
+        const couleurs = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+        for (let i = 0; i < 90; i++) {
+            particules.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height * 0.4,
+                w: Math.random() * 9 + 5,
+                h: Math.random() * 5 + 4,
+                couleur: couleurs[Math.floor(Math.random() * couleurs.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 4 + 2,
+                rotation: Math.random() * 360,
+                vRot: (Math.random() - 0.5) * 8
+            });
+        }
+
+        let animationFrame;
+        let duree = 0;
+
+        function animer() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particules.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.vRot;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.couleur;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+
+            duree++;
+            if (duree < 140) {
+                animationFrame = requestAnimationFrame(animer);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animationFrame);
+            }
+        }
+
+        animer();
+    }
+
+    // Lancement au chargement
+    window.addEventListener('DOMContentLoaded', () => {
+        initialiserVoix();
+        nouveauQuiz();
+    });
+</script>
+
+</body>
+</html>
