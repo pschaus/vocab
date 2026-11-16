@@ -201,7 +201,7 @@
         }
 
         /* =========================================================
-           STYLES : MODE DICTÉE SUR PAPIER + CORRECTION GEMINI 3.8
+           STYLES : CLÉ API & TEST
            ========================================================= */
         .api-key-card {
             background: var(--card-bg);
@@ -243,6 +243,11 @@
         .status-dot.missing {
             background-color: #f59e0b;
             box-shadow: 0 0 0 3px #fef3c7;
+        }
+
+        .status-dot.error {
+            background-color: #ef4444;
+            box-shadow: 0 0 0 3px #fee2e2;
         }
 
         .api-key-form {
@@ -289,6 +294,15 @@
             background: #4338ca;
         }
 
+        .btn-test-key {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .btn-test-key:hover {
+            background: #0284c7;
+        }
+
         .btn-outline-small {
             background: #f1f5f9;
             color: #475569;
@@ -299,7 +313,40 @@
             background: #e2e8f0;
         }
 
-        /* Étapes de la dictée papier */
+        .api-test-result {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .api-test-result.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .api-test-result.failure {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .api-test-result.testing {
+            display: block;
+            background: #e0f2fe;
+            color: #075985;
+            border: 1px solid #7dd3fc;
+        }
+
+        /* =========================================================
+           STYLES : PROGRESSION 1 PHRASE À LA FOIS (SUR 5)
+           ========================================================= */
         .paper-step-card {
             background: var(--card-bg);
             border-radius: 14px;
@@ -309,112 +356,94 @@
             border: 1px solid #e2e8f0;
         }
 
-        .step-header {
+        .progress-bar-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 10px;
             margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .step-title {
-            font-size: 1.18rem;
-            font-weight: 800;
-            color: #1e293b;
+        .progress-pills {
             display: flex;
-            align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
-        .step-badge {
-            background: var(--ai-bg);
-            color: var(--ai-accent);
-            font-size: 0.8rem;
-            font-weight: 700;
-            padding: 4px 10px;
+        .progress-pill {
+            padding: 6px 13px;
             border-radius: 20px;
-        }
-
-        /* Liste des 5 phrases */
-        .sentence-item {
-            background: #f8fafc;
+            font-size: 0.88rem;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #64748b;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
+            cursor: pointer;
             transition: all 0.2s;
         }
 
-        .sentence-item.active-sentence {
-            border-color: var(--audio);
-            background: #faf5ff;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1);
+        .progress-pill.current {
+            background: var(--ai-bg);
+            color: var(--ai-accent);
+            border-color: var(--ai-accent);
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
         }
 
-        .sentence-item.done-sentence {
+        .progress-pill.done-ok {
+            background: #dcfce7;
+            color: #15803d;
             border-color: #86efac;
-            background: #f0fdf4;
         }
 
-        .sentence-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
+        .progress-pill.done-err {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fca5a5;
         }
 
-        .sentence-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: #1e293b;
-        }
-
-        .sentence-num-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--primary);
+        .live-score-pill {
+            background: #1e293b;
             color: white;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-weight: 800;
-            flex-shrink: 0;
+            font-size: 0.95rem;
         }
 
-        .sentence-item.done-sentence .sentence-num-circle {
-            background: var(--success);
+        /* Carte de la phrase active */
+        .active-sentence-box {
+            background: #faf5ff;
+            border: 2px solid #c4b5fd;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
         }
 
         .sentence-controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
+            margin-top: 12px;
         }
 
         .btn-listen {
             background-color: var(--audio);
             color: white;
             border: none;
-            padding: 9px 16px;
-            border-radius: 20px;
+            padding: 11px 20px;
+            border-radius: 24px;
             cursor: pointer;
-            font-size: 0.93rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             transition: all 0.2s;
-            box-shadow: 0 3px 6px rgba(124, 58, 237, 0.22);
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.28);
         }
 
         .btn-listen:hover {
@@ -425,15 +454,15 @@
         .btn-listen-slow {
             background-color: #ede9fe;
             color: #5b21b6;
-            border: 1px solid #c4b5fd;
-            padding: 8px 13px;
-            border-radius: 20px;
+            border: 2px solid #c4b5fd;
+            padding: 10px 16px;
+            border-radius: 24px;
             cursor: pointer;
-            font-size: 0.88rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             transition: all 0.2s;
         }
 
@@ -441,43 +470,26 @@
             background-color: #ddd6fe;
         }
 
-        .btn-check-done {
-            background: white;
-            border: 2px solid #cbd5e1;
-            color: #475569;
-            padding: 7px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn-check-done.checked {
-            background: #22c55e;
-            border-color: #22c55e;
-            color: white;
-        }
-
         .sentence-spoiler {
-            margin-top: 10px;
-            padding: 10px 12px;
+            margin-top: 12px;
+            padding: 10px 14px;
             background: #fffbeb;
             border: 1px dashed #f59e0b;
             border-radius: 8px;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
             color: #92400e;
             display: none;
         }
 
-        /* Zone Photo */
+        /* =========================================================
+           STYLES : PHOTO & SÉLECTEUR DE ZONE (CROP INTERACTIF)
+           ========================================================= */
         .photo-upload-zone {
             border: 2px dashed #94a3b8;
             border-radius: 14px;
-            padding: 24px 16px;
+            padding: 20px 16px;
             text-align: center;
             background: #f8fafc;
-            transition: all 0.2s;
             margin-bottom: 16px;
         }
 
@@ -486,15 +498,15 @@
             flex-wrap: wrap;
             gap: 12px;
             justify-content: center;
-            margin-top: 14px;
+            margin-top: 12px;
         }
 
         .btn-camera {
             background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
             color: white;
-            padding: 14px 22px;
+            padding: 13px 20px;
             border-radius: 12px;
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
             border: none;
@@ -514,9 +526,9 @@
             background: white;
             color: #334155;
             border: 2px solid #cbd5e1;
-            padding: 13px 20px;
+            padding: 12px 18px;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 0.96rem;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
@@ -530,39 +542,128 @@
             border-color: #94a3b8;
         }
 
-        .photo-preview-container {
+        /* Zone de recadrage interactif */
+        .cropper-wrapper {
             display: none;
             margin-top: 16px;
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+        }
+
+        .cropper-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cropper-instructions {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .cropper-stage-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            margin: 0 auto;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid #475569;
+        }
+
+        .cropper-stage-container img {
+            display: block;
+            max-width: 100%;
+            max-height: 55vh;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+        }
+
+        /* Voile sombre autour de la sélection */
+        .crop-selection-box {
+            position: absolute;
+            border: 2.5px solid #38bdf8;
+            box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.62);
+            cursor: move;
+            touch-action: none;
+        }
+
+        /* Poignées de redimensionnement (coins + bords) */
+        .crop-handle {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: #38bdf8;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            touch-action: none;
+            z-index: 10;
+        }
+
+        .crop-handle.nw { top: -13px; left: -13px; cursor: nwse-resize; }
+        .crop-handle.ne { top: -13px; right: -13px; cursor: nesw-resize; }
+        .crop-handle.sw { bottom: -13px; left: -13px; cursor: nesw-resize; }
+        .crop-handle.se { bottom: -13px; right: -13px; cursor: nwse-resize; }
+        .crop-handle.n  { top: -13px; left: calc(50% - 13px); cursor: ns-resize; }
+        .crop-handle.s  { bottom: -13px; left: calc(50% - 13px); cursor: ns-resize; }
+        .crop-handle.w  { top: calc(50% - 13px); left: -13px; cursor: ew-resize; }
+        .crop-handle.e  { top: calc(50% - 13px); right: -13px; cursor: ew-resize; }
+
+        /* Aperçu en direct du découpage */
+        .cropped-preview-box {
+            margin-top: 14px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 10px;
             text-align: center;
         }
 
-        .photo-preview-container img {
+        .cropped-preview-box p {
+            font-size: 0.84rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .cropped-preview-box canvas {
             max-width: 100%;
-            max-height: 420px;
-            border-radius: 12px;
-            border: 2px solid #cbd5e1;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            max-height: 130px;
+            border-radius: 6px;
+            border: 2px solid #38bdf8;
+            background: white;
         }
 
         /* Résultats de correction IA */
         .ai-loading {
             display: none;
             text-align: center;
-            padding: 28px 20px;
+            padding: 24px 20px;
             background: #eef2ff;
             border-radius: 14px;
             border: 2px solid #c7d2fe;
-            margin: 20px 0;
+            margin: 18px 0;
         }
 
         .spinner {
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border: 4px solid #c7d2fe;
             border-top-color: #4f46e5;
             border-radius: 50%;
             animation: spin 0.9s linear infinite;
-            margin: 0 auto 12px;
+            margin: 0 auto 10px;
         }
 
         @keyframes spin {
@@ -573,6 +674,7 @@
             background: white;
             border-radius: 12px;
             padding: 18px;
+            margin-top: 16px;
             margin-bottom: 14px;
             border: 2px solid #e2e8f0;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
@@ -750,10 +852,6 @@
             transform: translateY(-1px);
         }
 
-        .btn-audio:active {
-            transform: translateY(1px);
-        }
-
         /* États de correction */
         .quiz-card.correct {
             border-color: #22c55e;
@@ -832,7 +930,7 @@
             display: block;
             width: 100%;
             padding: 16px;
-            font-size: 1.15rem;
+            font-size: 1.12rem;
             font-weight: 700;
             color: white;
             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
@@ -875,7 +973,6 @@
         }
 
         .btn-restart {
-            display: none;
             background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
             box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
         }
@@ -897,8 +994,6 @@
             .question-body { font-size: 1.05rem; }
             input[type="text"].quiz-input { width: 100%; min-width: unset; }
             .memo-content { padding: 12px; }
-            .sentence-row { flex-direction: column; align-items: flex-start; }
-            .sentence-controls { width: 100%; justify-content: flex-start; }
             .btn-camera, .btn-gallery { width: 100%; justify-content: center; }
         }
     </style>
@@ -1005,7 +1100,7 @@
 
     <!-- Choix de mode -->
     <div class="mode-selector">
-        <button class="mode-btn mode-papier active" onclick="changerMode('papier')">📸 Dictée sur Papier (5 phrases + IA)</button>
+        <button class="mode-btn mode-papier active" onclick="changerMode('papier')">📸 Dictée sur Papier (Phrase par phrase + IA)</button>
         <button class="mode-btn" onclick="changerMode('mixte')">🌟 Quiz Mixte (10)</button>
         <button class="mode-btn" onclick="changerMode('quel')">❓ Quel / Qu'elle... (10)</button>
         <button class="mode-btn" onclick="changerMode('chaque')">⚖️ Chaque / Chacun (10)</button>
@@ -1013,16 +1108,19 @@
         <button class="mode-btn" onclick="changerMode('audio')">🔊 Mots Audio (10)</button>
     </div>
 
-    <!-- Configuration Clé API Gemini & Voix IA (stockée dans localStorage) -->
+    <!-- Configuration Clé API Gemini & Bouton de Test -->
     <div class="api-key-card">
         <div class="api-key-header">
             <div class="api-key-status">
                 <span id="api-status-dot" class="status-dot missing"></span>
                 <span id="api-status-text">Clé API Gemini non configurée</span>
             </div>
-            <div style="display: flex; gap: 6px;">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn-small btn-test-key" onclick="testerCleApi()">
+                    🧪 Tester la clé API
+                </button>
                 <button type="button" id="btn-toggle-key-form" class="btn-small btn-outline-small" onclick="basculerFormulaireCle()">
-                    🔑 Configurer la clé API
+                    🔑 Configurer la clé
                 </button>
                 <button type="button" id="btn-clear-key" class="btn-small btn-outline-small" style="display: none; color: #b91c1c;" onclick="supprimerCleApi()">
                     🗑️ Effacer
@@ -1033,21 +1131,25 @@
         <div id="api-key-form-wrapper" class="api-key-form" style="display: none;">
             <input type="password" id="api-key-input" placeholder="Colle ta clé API Gemini (AIzaSy...)" autocomplete="off" spellcheck="false">
             <button type="button" class="btn-small btn-outline-small" onclick="basculerVisibiliteCle()" title="Afficher/Masquer">👁️</button>
-            <button type="button" class="btn-small btn-save-key" onclick="enregistrerCleApi()">💾 Enregistrer sur ce téléphone</button>
+            <button type="button" class="btn-small btn-save-key" onclick="enregistrerCleApi()">💾 Enregistrer</button>
+            <button type="button" class="btn-small btn-test-key" onclick="testerCleApi()">🧪 Tester maintenant</button>
             <p style="width: 100%; font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
-                🔒 Ta clé API est stockée uniquement dans la mémoire de ton navigateur/téléphone (<code>localStorage</code>). Elle active la <strong>voix IA naturelle (gemini-3.8-flash-tts)</strong> et la <strong>correction photo (gemini-3.8-flash)</strong>.
+                🔒 Ta clé API est stockée uniquement sur ton téléphone (<code>localStorage</code>). Elle active la <strong>voix IA (gemini-3.8-flash-tts)</strong> et la <strong>correction photo (gemini-3.8-flash)</strong>.
             </p>
         </div>
+
+        <!-- Zone de résultat du test de la clé API -->
+        <div id="api-test-result" class="api-test-result"></div>
 
         <!-- Options de Voix (IA Gemini vs Appareil) -->
         <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; font-size: 0.88rem;">
             <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <span style="font-weight: 700; color: #334155;">🗣️ Voix de la dictée :</span>
+                <span style="font-weight: 700; color: #334155;">🗣️ Voix :</span>
                 <select id="select-moteur-voix" onchange="changerMoteurVoix()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-weight: 600; background: #f8fafc; color: #1e293b;">
-                    <option value="gemini">✨ Voix IA Gemini (gemini-3.8-flash-tts - Recommandé)</option>
-                    <option value="browser">📱 Voix du navigateur / téléphone</option>
+                    <option value="gemini">✨ Voix IA Gemini (gemini-3.8-flash-tts)</option>
+                    <option value="browser">📱 Voix de l'appareil</option>
                 </select>
-                <select id="select-voix-gemini" onchange="viderCacheAudio()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #eef2ff; color: #3730a3; font-weight: 600;">
+                <select id="select-voix-gemini" onchange="afficherPhraseCourante()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #eef2ff; color: #3730a3; font-weight: 600;">
                     <option value="Kore">Voix IA : Kore (Claire & posée)</option>
                     <option value="Aoede">Voix IA : Aoede (Douce & naturelle)</option>
                     <option value="Puck">Voix IA : Puck (Dynamique)</option>
@@ -1061,52 +1163,59 @@
     </div>
 
     <!-- =========================================================
-         SECTION 1 : MODE DICTÉE SUR PAPIER (5 PHRASES + PHOTO GEMINI)
+         SECTION 1 : MODE DICTÉE SUR PAPIER (1 PHRASE À LA FOIS SUR 5)
          ========================================================= -->
     <div id="paper-mode-section">
 
-        <!-- Étape 1 : Écouter les 5 phrases et écrire sur papier -->
         <div class="paper-step-card">
-            <div class="step-header">
-                <div class="step-title">
-                    <span>🎧 Étape 1 : Écoute et écris sur ta feuille</span>
+            <!-- Barre de progression des 5 phrases + Score en direct -->
+            <div class="progress-bar-header">
+                <div class="progress-pills" id="paper-progress-pills"></div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="live-score-pill" id="live-score-pill">Score : 10 / 10</span>
+                    <button type="button" class="btn-small btn-outline-small" onclick="nouvelleDicteePapier()" title="Recommencer avec 5 nouvelles phrases">
+                        🔄 Nouvelle dictée
+                    </button>
                 </div>
-                <span class="step-badge">5 phrases aléatoires</span>
             </div>
 
-            <p style="font-size: 0.96rem; color: #334155; margin-bottom: 14px;">
-                Prends une feuille de papier et un stylo. Numérote de <strong>1 à 5</strong>.<br>
-                Écoute chaque phrase (autant de fois que tu veux) et écris-la lisiblement sur ta feuille.
-            </p>
-
-            <!-- Liste dynamique des 5 phrases -->
-            <div id="paper-sentences-list"></div>
-
-            <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; margin-top: 14px;">
-                <button type="button" class="btn-small btn-outline-small" onclick="basculerTexteSecours()">
-                    👁️ <span id="spoiler-btn-label">Voir le texte des phrases (secours)</span>
-                </button>
-                <button type="button" class="btn-small btn-outline-small" onclick="nouvelleDicteePapier()">
-                    🔄 Tirer 5 nouvelles phrases
-                </button>
-            </div>
-        </div>
-
-        <!-- Étape 2 : Prendre en photo sa feuille -->
-        <div class="paper-step-card">
-            <div class="step-header">
-                <div class="step-title">
-                    <span>📸 Étape 2 : Prends ta feuille en photo</span>
+            <!-- Étape A : Écouter la phrase actuelle et l'écrire sur papier -->
+            <div class="active-sentence-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <h2 id="current-sentence-title" style="font-size: 1.2rem; color: #3b0764;">
+                        🎧 Phrase 1 sur 5 : Écoute et écris sur ton papier
+                    </h2>
+                    <span id="current-cache-badge" style="display: none; font-size: 0.78rem; background: #eef2ff; color: #4f46e5; padding: 3px 10px; border-radius: 12px; font-weight: 700;">
+                        ✨ Audio IA en cache
+                    </span>
                 </div>
-                <span class="step-badge">1 point par faute • Score sur 10</span>
-            </div>
 
-            <div class="photo-upload-zone">
-                <p style="font-weight: 600; color: #334155; font-size: 1rem;">
-                    Une fois tes 5 phrases écrites sur papier, prends une photo bien éclairée et nette :
+                <p style="font-size: 0.94rem; color: #4c1d95; margin-top: 4px;">
+                    Écoute la phrase, écris-la sur ta feuille de papier, puis prends-la en photo ci-dessous.
                 </p>
 
-                <!-- Inputs fichier cachés (caméra directe ou galerie) -->
+                <div class="sentence-controls">
+                    <button type="button" class="btn-listen" id="btn-listen-normal" onclick="ecouterPhraseCourante(0.82, this)">
+                        🔊 Écouter la phrase
+                    </button>
+                    <button type="button" class="btn-listen-slow" id="btn-listen-slow" onclick="ecouterPhraseCourante(0.62, this)">
+                        🐢 Écouter lentement
+                    </button>
+                    <button type="button" class="btn-small btn-outline-small" onclick="basculerTexteSecours()">
+                        👁️ <span id="spoiler-btn-label">Voir le texte (secours)</span>
+                    </button>
+                </div>
+
+                <div class="sentence-spoiler" id="current-sentence-spoiler"></div>
+            </div>
+
+            <!-- Étape B : Photo & Sélection de la zone de la phrase -->
+            <div class="photo-upload-zone">
+                <p style="font-weight: 700; color: #1e293b; font-size: 1.02rem;">
+                    📸 Prends en photo ta feuille et encadre la phrase écrite :
+                </p>
+
+                <!-- Inputs fichier cachés -->
                 <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;" onchange="gererSelectionPhoto(event)">
                 <input type="file" id="gallery-input" accept="image/*" style="display: none;" onchange="gererSelectionPhoto(event)">
 
@@ -1119,46 +1228,75 @@
                     </button>
                 </div>
 
-                <!-- Aperçu de la photo -->
-                <div id="photo-preview-container" class="photo-preview-container">
-                    <p style="font-size: 0.9rem; color: var(--success); font-weight: 700; margin-bottom: 8px;">
-                        ✔ Photo prête pour la correction !
-                    </p>
-                    <img id="photo-preview-img" src="" alt="Aperçu de la dictée sur papier">
+                <!-- Outil de sélection de zone sur l'image -->
+                <div id="cropper-wrapper" class="cropper-wrapper">
+                    <div class="cropper-toolbar">
+                        <span class="cropper-instructions">
+                            👆 Déplace ou redimensionne le cadre bleu sur ta phrase :
+                        </span>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button type="button" class="btn-small btn-outline-small" onclick="pivoterImage(-90)">↺ -90°</button>
+                            <button type="button" class="btn-small btn-outline-small" onclick="pivoterImage(90)">↻ +90°</button>
+                            <button type="button" class="btn-small btn-outline-small" onclick="reinitialiserZoneCrop()">📐 Tout encadrer</button>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div id="cropper-stage" class="cropper-stage-container">
+                            <img id="cropper-img" src="" alt="Photo de la feuille">
+                            <div id="crop-box" class="crop-selection-box">
+                                <div class="crop-handle nw" data-handle="nw"></div>
+                                <div class="crop-handle n" data-handle="n"></div>
+                                <div class="crop-handle ne" data-handle="ne"></div>
+                                <div class="crop-handle e" data-handle="e"></div>
+                                <div class="crop-handle se" data-handle="se"></div>
+                                <div class="crop-handle s" data-handle="s"></div>
+                                <div class="crop-handle sw" data-handle="sw"></div>
+                                <div class="crop-handle w" data-handle="w"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aperçu exact de la zone découpée envoyée à Gemini -->
+                    <div class="cropped-preview-box">
+                        <p>🔍 Zone sélectionnée qui sera envoyée à Gemini pour correction :</p>
+                        <canvas id="cropped-preview-canvas"></canvas>
+                    </div>
                 </div>
             </div>
 
-            <button type="button" id="btn-corriger-photo" class="btn-main" onclick="corrigerPhotoAvecGemini()" disabled>
-                🤖 Corriger ma dictée avec Gemini 3.8 Flash (sur 10)
+            <!-- Bouton Corriger cette phrase -->
+            <button type="button" id="btn-corriger-phrase" class="btn-main" onclick="corrigerPhraseCouranteAvecGemini()" disabled>
+                🤖 Corriger cette phrase avec Gemini 3.8 Flash
             </button>
+
+            <!-- Indicateur de chargement IA -->
+            <div id="ai-loading" class="ai-loading">
+                <div class="spinner"></div>
+                <p style="font-weight: 700; font-size: 1.08rem; color: #3730a3;">
+                    Gemini 3.8 Flash lit la zone sélectionnée et corrige ta phrase...
+                </p>
+            </div>
+
+            <!-- Résultat de correction de la phrase actuelle -->
+            <div id="current-sentence-result"></div>
+
+            <!-- Bouton Phrase suivante -->
+            <div id="next-sentence-actions" style="display: none; margin-top: 14px;">
+                <button type="button" id="btn-next-sentence" class="btn-main btn-restart" onclick="passerPhraseSuivante()">
+                    ➡️ Passer à la phrase suivante
+                </button>
+            </div>
         </div>
 
-        <!-- Indicateur de chargement IA -->
-        <div id="ai-loading" class="ai-loading">
-            <div class="spinner"></div>
-            <p style="font-weight: 700; font-size: 1.1rem; color: #3730a3;">
-                Gemini 3.8 Flash lit ton écriture et corrige tes 5 phrases...
-            </p>
-            <p style="font-size: 0.9rem; color: #4f46e5; margin-top: 4px;">
-                Analyse de l'orthographe, des accords et de la conjugaison (quelques secondes)
-            </p>
-        </div>
-
-        <!-- Bannière de score Dictée Papier -->
+        <!-- Bannière de score final Dictée Papier (affichée quand les 5 phrases sont corrigées) -->
         <div id="paper-score-banner">
             <div class="score-number" id="paper-score-display">10 / 10</div>
             <div class="score-msg" id="paper-score-message">Bravo !</div>
         </div>
 
-        <!-- Détail de la correction phrase par phrase -->
-        <div id="paper-correction-results"></div>
-
-        <!-- Bouton Nouvelle Dictée après correction -->
-        <div id="paper-post-actions" class="actions-container" style="display: none;">
-            <button type="button" class="btn-main btn-restart" style="display: block;" onclick="nouvelleDicteePapier()">
-                🔄 Faire une nouvelle dictée sur papier (5 nouvelles phrases)
-            </button>
-        </div>
+        <!-- Récapitulatif complet des 5 phrases corrigées -->
+        <div id="paper-all-results"></div>
 
     </div>
 
@@ -1166,20 +1304,17 @@
          SECTION 2 : MODE QUIZ INTERACTIF CLASSIQUE (10 QUESTIONS)
          ========================================================= -->
     <div id="classic-quiz-section" style="display: none;">
-        <!-- Conteneur des 10 questions -->
         <div id="quiz-container"></div>
 
-        <!-- Bannière de score -->
         <div id="score-banner">
             <div class="score-number" id="score-display">0 / 10</div>
             <div class="score-msg" id="score-message">Bravo !</div>
         </div>
 
-        <!-- Boutons d'action -->
         <div class="actions-container">
             <button id="btn-submit" class="btn-main" onclick="corrigerQuiz()">✅ Corriger mon quiz (sur 10)</button>
             <button id="btn-retry" class="btn-secondary" style="display: none;" onclick="reessayerMemeQuiz()">🔁 Réessayer ce même quiz</button>
-            <button id="btn-new-quiz" class="btn-main btn-restart" onclick="nouveauQuiz()">🔄 Faire un autre quiz (10 nouvelles questions)</button>
+            <button id="btn-new-quiz" class="btn-main btn-restart" style="display: none;" onclick="nouveauQuiz()">🔄 Faire un autre quiz (10 nouvelles questions)</button>
         </div>
     </div>
 </div>
@@ -1187,8 +1322,6 @@
 <script>
     /* =========================================================
        BANQUE DE 30 PHRASES COMPLÈTES POUR LA DICTÉE SUR PAPIER
-       (Thème de la Dictée 4 : Chaque/Chacun, Quel/Qu'elle,
-        22 noms, 4 adjectifs, 10 verbes au présent, 10 mots invariables)
        ========================================================= */
     const PHRASES_DICTEE_PAPIER = [
         "Avant le départ, chaque cycliste vérifie son vélo, puis chacun participe volontiers au grand défilé.",
@@ -1227,543 +1360,64 @@
        BANQUE COMPLÈTE DE QUESTIONS POUR LES QUIZ INTERACTIFS
        ========================================================= */
     const BANQUE = {
-        // --- 1. QUEL / QUELLE / QUELS / QUELLES / QU'ELLE / QU'ELLES ---
         quel: [
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " magnifique paysage on découvre depuis le sommet !",
-                reponses: ["quel"],
-                astuce: "Déterminant exclamatif qui s'accorde avec « paysage » (masculin singulier) -> Quel."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " vitesse étonnante dans cette descente !",
-                reponses: ["quelle"],
-                astuce: "S'accorde avec « vitesse » (féminin singulier) -> Quelle."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Dans ",
-                fin: " direction les cyclistes sont-ils partis ?",
-                reponses: ["quelle"],
-                astuce: "S'accorde avec « direction » (féminin singulier) -> quelle."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " véhicules anciens participent à ce défilé ?",
-                reponses: ["quels"],
-                astuce: "S'accorde avec « véhicules » (masculin pluriel) -> Quels."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " vallées les coureurs vont-ils traverser ensuite ?",
-                reponses: ["quelles"],
-                astuce: "S'accorde avec « vallées » (féminin pluriel) -> Quelles."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Ma marraine m'a dit ",
-                fin: " avait déjà photographié toute la vallée.",
-                reponses: ["qu'elle", "qu’elle"],
-                astuce: "On peut remplacer par « qu'il » (Ma marraine m'a dit qu'il avait...) -> qu'elle."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Les jumelles affirment ",
-                fin: " participeront au prochain défilé.",
-                reponses: ["qu'elles", "qu’elles"],
-                astuce: "On peut remplacer par « qu'ils » (Les jumeaux affirment qu'ils participeront...) -> qu'elles (au pluriel)."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " affreux brigand avec ce revolver à la ceinture !",
-                reponses: ["quel"],
-                astuce: "S'accorde avec « brigand » (masculin singulier) -> Quel."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " ustensiles étonnants utilises-tu dans ta cuisine ?",
-                reponses: ["quels"],
-                astuce: "S'accorde avec « ustensiles » (masculin pluriel) -> Quels."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Je me demande ",
-                fin: " sonnerie elle a choisie pour son téléphone.",
-                reponses: ["quelle"],
-                astuce: "S'accorde avec « sonnerie » (féminin singulier) -> quelle. (On ne peut pas dire « qu'il sonnerie » !)"
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Cette vieille guimbarde est plus rapide ",
-                fin: " n'en a l'air !",
-                reponses: ["qu'elle", "qu’elle"],
-                astuce: "On peut remplacer par « qu'il » (Ce vieux véhicule est plus rapide qu'il n'en a l'air) -> qu'elle."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " silence impressionnant règne au sommet de la montagne !",
-                reponses: ["quel"],
-                astuce: "S'accorde avec « silence » (nom masculin singulier : un silence) -> Quel."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Les côtes ",
-                fin: " dévalent à vélo sont vraiment raides.",
-                reponses: ["qu'elles", "qu’elles"],
-                astuce: "On peut remplacer par « qu'ils dévalent » -> qu'elles (au pluriel)."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "",
-                fin: " belles descentes les cyclistes ont effectuées aujourd'hui !",
-                reponses: ["quelles"],
-                astuce: "S'accorde avec « descentes » (féminin pluriel) -> Quelles."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Sais-tu ",
-                fin: " langage étonnant parlent ces voyageurs ?",
-                reponses: ["quel"],
-                astuce: "S'accorde avec « langage » (nom masculin singulier : un langage) -> quel."
-            },
-            {
-                type: "quel",
-                badge: "❓ Quel / Qu'elle...",
-                badgeClass: "badge-quel",
-                debut: "Dès ",
-                fin: " entend la sonnerie du téléphone, elle sursaute.",
-                reponses: ["qu'elle", "qu’elle"],
-                astuce: "On peut remplacer par « Dès qu'il entend la sonnerie » -> qu'elle."
-            }
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " magnifique paysage on découvre depuis le sommet !", reponses: ["quel"], astuce: "Déterminant exclamatif qui s'accorde avec « paysage » (masculin singulier) -> Quel." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " vitesse étonnante dans cette descente !", reponses: ["quelle"], astuce: "S'accorde avec « vitesse » (féminin singulier) -> Quelle." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Dans ", fin: " direction les cyclistes sont-ils partis ?", reponses: ["quelle"], astuce: "S'accorde avec « direction » (féminin singulier) -> quelle." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " véhicules anciens participent à ce défilé ?", reponses: ["quels"], astuce: "S'accorde avec « véhicules » (masculin pluriel) -> Quels." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " vallées les coureurs vont-ils traverser ensuite ?", reponses: ["quelles"], astuce: "S'accorde avec « vallées » (féminin pluriel) -> Quelles." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Ma marraine m'a dit ", fin: " avait déjà photographié toute la vallée.", reponses: ["qu'elle", "qu’elle"], astuce: "On peut remplacer par « qu'il » (Ma marraine m'a dit qu'il avait...) -> qu'elle." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Les jumelles affirment ", fin: " participeront au prochain défilé.", reponses: ["qu'elles", "qu’elles"], astuce: "On peut remplacer par « qu'ils » (Les jumeaux affirment qu'ils participeront...) -> qu'elles (au pluriel)." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " affreux brigand avec ce revolver à la ceinture !", reponses: ["quel"], astuce: "S'accorde avec « brigand » (masculin singulier) -> Quel." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " ustensiles étonnants utilises-tu dans ta cuisine ?", reponses: ["quels"], astuce: "S'accorde avec « ustensiles » (masculin pluriel) -> Quels." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Je me demande ", fin: " sonnerie elle a choisie pour son téléphone.", reponses: ["quelle"], astuce: "S'accorde avec « sonnerie » (féminin singulier) -> quelle." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Cette vieille guimbarde est plus rapide ", fin: " n'en a l'air !", reponses: ["qu'elle", "qu’elle"], astuce: "On peut remplacer par « qu'il » -> qu'elle." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " silence impressionnant règne au sommet de la montagne !", reponses: ["quel"], astuce: "S'accorde avec « silence » (masculin singulier) -> Quel." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Les côtes ", fin: " dévalent à vélo sont vraiment raides.", reponses: ["qu'elles", "qu’elles"], astuce: "On peut remplacer par « qu'ils dévalent » -> qu'elles." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "", fin: " belles descentes les cyclistes ont effectuées aujourd'hui !", reponses: ["quelles"], astuce: "S'accorde avec « descentes » (féminin pluriel) -> Quelles." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Sais-tu ", fin: " langage étonnant parlent ces voyageurs ?", reponses: ["quel"], astuce: "S'accorde avec « langage » (masculin singulier) -> quel." },
+            { type: "quel", badge: "❓ Quel / Qu'elle...", badgeClass: "badge-quel", debut: "Dès ", fin: " entend la sonnerie du téléphone, elle sursaute.", reponses: ["qu'elle", "qu’elle"], astuce: "On peut remplacer par « Dès qu'il entend » -> qu'elle." }
         ],
-
-        // --- 2. CHAQUE / CHACUN & ACCORDS (NOMS + ADJECTIFS DE LA DICTÉE 4) ---
         chaque: [
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chaque »",
-                badgeClass: "badge-chaque",
-                hint: "cycliste",
-                debut: "Avant le départ, chaque ",
-                fin: " vérifie son vélo avec soin.",
-                reponses: ["cycliste"],
-                astuce: "Le déterminant « chaque » est toujours suivi d'un nom au singulier : cycliste (sans s)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chaque »",
-                badgeClass: "badge-chaque",
-                hint: "véhicule",
-                debut: "Pendant le défilé, chaque ",
-                fin: " roule à faible vitesse.",
-                reponses: ["véhicule"],
-                astuce: "Après « chaque », le nom est toujours au singulier : véhicule (sans s)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chaque »",
-                badgeClass: "badge-chaque",
-                hint: "patient",
-                debut: "Dans le cabinet médical, chaque ",
-                fin: " attend son tour en silence.",
-                reponses: ["patient"],
-                astuce: "Après « chaque », le nom reste toujours au singulier : patient (sans s)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chaque »",
-                badgeClass: "badge-chaque",
-                hint: "ustensile",
-                debut: "Ma marraine range chaque ",
-                fin: " à sa place.",
-                reponses: ["ustensile"],
-                astuce: "Après « chaque », le nom s'écrit toujours au singulier : ustensile."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chaque »",
-                badgeClass: "badge-chaque",
-                hint: "brigand",
-                debut: "Dans ce film, chaque ",
-                fin: " porte un revolver à sa ceinture.",
-                reponses: ["brigand"],
-                astuce: "Après « chaque », le nom est au singulier : brigand (avec un d muet, sans s)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chacun »",
-                badgeClass: "badge-chaque",
-                hint: "participer",
-                debut: "Les habitants sont ravis : chacun ",
-                fin: " volontiers au grand défilé.",
-                reponses: ["participe"],
-                astuce: "Le verbe qui a le pronom « chacun » comme sujet se conjugue obligatoirement au singulier : participe (-e)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chacun »",
-                badgeClass: "badge-chaque",
-                hint: "sursauter",
-                debut: "Quand la sonnerie retentit violemment, chacun ",
-                fin: " dans la pièce.",
-                reponses: ["sursaute"],
-                astuce: "Avec le sujet « chacun », le verbe se conjugue toujours à la 3e personne du singulier : sursaute (-e)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chacun »",
-                badgeClass: "badge-chaque",
-                hint: "photographier",
-                debut: "Arrivés au sommet, chacun ",
-                fin: " le magnifique paysage de la vallée.",
-                reponses: ["photographie"],
-                astuce: "Avec le sujet « chacun », le verbe est au singulier : photographie (-ie)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chacun »",
-                badgeClass: "badge-chaque",
-                hint: "aller",
-                debut: "Après l'arrivée, chacun ",
-                fin: " dans une direction différente.",
-                reponses: ["va"],
-                astuce: "Avec le sujet « chacun », le verbe aller se conjugue à la 3e personne du singulier : chacun va."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chacun »",
-                badgeClass: "badge-chaque",
-                hint: "courir",
-                debut: "Dès le signal, chacun ",
-                fin: " à toute vitesse vers la ligne d'arrivée.",
-                reponses: ["court"],
-                astuce: "Le sujet « chacun » impose le singulier : chacun court (-t)."
-            },
-            {
-                type: "indice",
-                badge: "⚖️ Règle de « chacun »",
-                badgeClass: "badge-chaque",
-                hint: "redescendre",
-                debut: "La course est finie, chacun ",
-                fin: " calmement vers la vallée.",
-                reponses: ["redescend"],
-                astuce: "Avec « chacun », le verbe est au singulier : chacun redescend (-d)."
-            },
-            {
-                type: "indice",
-                badge: "🎨 Accord de l'adjectif",
-                badgeClass: "badge-chaque",
-                hint: "différent",
-                debut: "Les cyclistes partent dans des directions ",
-                fin: ".",
-                reponses: ["différentes"],
-                astuce: "S'accorde avec « des directions » (féminin pluriel) : différentes (deux f, -entes)."
-            },
-            {
-                type: "indice",
-                badge: "🎨 Accord de l'adjectif",
-                badgeClass: "badge-chaque",
-                hint: "habile",
-                debut: "Ces coureurs très ",
-                fin: " dévalent la descente à toute vitesse.",
-                reponses: ["habiles"],
-                astuce: "S'accorde avec « Ces coureurs » (masculin pluriel) : habiles (avec h muet et -s)."
-            },
-            {
-                type: "indice",
-                badge: "🎨 Accord de l'adjectif",
-                badgeClass: "badge-chaque",
-                hint: "affreux",
-                debut: "Cette vieille guimbarde fait une ",
-                fin: " fumée noire !",
-                reponses: ["affreuse"],
-                astuce: "Au masculin « affreux », mais au féminin singulier (avec « une fumée ») -> affreuse (deux f, -euse)."
-            },
-            {
-                type: "indice",
-                badge: "🎨 Accord de l'adjectif",
-                badgeClass: "badge-chaque",
-                hint: "étonnant",
-                debut: "Ma marraine possède des ustensiles tout à fait ",
-                fin: ".",
-                reponses: ["étonnants"],
-                astuce: "S'accorde avec « des ustensiles » (masculin pluriel) : étonnants (deux n, -ants)."
-            },
-            {
-                type: "indice",
-                badge: "🎨 Accord de l'adjectif",
-                badgeClass: "badge-chaque",
-                hint: "étonnant",
-                debut: "Ces vieilles guimbardes roulent à une vitesse ",
-                fin: " !",
-                reponses: ["étonnante"],
-                astuce: "S'accorde avec « une vitesse » (féminin singulier) : étonnante (deux n, -ante)."
-            }
+            { type: "indice", badge: "⚖️ Règle de « chaque »", badgeClass: "badge-chaque", hint: "cycliste", debut: "Avant le départ, chaque ", fin: " vérifie son vélo avec soin.", reponses: ["cycliste"], astuce: "Le déterminant « chaque » est toujours suivi d'un nom au singulier : cycliste (sans s)." },
+            { type: "indice", badge: "⚖️ Règle de « chaque »", badgeClass: "badge-chaque", hint: "véhicule", debut: "Pendant le défilé, chaque ", fin: " roule à faible vitesse.", reponses: ["véhicule"], astuce: "Après « chaque », le nom est toujours au singulier : véhicule (sans s)." },
+            { type: "indice", badge: "⚖️ Règle de « chaque »", badgeClass: "badge-chaque", hint: "patient", debut: "Dans le cabinet médical, chaque ", fin: " attend son tour en silence.", reponses: ["patient"], astuce: "Après « chaque », le nom reste toujours au singulier : patient (sans s)." },
+            { type: "indice", badge: "⚖️ Règle de « chaque »", badgeClass: "badge-chaque", hint: "ustensile", debut: "Ma marraine range chaque ", fin: " à sa place.", reponses: ["ustensile"], astuce: "Après « chaque », le nom s'écrit toujours au singulier : ustensile." },
+            { type: "indice", badge: "⚖️ Règle de « chaque »", badgeClass: "badge-chaque", hint: "brigand", debut: "Dans ce film, chaque ", fin: " porte un revolver à sa ceinture.", reponses: ["brigand"], astuce: "Après « chaque », le nom est au singulier : brigand (avec un d muet, sans s)." },
+            { type: "indice", badge: "⚖️ Règle de « chacun »", badgeClass: "badge-chaque", hint: "participer", debut: "Les habitants sont ravis : chacun ", fin: " volontiers au grand défilé.", reponses: ["participe"], astuce: "Le verbe qui a le pronom « chacun » comme sujet se conjugue obligatoirement au singulier : participe (-e)." },
+            { type: "indice", badge: "⚖️ Règle de « chacun »", badgeClass: "badge-chaque", hint: "sursauter", debut: "Quand la sonnerie retentit violemment, chacun ", fin: " dans la pièce.", reponses: ["sursaute"], astuce: "Avec le sujet « chacun », le verbe se conjugue toujours à la 3e personne du singulier : sursaute (-e)." },
+            { type: "indice", badge: "⚖️ Règle de « chacun »", badgeClass: "badge-chaque", hint: "photographier", debut: "Arrivés au sommet, chacun ", fin: " le magnifique paysage de la vallée.", reponses: ["photographie"], astuce: "Avec le sujet « chacun », le verbe est au singulier : photographie (-ie)." },
+            { type: "indice", badge: "⚖️ Règle de « chacun »", badgeClass: "badge-chaque", hint: "aller", debut: "Après l'arrivée, chacun ", fin: " dans une direction différente.", reponses: ["va"], astuce: "Avec le sujet « chacun », le verbe aller se conjugue à la 3e personne du singulier : chacun va." },
+            { type: "indice", badge: "⚖️ Règle de « chacun »", badgeClass: "badge-chaque", hint: "courir", debut: "Dès le signal, chacun ", fin: " à toute vitesse vers la ligne d'arrivée.", reponses: ["court"], astuce: "Le sujet « chacun » impose le singulier : chacun court (-t)." },
+            { type: "indice", badge: "⚖️ Règle de « chacun »", badgeClass: "badge-chaque", hint: "redescendre", debut: "La course est finie, chacun ", fin: " calmement vers la vallée.", reponses: ["redescend"], astuce: "Avec « chacun », le verbe est au singulier : chacun redescend (-d)." },
+            { type: "indice", badge: "🎨 Accord de l'adjectif", badgeClass: "badge-chaque", hint: "différent", debut: "Les cyclistes partent dans des directions ", fin: ".", reponses: ["différentes"], astuce: "S'accorde avec « des directions » (féminin pluriel) : différentes (deux f, -entes)." },
+            { type: "indice", badge: "🎨 Accord de l'adjectif", badgeClass: "badge-chaque", hint: "habile", debut: "Ces coureurs très ", fin: " dévalent la descente à toute vitesse.", reponses: ["habiles"], astuce: "S'accorde avec « Ces coureurs » (masculin pluriel) : habiles (avec h muet et -s)." },
+            { type: "indice", badge: "🎨 Accord de l'adjectif", badgeClass: "badge-chaque", hint: "affreux", debut: "Cette vieille guimbarde fait une ", fin: " fumée noire !", reponses: ["affreuse"], astuce: "Au féminin singulier (avec « une fumée ») -> affreuse (deux f, -euse)." },
+            { type: "indice", badge: "🎨 Accord de l'adjectif", badgeClass: "badge-chaque", hint: "étonnant", debut: "Ma marraine possède des ustensiles tout à fait ", fin: ".", reponses: ["étonnants"], astuce: "S'accorde avec « des ustensiles » (masculin pluriel) : étonnants (deux n, -ants)." },
+            { type: "indice", badge: "🎨 Accord de l'adjectif", badgeClass: "badge-chaque", hint: "étonnant", debut: "Ces vieilles guimbardes roulent à une vitesse ", fin: " !", reponses: ["étonnante"], astuce: "S'accorde avec « une vitesse » (féminin singulier) : étonnante (deux n, -ante)." }
         ],
-
-        // --- 3. CONJUGAISON DES 10 VERBES DE LA DICTÉE 4 ---
         conjugaison: [
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "participer",
-                audioText: "Verbe participer : De vieilles guimbardes participent au défilé du village.",
-                debut: "De vieilles guimbardes ",
-                fin: " au défilé du village.",
-                reponses: ["participent"],
-                astuce: "Le sujet est « De vieilles guimbardes » (pluriel) : elles participent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "participer",
-                audioText: "Verbe participer : Chaque cycliste participe à cette course difficile.",
-                debut: "Chaque cycliste ",
-                fin: " à cette course difficile.",
-                reponses: ["participe"],
-                astuce: "Après « chaque », le sujet est au singulier : il participe (-e)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "redescendre",
-                audioText: "Verbe redescendre : Après l'arrivée au sommet, le cycliste redescend dans la vallée.",
-                debut: "Après l'arrivée au sommet, le cycliste ",
-                fin: " dans la vallée.",
-                reponses: ["redescend"],
-                astuce: "Verbe en -dre à la 3e personne du singulier : il redescend (se termine par un -d)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "redescendre",
-                audioText: "Verbe redescendre : Les voyageurs redescendent à peu près en même temps.",
-                debut: "Les voyageurs ",
-                fin: " à peu près en même temps.",
-                reponses: ["redescendent"],
-                astuce: "Le sujet est « Les voyageurs » (pluriel) : ils redescendent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "attraper",
-                audioText: "Verbe attraper : Le brigand attrape le revolver accroché à sa ceinture.",
-                debut: "Le brigand ",
-                fin: " le revolver accroché à sa ceinture.",
-                reponses: ["attrape"],
-                astuce: "Attention : attraper prend deux t mais un seul p -> il attrape (-e)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "attraper",
-                audioText: "Verbe attraper : Les policiers attrapent les vandales qui courent dans la rue.",
-                debut: "Les policiers ",
-                fin: " les vandales qui courent dans la rue.",
-                reponses: ["attrapent"],
-                astuce: "Sujet au pluriel + deux t et un seul p -> ils attrapent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "sursauter",
-                audioText: "Verbe sursauter : Les patients sursautent lorsque la sonnerie du téléphone retentit.",
-                debut: "Les patients ",
-                fin: " lorsque la sonnerie du téléphone retentit.",
-                reponses: ["sursautent"],
-                astuce: "Le sujet est « Les patients » (pluriel) : ils sursautent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "sursauter",
-                audioText: "Verbe sursauter : Ma marraine sursaute à cause de ce bruit affreux.",
-                debut: "Ma marraine ",
-                fin: " à cause de ce bruit affreux.",
-                reponses: ["sursaute"],
-                astuce: "Le sujet est « Ma marraine » (singulier) : elle sursaute (-e)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "courir",
-                audioText: "Verbe courir : Le vandale court à toute vitesse dans une autre direction.",
-                debut: "Le vandale ",
-                fin: " à toute vitesse dans une autre direction.",
-                reponses: ["court"],
-                astuce: "Au présent, courir ne prend qu'un seul r : je cours, tu cours, il court (-t)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "courir",
-                audioText: "Verbe courir : Les brigands courent vers leur véhicule.",
-                debut: "Les brigands ",
-                fin: " vers leur véhicule.",
-                reponses: ["courent"],
-                astuce: "Le sujet est « Les brigands » (pluriel) : ils courent (un seul r, -ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "régner",
-                audioText: "Verbe régner : Un grand silence règne dans toute la vallée.",
-                debut: "Un grand silence ",
-                fin: " dans toute la vallée.",
-                reponses: ["règne"],
-                astuce: "Attention à l'accent grave sur le è au présent : il règne (-e)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "régner",
-                audioText: "Verbe régner : Le calme et le silence règnent au sommet de la montagne.",
-                debut: "Le calme et le silence ",
-                fin: " au sommet de la montagne.",
-                reponses: ["règnent"],
-                astuce: "Deux sujets (« Le calme et le silence » = pluriel) et accent grave è : ils règnent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "dévaler",
-                audioText: "Verbe dévaler : Les cyclistes habiles dévalent la descente à toute vitesse.",
-                debut: "Les cyclistes habiles ",
-                fin: " la descente à toute vitesse.",
-                reponses: ["dévalent"],
-                astuce: "Le sujet est « Les cyclistes habiles » (pluriel) : ils dévalent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "dévaler",
-                audioText: "Verbe dévaler : Tu dévales la pente beaucoup trop vite !",
-                debut: "Tu ",
-                fin: " la pente beaucoup trop vite !",
-                reponses: ["dévales"],
-                astuce: "Avec « Tu », le verbe du 1er groupe prend -es : tu dévales."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "demander",
-                audioText: "Verbe demander : Le patient demande un renseignement au médecin.",
-                debut: "Le patient ",
-                fin: " un renseignement au médecin.",
-                reponses: ["demande"],
-                astuce: "Le sujet est « Le patient » (singulier) : il demande (-e)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "demander",
-                audioText: "Verbe demander : Les touristes leur demandent quelle direction prendre.",
-                debut: "Les touristes leur ",
-                fin: " quelle direction prendre.",
-                reponses: ["demandent"],
-                astuce: "Le sujet est « Les touristes » (pluriel, ne t'accorde pas avec « leur ») : ils demandent (-ent)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "aller",
-                audioText: "Verbe aller : Ces véhicules vont tous dans la même direction.",
-                debut: "Ces véhicules ",
-                fin: " tous dans la même direction.",
-                reponses: ["vont"],
-                astuce: "Verbe aller à la 3e personne du pluriel au présent : ils vont."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "aller",
-                audioText: "Verbe aller : Nous allons quelquefois rendre visite à ma marraine.",
-                debut: "Nous ",
-                fin: " quelquefois rendre visite à ma marraine.",
-                reponses: ["allons"],
-                astuce: "Verbe aller à la 1re personne du pluriel : nous allons."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "photographier",
-                audioText: "Verbe photographier : Les spectateurs photographient l'arrivée des cyclistes.",
-                debut: "Les spectateurs ",
-                fin: " l'arrivée des cyclistes.",
-                reponses: ["photographient"],
-                astuce: "Verbe en -ier à la 3e personne du pluriel : ils photographient (-ient)."
-            },
-            {
-                type: "conjugaison",
-                badge: "⚡ Conjugaison",
-                badgeClass: "badge-conjugaison",
-                hint: "photographier",
-                audioText: "Verbe photographier : Ma marraine photographie le paysage depuis le sommet.",
-                debut: "Ma marraine ",
-                fin: " le paysage depuis le sommet.",
-                reponses: ["photographie"],
-                astuce: "Verbe en -ier à la 3e personne du singulier : elle photographie (-ie)."
-            }
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "participer", audioText: "Verbe participer : De vieilles guimbardes participent au défilé du village.", debut: "De vieilles guimbardes ", fin: " au défilé du village.", reponses: ["participent"], astuce: "Le sujet est « De vieilles guimbardes » (pluriel) : elles participent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "participer", audioText: "Verbe participer : Chaque cycliste participe à cette course difficile.", debut: "Chaque cycliste ", fin: " à cette course difficile.", reponses: ["participe"], astuce: "Après « chaque », le sujet est au singulier : il participe (-e)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "redescendre", audioText: "Verbe redescendre : Après l'arrivée au sommet, le cycliste redescend dans la vallée.", debut: "Après l'arrivée au sommet, le cycliste ", fin: " dans la vallée.", reponses: ["redescend"], astuce: "Verbe en -dre à la 3e personne du singulier : il redescend (se termine par un -d)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "redescendre", audioText: "Verbe redescendre : Les voyageurs redescendent à peu près en même temps.", debut: "Les voyageurs ", fin: " à peu près en même temps.", reponses: ["redescendent"], astuce: "Le sujet est « Les voyageurs » (pluriel) : ils redescendent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "attraper", audioText: "Verbe attraper : Le brigand attrape le revolver accroché à sa ceinture.", debut: "Le brigand ", fin: " le revolver accroché à sa ceinture.", reponses: ["attrape"], astuce: "Attention : attraper prend deux t mais un seul p -> il attrape (-e)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "attraper", audioText: "Verbe attraper : Les policiers attrapent les vandales qui courent dans la rue.", debut: "Les policiers ", fin: " les vandales qui courent dans la rue.", reponses: ["attrapent"], astuce: "Sujet au pluriel + deux t et un seul p -> ils attrapent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "sursauter", audioText: "Verbe sursauter : Les patients sursautent lorsque la sonnerie du téléphone retentit.", debut: "Les patients ", fin: " lorsque la sonnerie du téléphone retentit.", reponses: ["sursautent"], astuce: "Le sujet est « Les patients » (pluriel) : ils sursautent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "sursauter", audioText: "Verbe sursauter : Ma marraine sursaute à cause de ce bruit affreux.", debut: "Ma marraine ", fin: " à cause de ce bruit affreux.", reponses: ["sursaute"], astuce: "Le sujet est « Ma marraine » (singulier) : elle sursaute (-e)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "courir", audioText: "Verbe courir : Le vandale court à toute vitesse dans une autre direction.", debut: "Le vandale ", fin: " à toute vitesse dans une autre direction.", reponses: ["court"], astuce: "Au présent, courir ne prend qu'un seul r : il court (-t)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "courir", audioText: "Verbe courir : Les brigands courent vers leur véhicule.", debut: "Les brigands ", fin: " vers leur véhicule.", reponses: ["courent"], astuce: "Le sujet est « Les brigands » (pluriel) : ils courent (un seul r, -ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "régner", audioText: "Verbe régner : Un grand silence règne dans toute la vallée.", debut: "Un grand silence ", fin: " dans toute la vallée.", reponses: ["règne"], astuce: "Attention à l'accent grave sur le è au présent : il règne (-e)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "régner", audioText: "Verbe régner : Le calme et le silence règnent au sommet de la montagne.", debut: "Le calme et le silence ", fin: " au sommet de la montagne.", reponses: ["règnent"], astuce: "Deux sujets (pluriel) et accent grave è : ils règnent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "dévaler", audioText: "Verbe dévaler : Les cyclistes habiles dévalent la descente à toute vitesse.", debut: "Les cyclistes habiles ", fin: " la descente à toute vitesse.", reponses: ["dévalent"], astuce: "Le sujet est « Les cyclistes habiles » (pluriel) : ils dévalent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "dévaler", audioText: "Verbe dévaler : Tu dévales la pente beaucoup trop vite !", debut: "Tu ", fin: " la pente beaucoup trop vite !", reponses: ["dévales"], astuce: "Avec « Tu », le verbe du 1er groupe prend -es : tu dévales." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "demander", audioText: "Verbe demander : Le patient demande un renseignement au médecin.", debut: "Le patient ", fin: " un renseignement au médecin.", reponses: ["demande"], astuce: "Le sujet est « Le patient » (singulier) : il demande (-e)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "demander", audioText: "Verbe demander : Les touristes leur demandent quelle direction prendre.", debut: "Les touristes leur ", fin: " quelle direction prendre.", reponses: ["demandent"], astuce: "Le sujet est « Les touristes » (pluriel) : ils demandent (-ent)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "aller", audioText: "Verbe aller : Ces véhicules vont tous dans la même direction.", debut: "Ces véhicules ", fin: " tous dans la même direction.", reponses: ["vont"], astuce: "Verbe aller à la 3e personne du pluriel au présent : ils vont." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "aller", audioText: "Verbe aller : Nous allons quelquefois rendre visite à ma marraine.", debut: "Nous ", fin: " quelquefois rendre visite à ma marraine.", reponses: ["allons"], astuce: "Verbe aller à la 1re personne du pluriel : nous allons." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "photographier", audioText: "Verbe photographier : Les spectateurs photographient l'arrivée des cyclistes.", debut: "Les spectateurs ", fin: " l'arrivée des cyclistes.", reponses: ["photographient"], astuce: "Verbe en -ier à la 3e personne du pluriel : ils photographient (-ient)." },
+            { type: "conjugaison", badge: "⚡ Conjugaison", badgeClass: "badge-conjugaison", hint: "photographier", audioText: "Verbe photographier : Ma marraine photographie le paysage depuis le sommet.", debut: "Ma marraine ", fin: " le paysage depuis le sommet.", reponses: ["photographie"], astuce: "Verbe en -ier à la 3e personne du singulier : elle photographie (-ie)." }
         ],
-
-        // --- 4. DICTÉE AUDIO : NOMS, ADJECTIFS, VERBES & MOTS INVARIABLES ---
         audio: [
             { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un brigand", reponses: ["un brigand"], consigne: "Écris le groupe nominal entendu (attention à la lettre muette finale) :", astuce: "un brigand prend un d muet à la fin (comme brigander)." },
             { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un revolver", reponses: ["un revolver"], consigne: "Écris le groupe nominal entendu :", astuce: "un revolver s'écrit sans accent et se termine par -er." },
@@ -1787,30 +1441,24 @@
             { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un cycliste", reponses: ["un cycliste"], consigne: "Écris le groupe nominal entendu (attention au y) :", astuce: "un cycliste s'écrit avec un y (comme bicyclette)." },
             { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "une descente", reponses: ["une descente"], consigne: "Écris le groupe nominal entendu (comme descendre, attention au sc) :", astuce: "une descente s'écrit avec s-c (d-e-s-c-e-n-t-e)." },
             { type: "audio", badge: "🔊 Dictée audio (nom)", badgeClass: "badge-audio", audioText: "un paysage", reponses: ["un paysage"], consigne: "Écris le groupe nominal entendu (comme un pays) :", astuce: "un paysage s'écrit p-a-y-s-a-g-e." },
-
-            // Les 4 Adjectifs
             { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "différent", reponses: ["différent"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux deux f) :", astuce: "différent prend deux f et se termine par -ent." },
             { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "habile", reponses: ["habile"], consigne: "Écris l'adjectif entendu (attention au h muet au début) :", astuce: "habile commence par un h muet et ne prend qu'un seul l." },
             { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "affreux", reponses: ["affreux"], consigne: "Écris l'adjectif masculin entendu (attention aux deux f et à la fin) :", astuce: "affreux prend deux f et se termine par -eux." },
             { type: "audio", badge: "🔊 Dictée audio (adjectif)", badgeClass: "badge-audio", audioText: "étonnant", reponses: ["étonnant"], consigne: "Écris l'adjectif masculin singulier entendu (attention aux deux n) :", astuce: "étonnant prend deux n et se termine par -ant." },
-
-            // Verbes à l'infinitif (pièges orthographiques)
-            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "attraper", reponses: ["attraper"], consigne: "Écris ce verbe à l'infinitif (attention aux consonnes : 2 t mais un seul p !) :", astuce: "attraper prend deux t et un seul p." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "attraper", reponses: ["attraper"], consigne: "Écris ce verbe à l'infinitif (2 t mais un seul p !) :", astuce: "attraper prend deux t et un seul p." },
             { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "redescendre", reponses: ["redescendre"], consigne: "Écris ce verbe à l'infinitif (attention au sc) :", astuce: "redescendre s'écrit avec s-c et -dre." },
             { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "photographier", reponses: ["photographier"], consigne: "Écris ce verbe à l'infinitif (attention aux deux ph) :", astuce: "p-h-o-t-o-g-r-a-p-h-i-e-r." },
-            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "courir", reponses: ["courir"], consigne: "Écris ce verbe à l'infinitif (attention : un seul r !) :", astuce: "courir ne prend qu'un seul r à l'infinitif et au présent." },
-
-            // Les 10 Mots invariables
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "auparavant", reponses: ["auparavant"], consigne: "Écris le mot invariable entendu (en un seul mot) :", astuce: "a-u-p-a-r-a-v-a-n-t (en un seul mot, terminé par t)." },
+            { type: "audio", badge: "🔊 Dictée audio (verbe)", badgeClass: "badge-audio", audioText: "courir", reponses: ["courir"], consigne: "Écris ce verbe à l'infinitif (un seul r !) :", astuce: "courir ne prend qu'un seul r à l'infinitif et au présent." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "auparavant", reponses: ["auparavant"], consigne: "Écris le mot invariable entendu (en un seul mot) :", astuce: "a-u-p-a-r-a-v-a-n-t." },
             { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "ensuite", reponses: ["ensuite"], consigne: "Écris le mot invariable entendu (en un seul mot) :", astuce: "ensuite s'écrit en un seul mot." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "quelquefois", reponses: ["quelquefois"], consigne: "Écris le mot invariable entendu (en un seul mot, sans s au milieu) :", astuce: "quelquefois s'écrit en un seul mot et avec un s uniquement à la fin." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "tout à fait", reponses: ["tout à fait"], consigne: "Écris l'expression invariable entendue (en 3 mots, attention à l'accent) :", astuce: "tout à fait (avec accent grave sur à)." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "à peu près", reponses: ["à peu près"], consigne: "Écris l'expression invariable entendue (en 3 mots, attention aux accents) :", astuce: "à peu près (accents graves sur à et sur près, terminé par s)." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "alors", reponses: ["alors"], consigne: "Écris le mot invariable entendu (attention à la lettre finale) :", astuce: "alors prend toujours un s à la fin." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "violemment", reponses: ["violemment"], consigne: "Écris l'adverbe invariable entendu (formé sur violent -> attention à -emment !) :", astuce: "violemment s'écrit avec -emment (un e et deux m)." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "d'abord", reponses: ["d'abord"], consigne: "Écris le mot invariable entendu (attention à l'apostrophe et à la lettre muette finale) :", astuce: "d'abord prend une apostrophe et un d muet à la fin." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "déjà", reponses: ["déjà"], consigne: "Écris le mot invariable entendu (attention aux deux accents) :", astuce: "déjà prend un accent aigu sur le é et un accent grave sur le à." },
-            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "là-dessus", reponses: ["là-dessus"], consigne: "Écris le mot invariable entendu (attention à l'accent et au trait d'union) :", astuce: "là-dessus prend un accent grave sur là et un trait d'union." }
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "quelquefois", reponses: ["quelquefois"], consigne: "Écris le mot invariable entendu (en un seul mot) :", astuce: "quelquefois s'écrit en un seul mot et avec un s à la fin." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "tout à fait", reponses: ["tout à fait"], consigne: "Écris l'expression invariable entendue (en 3 mots) :", astuce: "tout à fait (avec accent grave sur à)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "à peu près", reponses: ["à peu près"], consigne: "Écris l'expression invariable entendue (en 3 mots) :", astuce: "à peu près (accents graves sur à et sur près)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "alors", reponses: ["alors"], consigne: "Écris le mot invariable entendu :", astuce: "alors prend toujours un s à la fin." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "violemment", reponses: ["violemment"], consigne: "Écris l'adverbe invariable entendu (attention à -emment !) :", astuce: "violemment s'écrit avec -emment (un e et deux m)." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "d'abord", reponses: ["d'abord"], consigne: "Écris le mot invariable entendu :", astuce: "d'abord prend une apostrophe et un d muet à la fin." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "déjà", reponses: ["déjà"], consigne: "Écris le mot invariable entendu :", astuce: "déjà prend un accent aigu sur le é et un accent grave sur le à." },
+            { type: "audio", badge: "🔊 Mot invariable", badgeClass: "badge-audio", audioText: "là-dessus", reponses: ["là-dessus"], consigne: "Écris le mot invariable entendu :", astuce: "là-dessus prend un accent grave sur là et un trait d'union." }
         ]
     };
 
@@ -1820,27 +1468,33 @@
     const STORAGE_KEY_API = 'gemini_api_key_dictee';
     let modeActuel = 'papier';
     let questionsActuelles = [];
+
+    // État Dictée Papier (5 phrases, 1 par 1)
     let phrasesPapierActuelles = [];
-    let phrasesPapierCochees = [false, false, false, false, false];
-    let spoilersVisibles = false;
-    let imageBase64 = null;
-    let imageMimeType = 'image/jpeg';
+    let indexPhraseCourante = 0;
+    let resultatsPhrasesPapier = [null, null, null, null, null]; // stocke le résultat de chaque phrase
+    let spoilerVisible = false;
+
+    // État Image & Recadrage (Cropper)
+    let imageSourceComplete = null; // HTMLImageElement de la photo chargée
+    let cropRect = { x: 0.05, y: 0.25, w: 0.90, h: 0.35 }; // Coordonnées normalisées (0..1)
+    let imageRecadreeBase64 = null;
+
+    // État Voix
     let voixFrancaise = null;
+    const cacheAudioGemini = new Map();
+    let audioEnCours = null;
+    let listeVoixFrancaises = [];
 
     /* =========================================================
        SYNTHÈSE VOCALE : GEMINI 3.8 FLASH TTS + CACHE + SECOURS NAVIGATEUR
        ========================================================= */
-    const cacheAudioGemini = new Map(); // clé: "voix::texte" -> url Blob WAV
-    let audioEnCours = null;
-    let listeVoixFrancaises = [];
-
     function scoreVoixNavigateur(v) {
         let s = 0;
         const nom = (v.name || '').toLowerCase();
         const lang = (v.lang || '').toLowerCase();
         if (lang === 'fr-fr') s += 20;
         else if (lang.startsWith('fr')) s += 10;
-        // Prioriser les voix haute qualité sur iOS / macOS / Android / Chrome / Edge
         if (nom.includes('natural') || nom.includes('online')) s += 50;
         if (nom.includes('premium') || nom.includes('enhanced') || nom.includes('améliorée')) s += 45;
         if (nom.includes('google')) s += 35;
@@ -1894,10 +1548,6 @@
         }
     }
 
-    function viderCacheAudio() {
-        afficherPhrasesPapier();
-    }
-
     function arreterAudioEnCours() {
         if (audioEnCours) {
             audioEnCours.pause();
@@ -1948,22 +1598,18 @@
         });
     }
 
-    async function ecouter(texte, vitesse = 0.82, boutonDeclencheur = null, idxPhrasePapier = null) {
-        const apiKey = (localStorage.getItem(STORAGE_KEY_API) || '').trim();
+    async function ecouter(texte, vitesse = 0.82, boutonDeclencheur = null) {
+        const apiKey = obtenirCleApiActive();
         const selectMoteur = document.getElementById('select-moteur-voix');
         const moteur = selectMoteur ? selectMoteur.value : 'gemini';
         const statusEl = document.getElementById('tts-status-indicator');
 
-        // Si le moteur choisi est Gemini et qu'une clé API est enregistrée
         if (moteur === 'gemini' && apiKey.length > 10) {
             const selectVoix = document.getElementById('select-voix-gemini');
             const voixChoisie = selectVoix ? selectVoix.value : 'Kore';
             const cleCache = `${voixChoisie}::${texte}`;
-
-            // Vitesse de lecture HTML5 : 1.0 pour normal, 0.76 pour lentement
             const tauxLecture = (vitesse < 0.72) ? 0.76 : 1.0;
 
-            // 1. Si l'audio est déjà en cache mémoire, lecture instantanée !
             if (cacheAudioGemini.has(cleCache)) {
                 if (statusEl) statusEl.textContent = '✨ Lecture voix IA (en cache)';
                 lireBlobAudio(cacheAudioGemini.get(cleCache), tauxLecture, () => {
@@ -1972,7 +1618,6 @@
                 return;
             }
 
-            // 2. Sinon, appel à Gemini 3.8 Flash TTS
             const texteOriginalBtn = boutonDeclencheur ? boutonDeclencheur.innerHTML : null;
             if (boutonDeclencheur) {
                 boutonDeclencheur.disabled = true;
@@ -1988,8 +1633,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'x-goog-api-key': apiKey,
-                        'Api-Revision': '2026-05-20'
+                        'x-goog-api-key': apiKey
                     },
                     body: JSON.stringify({
                         model: 'gemini-3.8-flash-tts',
@@ -2022,7 +1666,6 @@
 
                 const data = await response.json();
 
-                // Extraction du bloc audio en base64 dans steps[].content[]
                 let audioBase64 = data.output_audio?.data || null;
                 let audioMime = data.output_audio?.mime_type || 'audio/wav';
 
@@ -2046,10 +1689,8 @@
                 const blobUrl = base64VersBlobUrl(audioBase64, audioMime);
                 cacheAudioGemini.set(cleCache, blobUrl);
 
-                if (idxPhrasePapier !== null) {
-                    const badgeCache = document.getElementById(`cache-badge-${idxPhrasePapier}`);
-                    if (badgeCache) badgeCache.style.display = 'inline-block';
-                }
+                const badgeCache = document.getElementById('current-cache-badge');
+                if (badgeCache) badgeCache.style.display = 'inline-block';
 
                 if (statusEl) statusEl.textContent = '🔊 Lecture voix IA Gemini';
                 lireBlobAudio(blobUrl, tauxLecture, () => {
@@ -2067,16 +1708,22 @@
                 }
             }
         } else {
-            // Pas de clé API ou choix explicite de la voix du navigateur
             ecouterNavigateur(texte, vitesse);
         }
     }
 
     /* =========================================================
-       GESTION DE LA CLÉ API GEMINI (LOCALSTORAGE SUR TÉLÉPHONE)
+       GESTION & TEST DE LA CLÉ API GEMINI
        ========================================================= */
+    function obtenirCleApiActive() {
+        const input = document.getElementById('api-key-input');
+        const cleSaisie = input ? input.value.trim() : '';
+        const cleStockee = (localStorage.getItem(STORAGE_KEY_API) || '').trim();
+        return cleSaisie || cleStockee;
+    }
+
     function chargerCleApi() {
-        const cle = localStorage.getItem(STORAGE_KEY_API) || '';
+        const cle = (localStorage.getItem(STORAGE_KEY_API) || '').trim();
         const dot = document.getElementById('api-status-dot');
         const txt = document.getElementById('api-status-text');
         const btnToggle = document.getElementById('btn-toggle-key-form');
@@ -2084,7 +1731,7 @@
         const formWrapper = document.getElementById('api-key-form-wrapper');
         const input = document.getElementById('api-key-input');
 
-        if (cle.trim().length > 10) {
+        if (cle.length > 10) {
             dot.className = 'status-dot ok';
             const masque = cle.slice(0, 6) + '••••••••' + cle.slice(-4);
             txt.textContent = `Clé API Gemini enregistrée (${masque})`;
@@ -2094,7 +1741,7 @@
             input.value = cle;
         } else {
             dot.className = 'status-dot missing';
-            txt.textContent = 'Clé API Gemini requise pour corriger la photo';
+            txt.textContent = 'Clé API Gemini requise';
             btnToggle.textContent = '🔑 Entrer ma clé API';
             btnClear.style.display = 'none';
             formWrapper.style.display = 'flex';
@@ -2127,12 +1774,80 @@
     function supprimerCleApi() {
         if (confirm("Veux-tu vraiment effacer la clé API enregistrée sur ce téléphone ?")) {
             localStorage.removeItem(STORAGE_KEY_API);
+            document.getElementById('api-test-result').style.display = 'none';
             chargerCleApi();
         }
     }
 
+    async function testerCleApi() {
+        const resultBox = document.getElementById('api-test-result');
+        const dot = document.getElementById('api-status-dot');
+        const apiKey = obtenirCleApiActive();
+
+        if (!apiKey || apiKey.length < 10) {
+            resultBox.className = 'api-test-result failure';
+            resultBox.innerHTML = '❌ Aucune clé API entrée. Colle ta clé API Gemini dans le champ ci-dessus puis reclique sur <strong>🧪 Tester</strong>.';
+            document.getElementById('api-key-form-wrapper').style.display = 'flex';
+            document.getElementById('api-key-input').focus();
+            return;
+        }
+
+        resultBox.className = 'api-test-result testing';
+        resultBox.innerHTML = '⏳ Test de connexion à Gemini (<code>gemini-3.8-flash</code>) en cours...';
+
+        const t0 = performance.now();
+        try {
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey
+                },
+                body: JSON.stringify({
+                    model: 'gemini-3.8-flash',
+                    input: 'Réponds uniquement par le mot : OK'
+                })
+            });
+
+            const dureeMs = Math.round(performance.now() - t0);
+
+            if (!response.ok) {
+                let detail = '';
+                try {
+                    const errJson = await response.json();
+                    const msg = Array.isArray(errJson) ? errJson[0]?.error?.message : errJson?.error?.message;
+                    detail = msg || JSON.stringify(errJson);
+                } catch (_) {
+                    detail = await response.text();
+                }
+                throw new Error(`Code HTTP ${response.status} — ${detail}`);
+            }
+
+            const data = await response.json();
+            let texteReponse = data.output_text || '';
+            if (!texteReponse && Array.isArray(data.steps)) {
+                const modelStep = data.steps.filter(s => s.type === 'model_output').pop();
+                const textPart = modelStep?.content?.find(c => c.type === 'text');
+                if (textPart) texteReponse = textPart.text;
+            }
+
+            // Enregistrer automatiquement la clé validée !
+            localStorage.setItem(STORAGE_KEY_API, apiKey);
+            chargerCleApi();
+
+            dot.className = 'status-dot ok';
+            resultBox.className = 'api-test-result success';
+            resultBox.innerHTML = `✅ <strong>Clé API parfaitement valide !</strong> Connexion réussie à <code>gemini-3.8-flash</code> en ${dureeMs} ms (réponse : <em>« ${echapperHtml(texteReponse.trim() || 'OK')} »</em>). Clé enregistrée sur cet appareil.`;
+
+        } catch (err) {
+            dot.className = 'status-dot error';
+            resultBox.className = 'api-test-result failure';
+            resultBox.innerHTML = `❌ <strong>Échec du test de la clé API :</strong><br>${echapperHtml(err.message)}`;
+        }
+    }
+
     /* =========================================================
-       LOGIQUE DU MODE DICTÉE SUR PAPIER (5 PHRASES + PHOTO)
+       LOGIQUE DICTÉE PAPIER : 1 PHRASE À LA FOIS (SUR 5)
        ========================================================= */
     function melanger(tableau) {
         const arr = [...tableau];
@@ -2145,90 +1860,124 @@
 
     function nouvelleDicteePapier() {
         phrasesPapierActuelles = melanger(PHRASES_DICTEE_PAPIER).slice(0, 5);
-        phrasesPapierCochees = [false, false, false, false, false];
-        spoilersVisibles = false;
-        document.getElementById('spoiler-btn-label').textContent = 'Voir le texte des phrases (secours)';
+        indexPhraseCourante = 0;
+        resultatsPhrasesPapier = [null, null, null, null, null];
+        spoilerVisible = false;
 
-        // Réinitialiser la photo et les résultats
-        imageBase64 = null;
-        document.getElementById('camera-input').value = '';
-        document.getElementById('gallery-input').value = '';
-        document.getElementById('photo-preview-container').style.display = 'none';
         document.getElementById('paper-score-banner').style.display = 'none';
-        document.getElementById('paper-correction-results').innerHTML = '';
-        document.getElementById('paper-post-actions').style.display = 'none';
+        document.getElementById('paper-all-results').innerHTML = '';
 
-        afficherPhrasesPapier();
-        mettreAJourBoutonCorrection();
+        afficherPhraseCourante();
     }
 
-    function afficherPhrasesPapier() {
-        const conteneur = document.getElementById('paper-sentences-list');
-        conteneur.innerHTML = '';
+    function calculerScoreActuel() {
+        let totalFautes = 0;
+        resultatsPhrasesPapier.forEach(res => {
+            if (res && Array.isArray(res.fautes)) {
+                totalFautes += res.fautes.length;
+            }
+        });
+        return {
+            score: Math.max(0, 10 - totalFautes),
+            totalFautes
+        };
+    }
+
+    function afficherBarreProgressionPapier() {
+        const pillsContainer = document.getElementById('paper-progress-pills');
+        pillsContainer.innerHTML = '';
+
+        phrasesPapierActuelles.forEach((_, idx) => {
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            let cls = 'progress-pill';
+            let icone = '';
+
+            if (idx === indexPhraseCourante) {
+                cls += ' current';
+            }
+            if (resultatsPhrasesPapier[idx]) {
+                const nbF = (resultatsPhrasesPapier[idx].fautes || []).length;
+                if (nbF === 0) {
+                    cls += ' done-ok';
+                    icone = ' ✔';
+                } else {
+                    cls += ' done-err';
+                    icone = ` (-${nbF})`;
+                }
+            }
+
+            pill.className = cls;
+            pill.textContent = `Phrase ${idx + 1}${icone}`;
+            pill.onclick = () => allerAPhrase(idx);
+            pillsContainer.appendChild(pill);
+        });
+
+        const { score } = calculerScoreActuel();
+        document.getElementById('live-score-pill').textContent = `Score : ${score} / 10`;
+    }
+
+    function allerAPhrase(idx) {
+        indexPhraseCourante = idx;
+        spoilerVisible = false;
+        afficherPhraseCourante();
+    }
+
+    function afficherPhraseCourante() {
+        afficherBarreProgressionPapier();
+
+        const phrase = phrasesPapierActuelles[indexPhraseCourante] || '';
+        document.getElementById('current-sentence-title').textContent =
+            `🎧 Phrase ${indexPhraseCourante + 1} sur 5 : Écoute et écris sur ton papier`;
 
         const selectVoix = document.getElementById('select-voix-gemini');
         const voixChoisie = selectVoix ? selectVoix.value : 'Kore';
+        const dejaEnCache = cacheAudioGemini.has(`${voixChoisie}::${phrase}`);
+        document.getElementById('current-cache-badge').style.display = dejaEnCache ? 'inline-block' : 'none';
 
-        phrasesPapierActuelles.forEach((phrase, idx) => {
-            const item = document.createElement('div');
-            item.className = 'sentence-item' + (phrasesPapierCochees[idx] ? ' done-sentence' : '');
-            item.id = `paper-sentence-${idx}`;
+        const spoilerEl = document.getElementById('current-sentence-spoiler');
+        spoilerEl.textContent = phrase;
+        spoilerEl.style.display = spoilerVisible ? 'block' : 'none';
+        document.getElementById('spoiler-btn-label').textContent = spoilerVisible
+            ? 'Masquer le texte'
+            : 'Voir le texte (secours)';
 
-            const phraseEchappee = phrase.replace(/'/g, "\\'");
-            const dejaEnCache = cacheAudioGemini.has(`${voixChoisie}::${phrase}`);
+        // Afficher le résultat de cette phrase si elle a déjà été corrigée
+        const resultContainer = document.getElementById('current-sentence-result');
+        const nextActions = document.getElementById('next-sentence-actions');
+        resultContainer.innerHTML = '';
 
-            item.innerHTML = `
-                <div class="sentence-row">
-                    <div class="sentence-label">
-                        <span class="sentence-num-circle">${idx + 1}</span>
-                        <span>Phrase ${idx + 1} sur 5</span>
-                        <span id="cache-badge-${idx}" style="display: ${dejaEnCache ? 'inline-block' : 'none'}; font-size: 0.75rem; background: #eef2ff; color: #4f46e5; padding: 2px 8px; border-radius: 12px; font-weight: 600;">✨ Audio IA prêt</span>
-                    </div>
-                    <div class="sentence-controls">
-                        <button type="button" class="btn-listen" onclick="ecouterPhrasePapier(${idx}, '${phraseEchappee}', 0.82, this)">
-                            🔊 Écouter
-                        </button>
-                        <button type="button" class="btn-listen-slow" onclick="ecouterPhrasePapier(${idx}, '${phraseEchappee}', 0.62, this)">
-                            🐢 Lentement
-                        </button>
-                        <button type="button" class="btn-check-done ${phrasesPapierCochees[idx] ? 'checked' : ''}" onclick="cocherPhrasePapier(${idx})">
-                            ${phrasesPapierCochees[idx] ? '✔ Écrite sur papier' : '☐ Marquer comme écrite'}
-                        </button>
-                    </div>
-                </div>
-                <div class="sentence-spoiler" id="spoiler-${idx}" style="display: ${spoilersVisibles ? 'block' : 'none'};">
-                    <strong>Phrase ${idx + 1} :</strong> ${phrase}
-                </div>
-            `;
-            conteneur.appendChild(item);
-        });
+        if (resultatsPhrasesPapier[indexPhraseCourante]) {
+            resultContainer.innerHTML = genererCarteCorrectionPhrase(
+                indexPhraseCourante,
+                resultatsPhrasesPapier[indexPhraseCourante]
+            );
+            nextActions.style.display = 'block';
+            mettreAJourBoutonSuivant();
+        } else {
+            nextActions.style.display = 'none';
+        }
+
+        mettreAJourBoutonCorrection();
     }
 
-    function ecouterPhrasePapier(idx, texte, vitesse, btnEl) {
-        document.querySelectorAll('.sentence-item').forEach(el => el.classList.remove('active-sentence'));
-        const card = document.getElementById(`paper-sentence-${idx}`);
-        if (card) card.classList.add('active-sentence');
-        ecouter(texte, vitesse, btnEl, idx);
-    }
-
-    function cocherPhrasePapier(idx) {
-        phrasesPapierCochees[idx] = !phrasesPapierCochees[idx];
-        afficherPhrasesPapier();
+    function ecouterPhraseCourante(vitesse, btnEl) {
+        const phrase = phrasesPapierActuelles[indexPhraseCourante];
+        if (!phrase) return;
+        ecouter(phrase, vitesse, btnEl);
     }
 
     function basculerTexteSecours() {
-        spoilersVisibles = !spoilersVisibles;
-        document.getElementById('spoiler-btn-label').textContent = spoilersVisibles
-            ? 'Masquer le texte des phrases'
-            : 'Voir le texte des phrases (secours)';
-        phrasesPapierActuelles.forEach((_, idx) => {
-            const el = document.getElementById(`spoiler-${idx}`);
-            if (el) el.style.display = spoilersVisibles ? 'block' : 'none';
-        });
+        spoilerVisible = !spoilerVisible;
+        const spoilerEl = document.getElementById('current-sentence-spoiler');
+        spoilerEl.style.display = spoilerVisible ? 'block' : 'none';
+        document.getElementById('spoiler-btn-label').textContent = spoilerVisible
+            ? 'Masquer le texte'
+            : 'Voir le texte (secours)';
     }
 
     /* =========================================================
-       GESTION ET COMPRESSION DE LA PHOTO (POUR MOBILE)
+       OUTIL DE SÉLECTION DE ZONE SUR L'IMAGE (CROP INTERACTIF)
        ========================================================= */
     function gererSelectionPhoto(event) {
         const file = event.target.files && event.target.files[0];
@@ -2238,125 +1987,278 @@
         reader.onload = function(e) {
             const img = new Image();
             img.onload = function() {
-                // Redimensionnement max 1600px pour envoi rapide depuis téléphone
-                const MAX_DIM = 1600;
-                let width = img.width;
-                let height = img.height;
-
-                if (width > MAX_DIM || height > MAX_DIM) {
-                    if (width > height) {
-                        height = Math.round((height * MAX_DIM) / width);
-                        width = MAX_DIM;
+                // Redimensionner l'image source à max 1800px pour fluidité sur téléphone
+                const MAX_DIM = 1800;
+                let w = img.width;
+                let h = img.height;
+                if (w > MAX_DIM || h > MAX_DIM) {
+                    if (w > h) {
+                        h = Math.round((h * MAX_DIM) / w);
+                        w = MAX_DIM;
                     } else {
-                        width = Math.round((width * MAX_DIM) / height);
-                        height = MAX_DIM;
+                        w = Math.round((w * MAX_DIM) / h);
+                        h = MAX_DIM;
                     }
                 }
+                const c = document.createElement('canvas');
+                c.width = w;
+                c.height = h;
+                c.getContext('2d').drawImage(img, 0, 0, w, h);
 
-                const canvas = document.createElement('canvas');
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-                imageMimeType = 'image/jpeg';
-                imageBase64 = dataUrl.split(',')[1];
-
-                const previewContainer = document.getElementById('photo-preview-container');
-                const previewImg = document.getElementById('photo-preview-img');
-                previewImg.src = dataUrl;
-                previewContainer.style.display = 'block';
-
-                mettreAJourBoutonCorrection();
+                const resizedImg = new Image();
+                resizedImg.onload = function() {
+                    imageSourceComplete = resizedImg;
+                    const cropperImg = document.getElementById('cropper-img');
+                    cropperImg.onload = function() {
+                        document.getElementById('cropper-wrapper').style.display = 'block';
+                        // Zone par défaut centrée horizontalement
+                        cropRect = { x: 0.04, y: 0.20, w: 0.92, h: 0.35 };
+                        actualiserAffichageCropBox();
+                    };
+                    cropperImg.src = resizedImg.src;
+                };
+                resizedImg.src = c.toDataURL('image/jpeg', 0.90);
             };
             img.src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 
+    function pivoterImage(degres) {
+        if (!imageSourceComplete) return;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const w = imageSourceComplete.width;
+        const h = imageSourceComplete.height;
+
+        canvas.width = h;
+        canvas.height = w;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((degres * Math.PI) / 180);
+        ctx.drawImage(imageSourceComplete, -w / 2, -h / 2);
+
+        const rotatedImg = new Image();
+        rotatedImg.onload = function() {
+            imageSourceComplete = rotatedImg;
+            const cropperImg = document.getElementById('cropper-img');
+            cropperImg.onload = function() {
+                actualiserAffichageCropBox();
+            };
+            cropperImg.src = rotatedImg.src;
+        };
+        rotatedImg.src = canvas.toDataURL('image/jpeg', 0.90);
+    }
+
+    function reinitialiserZoneCrop() {
+        cropRect = { x: 0.02, y: 0.05, w: 0.96, h: 0.90 };
+        actualiserAffichageCropBox();
+    }
+
+    function actualiserAffichageCropBox() {
+        const imgEl = document.getElementById('cropper-img');
+        const boxEl = document.getElementById('crop-box');
+        if (!imgEl || !boxEl || !imageSourceComplete) return;
+
+        const dispW = imgEl.clientWidth || imgEl.naturalWidth;
+        const dispH = imgEl.clientHeight || imgEl.naturalHeight;
+        if (!dispW || !dispH) return;
+
+        boxEl.style.left = `${cropRect.x * dispW}px`;
+        boxEl.style.top = `${cropRect.y * dispH}px`;
+        boxEl.style.width = `${cropRect.w * dispW}px`;
+        boxEl.style.height = `${cropRect.h * dispH}px`;
+
+        genererApercuRecadre();
+        mettreAJourBoutonCorrection();
+    }
+
+    function genererApercuRecadre() {
+        if (!imageSourceComplete) return;
+        const previewCanvas = document.getElementById('cropped-preview-canvas');
+        const ctx = previewCanvas.getContext('2d');
+
+        const sx = Math.round(cropRect.x * imageSourceComplete.width);
+        const sy = Math.round(cropRect.y * imageSourceComplete.height);
+        const sw = Math.max(20, Math.round(cropRect.w * imageSourceComplete.width));
+        const sh = Math.max(20, Math.round(cropRect.h * imageSourceComplete.height));
+
+        previewCanvas.width = sw;
+        previewCanvas.height = sh;
+        ctx.drawImage(imageSourceComplete, sx, sy, sw, sh, 0, 0, sw, sh);
+
+        const dataUrl = previewCanvas.toDataURL('image/jpeg', 0.88);
+        imageRecadreeBase64 = dataUrl.split(',')[1];
+    }
+
+    // Gestion du glisser-déposer (souris + écran tactile téléphone) sur la zone de sélection
+    function initialiserInteractionsCropper() {
+        const stage = document.getElementById('cropper-stage');
+        const imgEl = document.getElementById('cropper-img');
+        let modeDrag = null; // 'move' ou 'nw','ne','sw','se','n','s','e','w'
+        let startPt = { x: 0, y: 0 };
+        let startRect = { ...cropRect };
+
+        function obtenirPointNormalise(clientX, clientY) {
+            const rect = imgEl.getBoundingClientRect();
+            const nx = (clientX - rect.left) / Math.max(1, rect.width);
+            const ny = (clientY - rect.top) / Math.max(1, rect.height);
+            return { x: nx, y: ny };
+        }
+
+        function demarrerDrag(clientX, clientY, target) {
+            if (!imageSourceComplete) return;
+            const handle = target.getAttribute('data-handle');
+            if (handle) {
+                modeDrag = handle;
+            } else if (target.id === 'crop-box' || target.closest('#crop-box')) {
+                modeDrag = 'move';
+            } else {
+                // Clic en dehors : centrer la boîte autour du doigt
+                const pt = obtenirPointNormalise(clientX, clientY);
+                const newX = Math.max(0, Math.min(1 - cropRect.w, pt.x - cropRect.w / 2));
+                const newY = Math.max(0, Math.min(1 - cropRect.h, pt.y - cropRect.h / 2));
+                cropRect.x = newX;
+                cropRect.y = newY;
+                actualiserAffichageCropBox();
+                modeDrag = 'move';
+            }
+            startPt = obtenirPointNormalise(clientX, clientY);
+            startRect = { ...cropRect };
+        }
+
+        function deplacerDrag(clientX, clientY) {
+            if (!modeDrag) return;
+            const pt = obtenirPointNormalise(clientX, clientY);
+            const dx = pt.x - startPt.x;
+            const dy = pt.y - startPt.y;
+            const MIN_SIZE = 0.06;
+
+            if (modeDrag === 'move') {
+                cropRect.x = Math.max(0, Math.min(1 - startRect.w, startRect.x + dx));
+                cropRect.y = Math.max(0, Math.min(1 - startRect.h, startRect.y + dy));
+            } else {
+                let x1 = startRect.x;
+                let y1 = startRect.y;
+                let x2 = startRect.x + startRect.w;
+                let y2 = startRect.y + startRect.h;
+
+                if (modeDrag.includes('w')) x1 = Math.max(0, Math.min(x2 - MIN_SIZE, x1 + dx));
+                if (modeDrag.includes('e')) x2 = Math.min(1, Math.max(x1 + MIN_SIZE, x2 + dx));
+                if (modeDrag.includes('n')) y1 = Math.max(0, Math.min(y2 - MIN_SIZE, y1 + dy));
+                if (modeDrag.includes('s')) y2 = Math.min(1, Math.max(y1 + MIN_SIZE, y2 + dy));
+
+                cropRect = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+            }
+            actualiserAffichageCropBox();
+        }
+
+        function terminerDrag() {
+            modeDrag = null;
+        }
+
+        // Souris
+        stage.addEventListener('mousedown', e => {
+            e.preventDefault();
+            demarrerDrag(e.clientX, e.clientY, e.target);
+        });
+        window.addEventListener('mousemove', e => {
+            if (modeDrag) {
+                e.preventDefault();
+                deplacerDrag(e.clientX, e.clientY);
+            }
+        });
+        window.addEventListener('mouseup', terminerDrag);
+
+        // Écran tactile (mobile)
+        stage.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                e.preventDefault();
+                const t = e.touches[0];
+                demarrerDrag(t.clientX, t.clientY, e.target);
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchmove', e => {
+            if (modeDrag && e.touches.length === 1) {
+                e.preventDefault();
+                const t = e.touches[0];
+                deplacerDrag(t.clientX, t.clientY);
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', terminerDrag);
+        window.addEventListener('resize', () => {
+            if (imageSourceComplete) actualiserAffichageCropBox();
+        });
+    }
+
     function mettreAJourBoutonCorrection() {
-        const btn = document.getElementById('btn-corriger-photo');
+        const btn = document.getElementById('btn-corriger-phrase');
         if (!btn) return;
-        const cle = (localStorage.getItem(STORAGE_KEY_API) || '').trim();
-        btn.disabled = !(imageBase64 && cle.length > 10);
-        if (!imageBase64) {
-            btn.textContent = '📷 Prends d\'abord une photo de ta feuille pour corriger';
+        const cle = obtenirCleApiActive();
+        const num = indexPhraseCourante + 1;
+        btn.disabled = !(imageRecadreeBase64 && cle.length > 10);
+
+        if (!imageRecadreeBase64) {
+            btn.textContent = `📷 Prends une photo et encadre la phrase ${num} / 5`;
         } else if (cle.length <= 10) {
             btn.textContent = '🔑 Configure ta clé API Gemini en haut pour corriger';
         } else {
-            btn.textContent = '🤖 Corriger ma dictée avec Gemini 3.8 Flash (sur 10)';
+            btn.textContent = `🤖 Corriger la phrase ${num} / 5 avec Gemini 3.8 Flash`;
         }
     }
 
     /* =========================================================
-       APPEL API GEMINI (MODÈLE gemini-3.8-flash VIA INTERACTIONS API)
+       CORRECTION DE LA PHRASE SÉLECTIONNÉE AVEC GEMINI 3.8 FLASH
        ========================================================= */
-    async function corrigerPhotoAvecGemini() {
-        const apiKey = (localStorage.getItem(STORAGE_KEY_API) || '').trim();
-        if (!apiKey) {
-            alert("Merci d'enregistrer ta clé API Gemini en haut de la page.");
+    async function corrigerPhraseCouranteAvecGemini() {
+        const apiKey = obtenirCleApiActive();
+        if (!apiKey || apiKey.length < 10) {
+            alert("Merci d'enregistrer ou tester ta clé API Gemini en haut de la page.");
             return;
         }
-        if (!imageBase64) {
-            alert("Merci de prendre une photo de ta feuille avant de lancer la correction.");
+        if (!imageRecadreeBase64) {
+            alert("Merci de prendre une photo et d'encadrer ta phrase.");
             return;
         }
 
         const loading = document.getElementById('ai-loading');
-        const btn = document.getElementById('btn-corriger-photo');
-        const resultsDiv = document.getElementById('paper-correction-results');
-        const banner = document.getElementById('paper-score-banner');
+        const btn = document.getElementById('btn-corriger-phrase');
+        const resultContainer = document.getElementById('current-sentence-result');
+        const phraseAttendue = phrasesPapierActuelles[indexPhraseCourante];
 
         loading.style.display = 'block';
         btn.disabled = true;
-        resultsDiv.innerHTML = '';
-        banner.style.display = 'none';
+        resultContainer.innerHTML = '';
 
-        const listePhrasesAttendues = phrasesPapierActuelles
-            .map((p, i) => `${i + 1}. ${p}`)
-            .join('\n');
+        const promptTexte = `Tu es un professeur de français bienveillant qui corrige une phrase de dictée manuscrite écrite par un élève sur papier.
+Voici la phrase exacte qui a été dictée à l'élève :
+"${phraseAttendue}"
 
-        const promptTexte = `Tu es un professeur de français bienveillant qui corrige la dictée manuscrite d'un élève sur papier.
-Voici les 5 phrases exactes qui ont été dictées à l'élève :
-${listePhrasesAttendues}
-
-Examine attentivement la photo de la feuille de l'élève :
-1. Pour chacune des 5 phrases, transcris fidèlement ce que l'élève a écrit sur son papier (dans "transcription_eleve"). Si une phrase n'est pas écrite sur la feuille, indique "(Phrase non écrite)" et compte les mots manquants ou la phrase omise comme des fautes.
+Examine attentivement l'image recadrée contenant la phrase manuscrite de l'élève :
+1. Transcris fidèlement ce que l'élève a écrit dans cette zone ("transcription_eleve").
 2. Compare mot à mot ce que l'élève a écrit avec la phrase attendue.
-3. Relève chaque faute d'orthographe, d'accent, d'accord (notamment chaque/chacun, quel/quelle/quels/quelles/qu'elle/qu'elles, pluriels des noms et adjectifs) ou de conjugaison. Ne pénalise pas la ponctuation mineure ou une majuscule peu marquée si le mot est bien orthographié.
-4. Barème strict : La dictée est notée sur 10. On retire 1 point par faute (score = max(0, 10 - nombre_total_de_fautes)).`;
+3. Relève chaque faute d'orthographe, d'accent, d'accord (chaque/chacun, quel/quelle/quels/quelles/qu'elle/qu'elles, pluriels des noms et adjectifs) ou de conjugaison. Ne pénalise pas la ponctuation mineure ou une majuscule peu marquée si le mot est bien orthographié. Chaque mot oublié dans la phrase compte pour 1 faute.`;
 
-        const correctionSchema = {
+        const singleSentenceSchema = {
             type: "object",
             properties: {
-                phrases: {
+                transcription_eleve: { type: "string" },
+                fautes: {
                     type: "array",
                     items: {
                         type: "object",
                         properties: {
-                            numero: { type: "integer" },
-                            phrase_attendue: { type: "string" },
-                            transcription_eleve: { type: "string" },
-                            fautes: {
-                                type: "array",
-                                items: {
-                                    type: "object",
-                                    properties: {
-                                        mot_eleve: { type: "string" },
-                                        mot_attendu: { type: "string" },
-                                        explication: { type: "string" }
-                                    },
-                                    required: ["mot_eleve", "mot_attendu", "explication"]
-                                }
-                            }
+                            mot_eleve: { type: "string" },
+                            mot_attendu: { type: "string" },
+                            explication: { type: "string" }
                         },
-                        required: ["numero", "phrase_attendue", "transcription_eleve", "fautes"]
+                        required: ["mot_eleve", "mot_attendu", "explication"]
                     }
                 },
-                encouragement: { type: "string" }
+                commentaire: { type: "string" }
             },
-            required: ["phrases", "encouragement"]
+            required: ["transcription_eleve", "fautes", "commentaire"]
         };
 
         try {
@@ -2364,8 +2266,7 @@ Examine attentivement la photo de la feuille de l'élève :
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'x-goog-api-key': apiKey,
-                    'Api-Revision': '2026-05-20'
+                    'x-goog-api-key': apiKey
                 },
                 body: JSON.stringify({
                     model: 'gemini-3.8-flash',
@@ -2373,14 +2274,14 @@ Examine attentivement la photo de la feuille de l'élève :
                         { type: 'text', text: promptTexte },
                         {
                             type: 'image',
-                            data: imageBase64,
-                            mime_type: imageMimeType
+                            data: imageRecadreeBase64,
+                            mime_type: 'image/jpeg'
                         }
                     ],
                     response_format: {
                         type: 'text',
                         mime_type: 'application/json',
-                        schema: correctionSchema
+                        schema: singleSentenceSchema
                     }
                 })
             });
@@ -2392,7 +2293,6 @@ Examine attentivement la photo de la feuille de l'élève :
 
             const data = await response.json();
 
-            // Extraction du texte JSON depuis la réponse Interactions API
             let rawJson = data.output_text || null;
             if (!rawJson && Array.isArray(data.steps)) {
                 const modelSteps = data.steps.filter(s => s.type === 'model_output');
@@ -2407,12 +2307,25 @@ Examine attentivement la photo de la feuille de l'élève :
                 throw new Error("Réponse inattendue du modèle Gemini.");
             }
 
-            const resultat = JSON.parse(rawJson);
-            afficherResultatsCorrectionPapier(resultat);
+            const resultatPhrase = JSON.parse(rawJson);
+            resultatPhrase.phrase_attendue = phraseAttendue;
+            resultatsPhrasesPapier[indexPhraseCourante] = resultatPhrase;
+
+            afficherBarreProgressionPapier();
+            resultContainer.innerHTML = genererCarteCorrectionPhrase(indexPhraseCourante, resultatPhrase);
+
+            const nextActions = document.getElementById('next-sentence-actions');
+            nextActions.style.display = 'block';
+            mettreAJourBoutonSuivant();
+
+            // Si les 5 phrases ont été corrigées, afficher le bilan final sur 10 !
+            if (resultatsPhrasesPapier.every(r => r !== null)) {
+                afficherBilanFinal5Phrases();
+            }
 
         } catch (err) {
             console.error(err);
-            alert("Erreur lors de la correction avec Gemini :\n" + err.message + "\n\nVérifie que ta clé API est valide et que tu es bien connecté à Internet.");
+            alert("Erreur lors de la correction avec Gemini :\n" + err.message);
         } finally {
             loading.style.display = 'none';
             mettreAJourBoutonCorrection();
@@ -2428,92 +2341,112 @@ Examine attentivement la photo de la feuille de l'élève :
             .replace(/"/g, '&quot;');
     }
 
-    function afficherResultatsCorrectionPapier(resultat) {
-        const resultsDiv = document.getElementById('paper-correction-results');
-        const banner = document.getElementById('paper-score-banner');
-        const scoreDisplay = document.getElementById('paper-score-display');
-        const scoreMessage = document.getElementById('paper-score-message');
+    function genererCarteCorrectionPhrase(idx, res) {
+        const fautes = Array.isArray(res.fautes) ? res.fautes : [];
+        const phraseAttendue = res.phrase_attendue || phrasesPapierActuelles[idx] || '';
 
-        resultsDiv.innerHTML = '';
+        let fautesHtml = '';
+        if (fautes.length === 0) {
+            fautesHtml = `<div style="margin-top: 8px; color: var(--success); font-weight: 700;">✅ Aucune faute dans cette phrase ! Bravo !</div>`;
+        } else {
+            fautesHtml = fautes.map(f => `
+                <div class="error-item">
+                    <span class="wrong-word">${echapperHtml(f.mot_eleve)}</span>
+                    &rarr;
+                    <span class="right-word">${echapperHtml(f.mot_attendu)}</span>
+                    <div style="margin-top: 4px; color: #475569;">💡 ${echapperHtml(f.explication)}</div>
+                </div>
+            `).join('');
+        }
 
-        const phrasesCorrigees = Array.isArray(resultat.phrases) ? resultat.phrases : [];
-        let totalFautes = 0;
-
-        phrasesCorrigees.forEach((p, idx) => {
-            const fautes = Array.isArray(p.fautes) ? p.fautes : [];
-            totalFautes += fautes.length;
-
-            const card = document.createElement('div');
-            card.className = 'ai-correction-card ' + (fautes.length === 0 ? 'perfect' : 'has-errors');
-
-            let fautesHtml = '';
-            if (fautes.length === 0) {
-                fautesHtml = `<div style="margin-top: 8px; color: var(--success); font-weight: 700;">✅ Aucune faute dans cette phrase ! Bravo !</div>`;
-            } else {
-                fautesHtml = fautes.map(f => `
-                    <div class="error-item">
-                        <span class="wrong-word">${echapperHtml(f.mot_eleve)}</span>
-                        &rarr;
-                        <span class="right-word">${echapperHtml(f.mot_attendu)}</span>
-                        <div style="margin-top: 4px; color: #475569;">💡 ${echapperHtml(f.explication)}</div>
-                    </div>
-                `).join('');
-            }
-
-            const phraseAttendue = p.phrase_attendue || phrasesPapierActuelles[idx] || '';
-
-            card.innerHTML = `
+        return `
+            <div class="ai-correction-card ${fautes.length === 0 ? 'perfect' : 'has-errors'}">
                 <div class="card-top">
-                    <span class="q-number">Phrase ${p.numero || (idx + 1)} / 5</span>
+                    <span class="q-number">Correction de la Phrase ${idx + 1} / 5</span>
                     <span class="badge ${fautes.length === 0 ? 'badge-conjugaison' : 'badge-chaque'}">
                         ${fautes.length === 0 ? '✔ 0 faute' : `✘ ${fautes.length} faute${fautes.length > 1 ? 's' : ''} (-${fautes.length} pt${fautes.length > 1 ? 's' : ''})`}
                     </span>
                 </div>
                 <div class="comparison-row">
-                    <strong>📖 Texte lu sur ta feuille :</strong><br>
-                    <span style="color: #1e293b;">${echapperHtml(p.transcription_eleve)}</span>
+                    <strong>📖 Lu dans la zone sélectionnée :</strong><br>
+                    <span style="color: #1e293b;">${echapperHtml(res.transcription_eleve)}</span>
                 </div>
                 <div class="comparison-row">
                     <strong>✅ Phrase attendue :</strong><br>
                     <span style="color: #15803d; font-weight: 600;">${echapperHtml(phraseAttendue)}</span>
                 </div>
                 ${fautesHtml}
-            `;
-            resultsDiv.appendChild(card);
-        });
+            </div>
+        `;
+    }
 
-        // Calcul du score sur 10 : 1 point par faute
-        const scoreSur10 = Math.max(0, 10 - totalFautes);
-        scoreDisplay.textContent = `${scoreSur10} / 10`;
+    function mettreAJourBoutonSuivant() {
+        const btnNext = document.getElementById('btn-next-sentence');
+        const prochainNonCorrige = resultatsPhrasesPapier.findIndex((r, i) => r === null && i > indexPhraseCourante);
+        const toutEstCorrige = resultatsPhrasesPapier.every(r => r !== null);
+
+        if (toutEstCorrige) {
+            btnNext.textContent = '🏆 Voir mon score final sur 10';
+        } else if (indexPhraseCourante < 4) {
+            btnNext.textContent = `➡️ Passer à la phrase ${indexPhraseCourante + 2} sur 5`;
+        } else {
+            const premierManquant = resultatsPhrasesPapier.findIndex(r => r === null);
+            btnNext.textContent = `➡️ Aller à la phrase ${premierManquant + 1} sur 5`;
+        }
+    }
+
+    function passerPhraseSuivante() {
+        const toutEstCorrige = resultatsPhrasesPapier.every(r => r !== null);
+        if (toutEstCorrige) {
+            afficherBilanFinal5Phrases();
+            document.getElementById('paper-score-banner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        if (indexPhraseCourante < 4) {
+            allerAPhrase(indexPhraseCourante + 1);
+        } else {
+            const premierManquant = resultatsPhrasesPapier.findIndex(r => r === null);
+            if (premierManquant !== -1) allerAPhrase(premierManquant);
+        }
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function afficherBilanFinal5Phrases() {
+        const banner = document.getElementById('paper-score-banner');
+        const scoreDisplay = document.getElementById('paper-score-display');
+        const scoreMessage = document.getElementById('paper-score-message');
+        const allResults = document.getElementById('paper-all-results');
+
+        const { score, totalFautes } = calculerScoreActuel();
+        scoreDisplay.textContent = `${score} / 10`;
 
         const resumeFautes = totalFautes === 0
-            ? 'Aucune faute détectée !'
-            : `${totalFautes} faute${totalFautes > 1 ? 's' : ''} détectée${totalFautes > 1 ? 's' : ''} (-1 point par faute)`;
+            ? 'Aucune faute sur les 5 phrases !'
+            : `${totalFautes} faute${totalFautes > 1 ? 's' : ''} au total sur les 5 phrases (-1 point par faute)`;
 
-        const encouragement = resultat.encouragement ? `<br><span style="font-weight: normal; font-size: 0.98rem;">${echapperHtml(resultat.encouragement)}</span>` : '';
-
-        if (scoreSur10 === 10) {
+        if (score === 10) {
             banner.style.backgroundColor = 'var(--success-bg)';
             banner.style.color = 'var(--success)';
-            scoreMessage.innerHTML = `🎉 <strong>Score parfait ! ${resumeFautes}</strong>${encouragement}`;
+            scoreMessage.innerHTML = `🎉 <strong>Score parfait ! 10 / 10 !</strong> ${resumeFautes}`;
             lancerConfettis();
-        } else if (scoreSur10 >= 8) {
+        } else if (score >= 8) {
             banner.style.backgroundColor = '#ecfdf5';
             banner.style.color = '#047857';
-            scoreMessage.innerHTML = `👏 <strong>Très belle dictée ! ${resumeFautes}</strong>${encouragement}`;
-        } else if (scoreSur10 >= 5) {
+            scoreMessage.innerHTML = `👏 <strong>Très belle dictée !</strong> ${resumeFautes}`;
+        } else if (score >= 5) {
             banner.style.backgroundColor = 'var(--warning-bg)';
             banner.style.color = '#b45309';
-            scoreMessage.innerHTML = `👍 <strong>Bon travail ! ${resumeFautes}</strong>${encouragement}`;
+            scoreMessage.innerHTML = `👍 <strong>Bon travail !</strong> ${resumeFautes}`;
         } else {
             banner.style.backgroundColor = 'var(--error-bg)';
             banner.style.color = 'var(--error)';
-            scoreMessage.innerHTML = `💪 <strong>Continue tes efforts ! ${resumeFautes}</strong>${encouragement}`;
+            scoreMessage.innerHTML = `💪 <strong>Continue tes efforts !</strong> ${resumeFautes}`;
         }
 
         banner.style.display = 'block';
-        document.getElementById('paper-post-actions').style.display = 'flex';
-        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        allResults.innerHTML = `<h3 style="margin: 20px 0 10px; color: #1e293b;">📋 Récapitulatif de tes 5 phrases :</h3>` +
+            resultatsPhrasesPapier.map((res, idx) => genererCarteCorrectionPhrase(idx, res)).join('');
     }
 
     /* =========================================================
@@ -2635,11 +2568,6 @@ Examine attentivement la photo de la feuille de l'élève :
             card.innerHTML = topHtml + bodyHtml + feedbackHtml;
             conteneur.appendChild(card);
         });
-
-        setTimeout(() => {
-            const premierInput = document.getElementById('input-0');
-            if (premierInput) premierInput.focus();
-        }, 100);
     }
 
     function gererToucheEntree(event, idx) {
@@ -2838,6 +2766,7 @@ Examine attentivement la photo de la feuille de l'élève :
     // Lancement au chargement
     window.addEventListener('DOMContentLoaded', () => {
         initialiserVoix();
+        initialiserInteractionsCropper();
         chargerCleApi();
         nouvelleDicteePapier();
     });
