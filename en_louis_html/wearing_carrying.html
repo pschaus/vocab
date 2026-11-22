@@ -1,0 +1,3485 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Dressed : To Wear vs To Carry (Papier IA Gemini & Quiz)</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1d4ed8;
+            --secondary: #0ea5e9;
+            --success: #15803d;
+            --success-bg: #dcfce7;
+            --error: #b91c1c;
+            --error-bg: #fee2e2;
+            --warning-bg: #fef3c7;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --audio: #7c3aed;
+            --audio-hover: #6d28d9;
+            --ai-accent: #4f46e5;
+            --ai-bg: #eef2ff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 15px 60px;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+
+        /* En-tête */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 26px 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.25);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        header p {
+            font-size: 1.02rem;
+            opacity: 0.95;
+        }
+
+        /* Fiche Mémo repliable */
+        .memo-details {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .memo-summary {
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 15px 20px;
+            cursor: pointer;
+            background-color: #f8fafc;
+            color: var(--primary);
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .memo-summary:hover {
+            background-color: #f1f5f9;
+        }
+
+        .memo-content {
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            display: grid;
+            grid-gap: 18px;
+        }
+
+        .memo-section {
+            background: #f8fafc;
+            padding: 14px 18px;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .memo-section h3 {
+            font-size: 1.02rem;
+            color: #0f172a;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .memo-section p, .memo-section ul {
+            font-size: 0.94rem;
+            color: #334155;
+            margin-left: 18px;
+        }
+
+        .memo-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .chip {
+            background: #e2e8f0;
+            color: #1e293b;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s, background 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chip:hover {
+            transform: translateY(-1px);
+            background: #cbd5e1;
+        }
+
+        .chip.verb {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .chip.shoes {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .chip.acc {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .chip.color {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .chip.pattern {
+            background: #fce7f3;
+            color: #9d174d;
+        }
+
+        /* Sélecteur de mode */
+        .mode-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 9px 15px;
+            border-radius: 25px;
+            font-size: 0.91rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(30, 64, 175, 0.2);
+        }
+
+        .mode-btn.mode-papier {
+            border-color: #c7d2fe;
+            color: #3730a3;
+            background: #eef2ff;
+        }
+
+        .mode-btn.mode-papier.active {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* =========================================================
+           STYLES : CLÉ API & TEST
+           ========================================================= */
+        .api-key-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .api-key-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .api-key-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.96rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.ok {
+            background-color: #22c55e;
+            box-shadow: 0 0 0 3px #dcfce7;
+        }
+
+        .status-dot.missing {
+            background-color: #f59e0b;
+            box-shadow: 0 0 0 3px #fef3c7;
+        }
+
+        .status-dot.error {
+            background-color: #ef4444;
+            box-shadow: 0 0 0 3px #fee2e2;
+        }
+
+        .api-key-form {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .api-key-form input {
+            flex: 1;
+            min-width: 210px;
+            padding: 10px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: monospace;
+            background: #f8fafc;
+        }
+
+        .api-key-form input:focus {
+            border-color: var(--ai-accent);
+            outline: none;
+            background: #fff;
+        }
+
+        .btn-small {
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-save-key {
+            background: var(--ai-accent);
+            color: white;
+        }
+
+        .btn-save-key:hover {
+            background: #4338ca;
+        }
+
+        .btn-test-key {
+            background: #0ea5e9;
+            color: white;
+        }
+
+        .btn-test-key:hover {
+            background: #0284c7;
+        }
+
+        .btn-outline-small {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+        }
+
+        .btn-outline-small:hover {
+            background: #e2e8f0;
+        }
+
+        .api-test-result {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .api-test-result.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #86efac;
+        }
+
+        .api-test-result.failure {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+
+        .api-test-result.testing {
+            display: block;
+            background: #e0f2fe;
+            color: #075985;
+            border: 1px solid #7dd3fc;
+        }
+
+        /* =========================================================
+           STYLES : PROGRESSION 1 PHRASE À LA FOIS (SUR 5)
+           ========================================================= */
+        .paper-step-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 22px 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .paper-submode-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .paper-submode-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .submode-btn {
+            background: white;
+            border: 1.5px solid #cbd5e1;
+            padding: 6px 12px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .submode-btn.active {
+            background: var(--ai-accent);
+            color: white;
+            border-color: var(--ai-accent);
+        }
+
+        .progress-bar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .progress-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .progress-pill {
+            padding: 6px 13px;
+            border-radius: 20px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            background: #f1f5f9;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .progress-pill.current {
+            background: var(--ai-bg);
+            color: var(--ai-accent);
+            border-color: var(--ai-accent);
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.2);
+        }
+
+        .progress-pill.done-ok {
+            background: #dcfce7;
+            color: #15803d;
+            border-color: #86efac;
+        }
+
+        .progress-pill.done-err {
+            background: #fee2e2;
+            color: #b91c1c;
+            border-color: #fca5a5;
+        }
+
+        .live-score-pill {
+            background: #1e293b;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.95rem;
+        }
+
+        /* Carte de la phrase active */
+        .active-sentence-box {
+            background: #faf5ff;
+            border: 2px solid #c4b5fd;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 18px;
+        }
+
+        .paper-prompt-fr {
+            margin-top: 10px;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-left: 4px solid #7c3aed;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e293b;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .sentence-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .btn-listen {
+            background-color: var(--audio);
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 4px 10px rgba(124, 58, 237, 0.28);
+        }
+
+        .btn-listen:hover {
+            background-color: var(--audio-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-listen-slow {
+            background-color: #ede9fe;
+            color: #5b21b6;
+            border: 2px solid #c4b5fd;
+            padding: 10px 16px;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-listen-slow:hover {
+            background-color: #ddd6fe;
+        }
+
+        .sentence-spoiler {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: #fffbeb;
+            border: 1px dashed #f59e0b;
+            border-radius: 8px;
+            font-size: 0.96rem;
+            color: #92400e;
+            display: none;
+        }
+
+        /* =========================================================
+           STYLES : PHOTO & SÉLECTEUR DE ZONE (CROP INTERACTIF)
+           ========================================================= */
+        .photo-upload-zone {
+            border: 2px dashed #94a3b8;
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            background: #f8fafc;
+            margin-bottom: 16px;
+        }
+
+        .photo-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 12px;
+        }
+
+        .btn-camera {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            transition: all 0.2s;
+        }
+
+        .btn-camera:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-gallery {
+            background: white;
+            color: #334155;
+            border: 2px solid #cbd5e1;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-gallery:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        /* Zone de recadrage interactif */
+        .cropper-wrapper {
+            display: none;
+            margin-top: 16px;
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 14px;
+            color: white;
+        }
+
+        .cropper-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cropper-instructions {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        .cropper-stage-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            margin: 0 auto;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid #475569;
+        }
+
+        .cropper-stage-container img {
+            display: block;
+            max-width: 100%;
+            max-height: 55vh;
+            width: auto;
+            height: auto;
+            pointer-events: none;
+        }
+
+        /* Voile sombre autour de la sélection */
+        .crop-selection-box {
+            position: absolute;
+            border: 2.5px solid #38bdf8;
+            box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.62);
+            cursor: move;
+            touch-action: none;
+        }
+
+        /* Poignées de redimensionnement (coins + bords) */
+        .crop-handle {
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: #38bdf8;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            touch-action: none;
+            z-index: 10;
+        }
+
+        .crop-handle.nw { top: -13px; left: -13px; cursor: nwse-resize; }
+        .crop-handle.ne { top: -13px; right: -13px; cursor: nesw-resize; }
+        .crop-handle.sw { bottom: -13px; left: -13px; cursor: nesw-resize; }
+        .crop-handle.se { bottom: -13px; right: -13px; cursor: nwse-resize; }
+        .crop-handle.n  { top: -13px; left: calc(50% - 13px); cursor: ns-resize; }
+        .crop-handle.s  { bottom: -13px; left: calc(50% - 13px); cursor: ns-resize; }
+        .crop-handle.w  { top: calc(50% - 13px); left: -13px; cursor: ew-resize; }
+        .crop-handle.e  { top: calc(50% - 13px); right: -13px; cursor: ew-resize; }
+
+        /* Aperçu en direct du découpage */
+        .cropped-preview-box {
+            margin-top: 14px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .cropped-preview-box p {
+            font-size: 0.84rem;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .cropped-preview-box canvas {
+            max-width: 100%;
+            max-height: 130px;
+            border-radius: 6px;
+            border: 2px solid #38bdf8;
+            background: white;
+        }
+
+        /* Résultats de correction IA */
+        .ai-loading {
+            display: none;
+            text-align: center;
+            padding: 24px 20px;
+            background: #eef2ff;
+            border-radius: 14px;
+            border: 2px solid #c7d2fe;
+            margin: 18px 0;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 4px solid #c7d2fe;
+            border-top-color: #4f46e5;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .ai-correction-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 16px;
+            margin-bottom: 14px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .ai-correction-card.perfect {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .ai-correction-card.has-errors {
+            border-color: #f87171;
+            background: #fffafa;
+        }
+
+        .comparison-row {
+            margin: 8px 0;
+            font-size: 0.98rem;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #e2e8f0;
+        }
+
+        .error-item {
+            margin-top: 8px;
+            padding: 10px 12px;
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            border-radius: 6px;
+            font-size: 0.93rem;
+        }
+
+        .wrong-word {
+            text-decoration: line-through;
+            color: #dc2626;
+            font-weight: 700;
+            background: #fee2e2;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .right-word {
+            color: #15803d;
+            font-weight: 700;
+            background: #dcfce7;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* =========================================================
+           STYLES : QUIZ CLASSIQUE (10 QUESTIONS À COMPLÉTER)
+           ========================================================= */
+        .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border: 2px solid transparent;
+            transition: all 0.25s ease;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .q-number {
+            font-weight: 800;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .badge-verbes {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-vocab {
+            background-color: #fef3c7;
+            color: #b45309;
+        }
+
+        .badge-grammaire {
+            background-color: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-audio {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+        }
+
+        .question-body {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #0f172a;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .q-text {
+            display: inline;
+        }
+
+        .q-hint {
+            font-style: italic;
+            color: #2563eb;
+            font-weight: 700;
+            background: #eff6ff;
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #bfdbfe;
+        }
+
+        input[type="text"].quiz-input {
+            font-size: 1.05rem;
+            font-family: inherit;
+            padding: 6px 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: #0f172a;
+            font-weight: 600;
+            transition: all 0.2s;
+            min-width: 155px;
+            outline: none;
+        }
+
+        input[type="text"].quiz-input:focus {
+            border-color: var(--primary);
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        input[type="text"].quiz-input:disabled {
+            background-color: #f1f5f9;
+            color: #334155;
+            cursor: not-allowed;
+        }
+
+        /* Bouton Audio */
+        .btn-audio {
+            background-color: var(--audio);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 3px 6px rgba(124, 58, 237, 0.25);
+        }
+
+        .btn-audio:hover {
+            background-color: var(--audio-hover);
+            transform: translateY(-1px);
+        }
+
+        /* États de correction */
+        .quiz-card.correct {
+            border-color: #22c55e;
+            background-color: #f0fdf4;
+        }
+
+        .quiz-card.incorrect {
+            border-color: #ef4444;
+            background-color: #fef2f2;
+        }
+
+        .correction-feedback {
+            margin-top: 10px;
+            font-size: 0.96rem;
+            font-weight: 600;
+            line-height: 1.4;
+            display: none;
+            padding-top: 8px;
+            border-top: 1px dashed rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-card.correct .correction-feedback {
+            display: block;
+            color: var(--success);
+        }
+
+        .quiz-card.incorrect .correction-feedback {
+            display: block;
+            color: var(--error);
+        }
+
+        .rule-tip {
+            display: block;
+            margin-top: 4px;
+            font-size: 0.88rem;
+            font-weight: normal;
+            color: #475569;
+        }
+
+        /* Zone de score */
+        #score-banner, #paper-score-banner {
+            display: none;
+            text-align: center;
+            padding: 24px;
+            border-radius: 16px;
+            margin: 25px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .score-number {
+            font-size: 2.4rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+
+        .score-msg {
+            font-size: 1.15rem;
+            font-weight: 600;
+        }
+
+        /* Boutons d'action */
+        .actions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-main {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn-main:hover:not(:disabled) {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .btn-main:disabled {
+            background: #94a3b8;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e40af;
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .btn-secondary:hover {
+            background-color: #dbeafe;
+        }
+
+        .btn-restart {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.35);
+        }
+
+        /* Canvas Confetti */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.45rem; }
+            .question-body { font-size: 1.05rem; }
+            input[type="text"].quiz-input { width: 100%; min-width: unset; }
+            .memo-content { padding: 12px; }
+            .btn-camera, .btn-gallery { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+    <header>
+        <h1>👕 Get Dressed : To Wear vs To Carry</h1>
+        <p>Vocabulaire des vêtements, couleurs, motifs, verbes <em>to wear / to carry</em> & Écriture sur Papier (IA Gemini)</p>
+    </header>
+
+    <!-- Fiche mémo de révision (clique sur un mot pour l'écouter !) -->
+    <details class="memo-details">
+        <summary class="memo-summary">
+            <span>📖 Consulter la fiche mémo (Vocabulaire « Get Dressed » & Règles To wear ≠ To carry)</span>
+            <span style="font-size: 0.85em; opacity: 0.8;">▼ Cliquer pour ouvrir (🔊 mots cliquables)</span>
+        </summary>
+        <div class="memo-content">
+            <div class="memo-section">
+                <h3>⚖️ Règles : TO WEAR ≠ TO CARRY (Porter) & Grammaire</h3>
+                <p>• Ces 2 verbes se traduisent par <strong>« porter »</strong> mais quelle est la différence ?<br>
+                &rarr; Le verbe <strong>to wear</strong> est utilisé lorsque l'on parle de la <strong>manière dont une personne est habillée</strong> (vêtements, chaussures, chapeau, lunettes, bijoux portés sur soi).<br>
+                <em>Ex : Kelly <strong>is wearing</strong> a T-shirt with a pair of shorts.</em><br>
+                &rarr; Le verbe <strong>to carry</strong> est utilisé lorsqu'on parle de ce qu'une personne <strong>porte en main, au bras, sur le dos, etc.</strong> (un sac, une valise, un parapluie, des boîtes...).<br>
+                <em>Ex : Kelly <strong>is carrying</strong> a bag.</em></p>
+                <p style="margin-top: 10px;">• <strong>Simple Present vs Present Continuous :</strong><br>
+                &rarr; <strong>Today / Now / Look!</strong> (description de ce qu'on porte maintenant) = <strong>Present Continuous</strong> : <code>am / is / are + wearing</code> ou <code>carrying</code>.<br>
+                <em>Ex : What <strong>are</strong> you <strong>wearing</strong> today? I<strong>'m wearing</strong> jeans and a white hoodie.</em><br>
+                &rarr; <strong>Usually / Never / Always / For physical education</strong> (habitude) = <strong>Simple Present</strong> : <code>wear / wears</code> ou <code>carry / carries</code>.<br>
+                <em>Ex : I <strong>usually wear</strong> shorts and a T-shirt. I <strong>never wear</strong> tight trousers.</em></p>
+                <p style="margin-top: 10px;">• <strong>⚠️ Attention aux noms toujours pluriels en anglais (sans « a » !) :</strong><br>
+                &rarr; <strong>trousers, jeans, shorts, tights, glasses, shoes, boots, trainers, slippers, flip flops, gloves, mittens, earmuffs, dungarees, underpants / knickers</strong>.<br>
+                &rarr; On ne dit <strong>JAMAIS</strong> <s>a jeans</s> ou <s>a trousers</s> ! On écrit directement <em>blue jeans</em>, <em>green trousers</em>, <em>some mittens</em>, ou <em><strong>a pair of</strong> shorts / <strong>a pair of</strong> trainers</em>.<br>
+                &rarr; <strong>Position des adjectifs :</strong> La couleur et le motif se placent <strong>toujours AVANT</strong> le vêtement (ex: <em>a <strong>white</strong> shirt</em>, <em>a <strong>striped</strong> sweater</em>, <em><strong>tight</strong> trousers</em>).</p>
+            </div>
+
+            <div class="memo-section">
+                <h3>👕 Clothes (Les vêtements — clique pour écouter 🔊)</h3>
+                <div class="memo-chips">
+                    <span class="chip verb" onclick="ecouter('a skirt', 0.85)">🔊 a skirt (une jupe)</span>
+                    <span class="chip verb" onclick="ecouter('trousers', 0.85)">🔊 trousers (un pantalon)</span>
+                    <span class="chip verb" onclick="ecouter('jeans', 0.85)">🔊 jeans (un jean)</span>
+                    <span class="chip verb" onclick="ecouter('shorts', 0.85)">🔊 shorts (un short)</span>
+                    <span class="chip verb" onclick="ecouter('a pair of shorts', 0.85)">🔊 a pair of shorts</span>
+                    <span class="chip verb" onclick="ecouter('a sweater', 0.85)">🔊 a sweater (un pull)</span>
+                    <span class="chip verb" onclick="ecouter('a hoodie', 0.85)">🔊 a hoodie (un sweat à capuche)</span>
+                    <span class="chip verb" onclick="ecouter('a dress', 0.85)">🔊 a dress (une robe)</span>
+                    <span class="chip verb" onclick="ecouter('a jacket', 0.85)">🔊 a jacket (une veste)</span>
+                    <span class="chip verb" onclick="ecouter('a coat', 0.85)">🔊 a coat (un manteau)</span>
+                    <span class="chip verb" onclick="ecouter('a suit', 0.85)">🔊 a suit (un costume)</span>
+                    <span class="chip verb" onclick="ecouter('a T-shirt', 0.85)">🔊 a T-shirt (un t-shirt)</span>
+                    <span class="chip verb" onclick="ecouter('a shirt', 0.85)">🔊 a shirt (une chemise)</span>
+                    <span class="chip verb" onclick="ecouter('a blouse', 0.85)">🔊 a blouse (un chemisier)</span>
+                    <span class="chip verb" onclick="ecouter('socks', 0.85)">🔊 socks (des chaussettes)</span>
+                    <span class="chip verb" onclick="ecouter('tights', 0.85)">🔊 tights (des collants)</span>
+                    <span class="chip verb" onclick="ecouter('underpants', 0.85)">🔊 underpants (un slip/caleçon)</span>
+                    <span class="chip verb" onclick="ecouter('knickers', 0.85)">🔊 knickers (une culotte)</span>
+                    <span class="chip verb" onclick="ecouter('a bra', 0.85)">🔊 a bra (un soutien-gorge)</span>
+                    <span class="chip verb" onclick="ecouter('dungarees', 0.85)">🔊 dungarees (une salopette)</span>
+                    <span class="chip verb" onclick="ecouter('a tuxedo', 0.85)">🔊 a tuxedo (un smoking)</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>👟 Shoes & 🧣 Accessories (Chaussures & Accessoires)</h3>
+                <div class="memo-chips">
+                    <span class="chip shoes" onclick="ecouter('shoes', 0.85)">🔊 shoes (des chaussures)</span>
+                    <span class="chip shoes" onclick="ecouter('boots', 0.85)">🔊 boots (des bottes)</span>
+                    <span class="chip shoes" onclick="ecouter('ballerinas', 0.85)">🔊 ballerinas (des ballerines)</span>
+                    <span class="chip shoes" onclick="ecouter('trainers', 0.85)">🔊 trainers (des baskets)</span>
+                    <span class="chip shoes" onclick="ecouter('slippers', 0.85)">🔊 slippers (des pantoufles)</span>
+                    <span class="chip shoes" onclick="ecouter('flip flops', 0.85)">🔊 flip flops (des tongs)</span>
+                    <span class="chip acc" onclick="ecouter('a tie', 0.85)">🔊 a tie (une cravate)</span>
+                    <span class="chip acc" onclick="ecouter('a bow', 0.85)">🔊 a bow (un nœud papillon)</span>
+                    <span class="chip acc" onclick="ecouter('a belt', 0.85)">🔊 a belt (une ceinture)</span>
+                    <span class="chip acc" onclick="ecouter('a cap', 0.85)">🔊 a cap (une casquette)</span>
+                    <span class="chip acc" onclick="ecouter('a hat', 0.85)">🔊 a hat (un chapeau)</span>
+                    <span class="chip acc" onclick="ecouter('a scarf', 0.85)">🔊 a scarf (une écharpe)</span>
+                    <span class="chip acc" onclick="ecouter('gloves', 0.85)">🔊 gloves (des gants)</span>
+                    <span class="chip acc" onclick="ecouter('some mittens', 0.85)">🔊 some mittens (des mitaines/moufles)</span>
+                    <span class="chip acc" onclick="ecouter('some earmuffs', 0.85)">🔊 some earmuffs (des cache-oreilles)</span>
+                    <span class="chip acc" onclick="ecouter('a headband', 0.85)">🔊 a headband (un serre-tête)</span>
+                    <span class="chip acc" onclick="ecouter('some straps', 0.85)">🔊 some straps (des bretelles)</span>
+                    <span class="chip acc" onclick="ecouter('glasses', 0.85)">🔊 glasses (des lunettes)</span>
+                    <span class="chip acc" onclick="ecouter('a bag', 0.85)">🔊 a bag (un sac — to carry!)</span>
+                </div>
+            </div>
+
+            <div class="memo-section">
+                <h3>🎨 Colours, Patterns & Adjectives (Couleurs & Motifs)</h3>
+                <div class="memo-chips">
+                    <span class="chip color" onclick="ecouter('blue', 0.85)">🔊 blue</span>
+                    <span class="chip color" onclick="ecouter('yellow', 0.85)">🔊 yellow</span>
+                    <span class="chip color" onclick="ecouter('white', 0.85)">🔊 white</span>
+                    <span class="chip color" onclick="ecouter('red', 0.85)">🔊 red</span>
+                    <span class="chip color" onclick="ecouter('black', 0.85)">🔊 black</span>
+                    <span class="chip color" onclick="ecouter('grey', 0.85)">🔊 grey (gris)</span>
+                    <span class="chip color" onclick="ecouter('brown', 0.85)">🔊 brown (marron)</span>
+                    <span class="chip color" onclick="ecouter('green', 0.85)">🔊 green</span>
+                    <span class="chip color" onclick="ecouter('light green', 0.85)">🔊 light green (vert clair)</span>
+                    <span class="chip color" onclick="ecouter('dark green', 0.85)">🔊 dark green (vert foncé)</span>
+                    <span class="chip color" onclick="ecouter('pink', 0.85)">🔊 pink (rose)</span>
+                    <span class="chip color" onclick="ecouter('orange', 0.85)">🔊 orange</span>
+                    <span class="chip color" onclick="ecouter('cream', 0.85)">🔊 cream (crème)</span>
+                    <span class="chip color" onclick="ecouter('purple', 0.85)">🔊 purple (violet)</span>
+                    <span class="chip color" onclick="ecouter('burgundy', 0.85)">🔊 burgundy (bordeaux)</span>
+                    <span class="chip pattern" onclick="ecouter('striped', 0.85)">🔊 striped (rayé / à rayures)</span>
+                    <span class="chip pattern" onclick="ecouter('spotted', 0.85)">🔊 spotted (à pois)</span>
+                    <span class="chip pattern" onclick="ecouter('checked', 0.85)">🔊 checked (à carreaux)</span>
+                    <span class="chip pattern" onclick="ecouter('plain', 0.85)">🔊 plain (uni)</span>
+                    <span class="chip pattern" onclick="ecouter('tight trousers', 0.85)">🔊 tight trousers (pantalon moulant/serré)</span>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    <!-- Choix de mode -->
+    <div class="mode-selector">
+        <button class="mode-btn mode-papier active" onclick="changerMode('papier')">📸 Écriture sur Papier (Dictée / Traduction + Photo IA)</button>
+        <button class="mode-btn" onclick="changerMode('mixte')">🌟 Quiz Mixte (10)</button>
+        <button class="mode-btn" onclick="changerMode('verbes')">👜 To Wear ≠ To Carry (10)</button>
+        <button class="mode-btn" onclick="changerMode('vocab')">👕 Textes à compléter : Vocabulaire (10)</button>
+        <button class="mode-btn" onclick="changerMode('grammaire')">✍️ Descriptions & Grammaire (10)</button>
+        <button class="mode-btn" onclick="changerMode('audio')">🔊 Dictée Audio Mots (10)</button>
+    </div>
+
+    <!-- Configuration Clé API Gemini & Bouton de Test -->
+    <div class="api-key-card">
+        <div class="api-key-header">
+            <div class="api-key-status">
+                <span id="api-status-dot" class="status-dot missing"></span>
+                <span id="api-status-text">Clé API Gemini non configurée</span>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <button type="button" class="btn-small btn-test-key" onclick="testerCleApi()">
+                    🧪 Tester la clé API
+                </button>
+                <button type="button" id="btn-toggle-key-form" class="btn-small btn-outline-small" onclick="basculerFormulaireCle()">
+                    🔑 Configurer la clé
+                </button>
+                <button type="button" id="btn-clear-key" class="btn-small btn-outline-small" style="display: none; color: #b91c1c;" onclick="supprimerCleApi()">
+                    🗑️ Effacer
+                </button>
+            </div>
+        </div>
+
+        <div id="api-key-form-wrapper" class="api-key-form" style="display: none;">
+            <input type="password" id="api-key-input" placeholder="Colle ta clé API Gemini (AIzaSy...)" autocomplete="off" spellcheck="false">
+            <button type="button" class="btn-small btn-outline-small" onclick="basculerVisibiliteCle()" title="Afficher/Masquer">👁️</button>
+            <button type="button" class="btn-small btn-save-key" onclick="enregistrerCleApi()">💾 Enregistrer</button>
+            <button type="button" class="btn-small btn-test-key" onclick="testerCleApi()">🧪 Tester maintenant</button>
+            <p style="width: 100%; font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
+                🔒 Ta clé API est partagée automatiquement avec tes exercices de français (<code>localStorage</code>). Elle active la <strong>voix anglaise IA (gemini-3.8-flash-tts)</strong> et la <strong>correction photo sur papier (gemini-3.8-flash)</strong>.
+            </p>
+        </div>
+
+        <!-- Zone de résultat du test de la clé API -->
+        <div id="api-test-result" class="api-test-result"></div>
+
+        <!-- Options de Voix (IA Gemini vs Appareil) -->
+        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #f1f5f9; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; font-size: 0.88rem;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <span style="font-weight: 700; color: #334155;">🗣️ Voix Anglaise :</span>
+                <select id="select-moteur-voix" onchange="changerMoteurVoix()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; font-weight: 600; background: #f8fafc; color: #1e293b;">
+                    <option value="gemini">✨ Voix IA Gemini (gemini-3.8-flash-tts)</option>
+                    <option value="browser">📱 Voix anglaise de l'appareil</option>
+                </select>
+                <select id="select-voix-gemini" onchange="afficherPhraseCourante()" style="padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #eef2ff; color: #3730a3; font-weight: 600;">
+                    <option value="Puck">Voix IA : Puck (British / Clair & dynamique)</option>
+                    <option value="Kore">Voix IA : Kore (Claire & posée)</option>
+                    <option value="Aoede">Voix IA : Aoede (Douce & naturelle)</option>
+                    <option value="Charon">Voix IA : Charon (Grave & calme)</option>
+                </select>
+                <select id="select-voix-browser" onchange="selectionnerVoixNavigateurManuelle()" style="display: none; padding: 5px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; max-width: 240px;">
+                </select>
+            </div>
+            <span id="tts-status-indicator" style="color: var(--ai-accent); font-weight: 600; font-size: 0.82rem;"></span>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         SECTION 1 : MODE ÉCRITURE SUR PAPIER (1 PHRASE À LA FOIS SUR 5)
+         ========================================================= -->
+    <div id="paper-mode-section">
+
+        <div class="paper-step-card">
+            <!-- Choix du type d'exercice sur papier -->
+            <div class="paper-submode-bar">
+                <span style="font-size: 0.88rem; font-weight: 700; color: #334155;">📝 Type d'exercice sur papier :</span>
+                <div class="paper-submode-btns">
+                    <button type="button" class="submode-btn active" id="submode-both" onclick="changerSousModePapier('both')">🎧+🇫🇷 Audio Anglais + Consigne Français</button>
+                    <button type="button" class="submode-btn" id="submode-dictation" onclick="changerSousModePapier('dictation')">🎧 Dictée Audio pure (sans français)</button>
+                    <button type="button" class="submode-btn" id="submode-translation" onclick="changerSousModePapier('translation')">🇫🇷&rarr;🇬🇧 Traduction écrite sur papier</button>
+                </div>
+            </div>
+
+            <!-- Barre de progression des 5 phrases + Score en direct -->
+            <div class="progress-bar-header">
+                <div class="progress-pills" id="paper-progress-pills"></div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="live-score-pill" id="live-score-pill">Score : 10 / 10</span>
+                    <button type="button" class="btn-small btn-outline-small" onclick="nouvelleDicteePapier()" title="Recommencer avec 5 nouvelles phrases">
+                        🔄 5 nouvelles phrases
+                    </button>
+                </div>
+            </div>
+
+            <!-- Étape A : Écouter / Lire la consigne de la phrase actuelle et l'écrire sur papier -->
+            <div class="active-sentence-box">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <h2 id="current-sentence-title" style="font-size: 1.2rem; color: #3b0764;">
+                        ✍️ Phrase 1 sur 5 : Écris la phrase en anglais sur ton papier
+                    </h2>
+                    <span id="current-cache-badge" style="display: none; font-size: 0.78rem; background: #eef2ff; color: #4f46e5; padding: 3px 10px; border-radius: 12px; font-weight: 700;">
+                        ✨ Audio IA en cache
+                    </span>
+                </div>
+
+                <p id="paper-instruction-sub" style="font-size: 0.94rem; color: #4c1d95; margin-top: 4px;">
+                    Écoute la phrase anglaise (ou lis la phrase en français ci-dessous), écris-la en anglais sur ta feuille de papier, puis prends-la en photo pour que Gemini vérifie tes fautes !
+                </p>
+
+                <!-- Consigne en français (affichée en mode 'both' ou 'translation') -->
+                <div class="paper-prompt-fr" id="current-sentence-fr"></div>
+
+                <div class="sentence-controls">
+                    <button type="button" class="btn-listen" id="btn-listen-normal" onclick="ecouterPhraseCourante(0.85, this)">
+                        🔊 Écouter en anglais
+                    </button>
+                    <button type="button" class="btn-listen-slow" id="btn-listen-slow" onclick="ecouterPhraseCourante(0.65, this)">
+                        🐢 Écouter lentement
+                    </button>
+                    <button type="button" class="btn-small btn-outline-small" onclick="basculerTexteSecours()">
+                        👁️ <span id="spoiler-btn-label">Voir la phrase anglaise (secours)</span>
+                    </button>
+                </div>
+
+                <div class="sentence-spoiler" id="current-sentence-spoiler"></div>
+            </div>
+
+            <!-- Étape B : Photo & Sélection de la zone de la phrase -->
+            <div class="photo-upload-zone">
+                <p style="font-weight: 700; color: #1e293b; font-size: 1.02rem;">
+                    📸 Prends en photo ta feuille et encadre ta phrase écrite en anglais :
+                </p>
+
+                <!-- Inputs fichier cachés -->
+                <input type="file" id="camera-input" accept="image/*" capture="environment" style="display: none;" onchange="gererSelectionPhoto(event)">
+                <input type="file" id="gallery-input" accept="image/*" style="display: none;" onchange="gererSelectionPhoto(event)">
+
+                <div class="photo-buttons">
+                    <button type="button" class="btn-camera" onclick="document.getElementById('camera-input').click()">
+                        📷 Prendre une photo
+                    </button>
+                    <button type="button" class="btn-gallery" onclick="document.getElementById('gallery-input').click()">
+                        🖼️ Choisir une image
+                    </button>
+                </div>
+
+                <!-- Outil de sélection de zone sur l'image -->
+                <div id="cropper-wrapper" class="cropper-wrapper">
+                    <div class="cropper-toolbar">
+                        <span class="cropper-instructions">
+                            👆 Déplace ou redimensionne le cadre bleu sur ta phrase :
+                        </span>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button type="button" class="btn-small btn-outline-small" onclick="pivoterImage(-90)">↺ -90°</button>
+                            <button type="button" class="btn-small btn-outline-small" onclick="pivoterImage(90)">↻ +90°</button>
+                            <button type="button" class="btn-small btn-outline-small" onclick="reinitialiserZoneCrop()">📐 Tout encadrer</button>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div id="cropper-stage" class="cropper-stage-container">
+                            <img id="cropper-img" src="" alt="Photo de la feuille">
+                            <div id="crop-box" class="crop-selection-box">
+                                <div class="crop-handle nw" data-handle="nw"></div>
+                                <div class="crop-handle n" data-handle="n"></div>
+                                <div class="crop-handle ne" data-handle="ne"></div>
+                                <div class="crop-handle e" data-handle="e"></div>
+                                <div class="crop-handle se" data-handle="se"></div>
+                                <div class="crop-handle s" data-handle="s"></div>
+                                <div class="crop-handle sw" data-handle="sw"></div>
+                                <div class="crop-handle w" data-handle="w"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Aperçu exact de la zone découpée envoyée à Gemini -->
+                    <div class="cropped-preview-box">
+                        <p>🔍 Zone sélectionnée qui sera envoyée à Gemini pour correction :</p>
+                        <canvas id="cropped-preview-canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bouton Corriger cette phrase -->
+            <button type="button" id="btn-corriger-phrase" class="btn-main" onclick="corrigerPhraseCouranteAvecGemini()" disabled>
+                🤖 Vérifier ma phrase manuscrite avec Gemini 3.8 Flash
+            </button>
+
+            <!-- Indicateur de chargement IA -->
+            <div id="ai-loading" class="ai-loading">
+                <div class="spinner"></div>
+                <p style="font-weight: 700; font-size: 1.08rem; color: #3730a3;">
+                    Gemini 3.8 Flash lit ton écriture en anglais et vérifie l'orthographe et la grammaire...
+                </p>
+            </div>
+
+            <!-- Résultat de correction de la phrase actuelle -->
+            <div id="current-sentence-result"></div>
+
+            <!-- Bouton Phrase suivante -->
+            <div id="next-sentence-actions" style="display: none; margin-top: 14px;">
+                <button type="button" id="btn-next-sentence" class="btn-main btn-restart" onclick="passerPhraseSuivante()">
+                    ➡️ Passer à la phrase suivante
+                </button>
+            </div>
+        </div>
+
+        <!-- Bannière de score final Dictée Papier (affichée quand les 5 phrases sont corrigées) -->
+        <div id="paper-score-banner">
+            <div class="score-number" id="paper-score-display">10 / 10</div>
+            <div class="score-msg" id="paper-score-message">Well done!</div>
+        </div>
+
+        <!-- Récapitulatif complet des 5 phrases corrigées -->
+        <div id="paper-all-results"></div>
+
+    </div>
+
+    <!-- =========================================================
+         SECTION 2 : MODE QUIZ INTERACTIF CLASSIQUE (10 QUESTIONS)
+         ========================================================= -->
+    <div id="classic-quiz-section" style="display: none;">
+        <div id="quiz-container"></div>
+
+        <div id="score-banner">
+            <div class="score-number" id="score-display">0 / 10</div>
+            <div class="score-msg" id="score-message">Well done!</div>
+        </div>
+
+        <div class="actions-container">
+            <button id="btn-submit" class="btn-main" onclick="corrigerQuiz()">✅ Corriger mon quiz (sur 10)</button>
+            <button id="btn-retry" class="btn-secondary" style="display: none;" onclick="reessayerMemeQuiz()">🔁 Réessayer ce même quiz</button>
+            <button id="btn-new-quiz" class="btn-main btn-restart" style="display: none;" onclick="nouveauQuiz()">🔄 Faire un autre quiz (10 nouvelles questions)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* =========================================================
+       BANQUE DE 30 PHRASES POUR L'ÉCRITURE SUR PAPIER (PHOTO IA)
+       Inspirées directement des feuilles 4, 5, 6 et 7 du dossier wearing_carrying
+       ========================================================= */
+    const PHRASES_DICTEE_PAPIER = [
+        {
+            en: "Kelly is wearing a T-shirt with a pair of shorts.",
+            fr: "Kelly porte un t-shirt avec un short.",
+            focus: "to wear (Present Continuous) + a T-shirt + a pair of shorts"
+        },
+        {
+            en: "Kelly is carrying a bag.",
+            fr: "Kelly porte un sac (à la main / au bras).",
+            focus: "to carry (porter un sac à la main / au bras) au Present Continuous"
+        },
+        {
+            en: "Hollie is wearing some earmuffs and a red hoodie.",
+            fr: "Hollie porte des cache-oreilles et un sweat à capuche rouge.",
+            focus: "is wearing + some earmuffs (deux f) + a red hoodie"
+        },
+        {
+            en: "She is wearing a white T-shirt, green trousers and a pair of boots.",
+            fr: "Elle porte un t-shirt blanc, un pantalon vert et une paire de bottes.",
+            focus: "pas de 'a' devant green trousers (pluriel) + a pair of boots"
+        },
+        {
+            en: "Rosa is wearing glasses, a white shirt and a striped green sweater.",
+            fr: "Rosa porte des lunettes, une chemise blanche et un pull vert à rayures.",
+            focus: "glasses (sans 'a') + a white shirt + a striped green sweater"
+        },
+        {
+            en: "She is wearing jeans and brown trainers.",
+            fr: "Elle porte un jean et des baskets marron.",
+            focus: "is wearing (pas 'is wear' !) + jeans (sans 'a') + brown trainers"
+        },
+        {
+            en: "Emma is wearing a headband, a T-shirt and a pink skirt with some straps.",
+            fr: "Emma porte un serre-tête, un t-shirt et une jupe rose avec des bretelles.",
+            focus: "a headband + a pink skirt + some straps (des bretelles)"
+        },
+        {
+            en: "She is wearing some mittens, white tights and trainers.",
+            fr: "Elle porte des mitaines, des collants blancs et des baskets.",
+            focus: "some mittens (des mitaines) + white tights (avec g-h-t-s, sans 'a')"
+        },
+        {
+            en: "Donna is wearing a blue hoodie, a spotted skirt, red tights and ballerinas.",
+            fr: "Donna porte un sweat à capuche bleu, une jupe à pois, des collants rouges et des ballerines.",
+            focus: "a spotted skirt (à pois, deux t) + red tights + ballerinas"
+        },
+        {
+            en: "Today, I'm wearing blue jeans and a white hoodie.",
+            fr: "Aujourd'hui, je porte un jean bleu et un sweat à capuche blanc.",
+            focus: "I'm wearing / I am wearing + blue jeans (sans 'a') + a white hoodie"
+        },
+        {
+            en: "My favourite outfit is a burgundy hoodie with a black dress.",
+            fr: "Ma tenue préférée est un sweat à capuche bordeaux avec une robe noire.",
+            focus: "favourite outfit + a burgundy hoodie + a black dress"
+        },
+        {
+            en: "I never wear tight trousers.",
+            fr: "Je ne porte jamais de pantalon moulant (serré).",
+            focus: "Simple Present (habitude : I never wear) + tight trousers (sans 'a')"
+        },
+        {
+            en: "My neighbour is wearing blue jeans and a black hoodie.",
+            fr: "Mon voisin porte un jean bleu et un sweat à capuche noir.",
+            focus: "neighbour + is wearing + blue jeans (sans 'a') + a black hoodie"
+        },
+        {
+            en: "My teacher is wearing a brown suit with a white shirt and a tie.",
+            fr: "Mon professeur porte un costume marron avec une chemise blanche et une cravate.",
+            focus: "is wearing + a brown suit + a white shirt + a tie"
+        },
+        {
+            en: "For physical education, I usually wear shorts and a T-shirt.",
+            fr: "Pour l'éducation physique (le sport), je porte d'habitude un short et un t-shirt.",
+            focus: "Simple Present avec usually (I usually wear) + shorts (sans 'a')"
+        },
+        {
+            en: "Look! The man is wearing a black tuxedo with a bow and he is carrying a coat.",
+            fr: "Regarde ! L'homme porte un smoking noir avec un nœud papillon et il porte un manteau (sur le bras).",
+            focus: "contraste is wearing (smoking/nœud papillon) vs is carrying (manteau porté au bras)"
+        },
+        {
+            en: "In winter, she wears a warm coat, a dark green scarf and gloves.",
+            fr: "En hiver, elle porte un manteau chaud, une écharpe vert foncé et des gants.",
+            focus: "Simple Present 3e pers. (she wears) + a dark green scarf + gloves"
+        },
+        {
+            en: "In summer, we wear flip flops, a plain T-shirt and a cap.",
+            fr: "En été, nous portons des tongs, un t-shirt uni et une casquette.",
+            focus: "flip flops (des tongs) + a plain T-shirt (uni) + a cap"
+        },
+        {
+            en: "She is wearing a checked blouse with a brown belt and grey trousers.",
+            fr: "Elle porte un chemisier à carreaux avec une ceinture marron et un pantalon gris.",
+            focus: "a checked blouse (à carreaux) + a brown belt + grey trousers"
+        },
+        {
+            en: "He is wearing blue dungarees and he is carrying a heavy schoolbag.",
+            fr: "Il porte une salopette bleue et il porte un cartable lourd (à la main / au dos).",
+            focus: "dungarees (une salopette, toujours pluriel) + is carrying a heavy schoolbag"
+        },
+        {
+            en: "Are you wearing slippers or socks in your bedroom?",
+            fr: "Portes-tu des pantoufles ou des chaussettes dans ta chambre ?",
+            focus: "Question au Present Continuous (Are you wearing...?) + slippers + socks"
+        },
+        {
+            en: "My sister is wearing a light green dress, a cream hat and purple ballerinas.",
+            fr: "Ma sœur porte une robe vert clair, un chapeau crème et des ballerines violettes.",
+            focus: "light green + cream hat + purple ballerinas"
+        },
+        {
+            en: "Why are you carrying your jacket? Put it on and wear it!",
+            fr: "Pourquoi portes-tu ta veste à la main ? Mets-la et porte-la (sur toi) !",
+            focus: "contraste carrying (à la main) vs wear (sur soi)"
+        },
+        {
+            en: "He never wears a suit or a tie, he prefers a sweater and jeans.",
+            fr: "Il ne porte jamais de costume ni de cravate, il préfère un pull et un jean.",
+            focus: "Simple Present 3e pers. (he never wears, he prefers) + a suit + a tie + a sweater"
+        },
+        {
+            en: "Look at the detective! He is wearing a brown coat and a hat, and he is carrying a magnifying glass.",
+            fr: "Regarde le détective ! Il porte un manteau marron et un chapeau, et il tient (porte en main) une loupe.",
+            focus: "is wearing (manteau, chapeau) vs is carrying (loupe en main)"
+        }
+    ];
+
+    /* =========================================================
+       BANQUE COMPLÈTE DE QUESTIONS POUR LES QUIZ À COMPLÉTER
+       ========================================================= */
+    const BANQUE = {
+        verbes: [
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète la règle du cours avec <strong>to wear</strong> ou <strong>to carry</strong> :",
+                debut: "Le verbe « ",
+                fin: " » est utilisé lorsque l'on parle de la manière dont une personne est habillée.",
+                reponses: ["to wear", "wear"],
+                audioText: "to wear",
+                astuce: "TO WEAR = porter un vêtement, des chaussures ou un accessoire sur soi (être habillé)."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète la règle du cours avec <strong>to wear</strong> ou <strong>to carry</strong> :",
+                debut: "Le verbe « ",
+                fin: " » est utilisé lorsqu'on parle de ce qu'une personne porte en main, au bras, etc.",
+                reponses: ["to carry", "carry"],
+                audioText: "to carry",
+                astuce: "TO CARRY = porter/transporter un objet (un sac, une valise, un parapluie) en main ou au bras."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Observe la phrase du cours et complète au <strong>Present Continuous</strong> (<em>is wearing</em> ou <em>is carrying</em>) :",
+                debut: "Kelly ",
+                fin: " a T-shirt with a pair of shorts.",
+                reponses: ["is wearing", "'s wearing"],
+                audioText: "Kelly is wearing a T-shirt with a pair of shorts.",
+                astuce: "Un t-shirt et un short sont des vêtements portés sur soi -> Kelly is wearing."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Observe la phrase du cours et complète au <strong>Present Continuous</strong> (<em>is wearing</em> ou <em>is carrying</em>) :",
+                debut: "Kelly ",
+                fin: " a bag.",
+                reponses: ["is carrying", "'s carrying"],
+                audioText: "Kelly is carrying a bag.",
+                astuce: "Un sac (a bag) est porté à la main ou à l'épaule/au bras -> Kelly is carrying."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète au <strong>Present Continuous</strong> avec le bon verbe (<em>to wear</em> ou <em>to carry</em>) :",
+                debut: "Look! My mother ",
+                fin: " two heavy shopping bags in her hands.",
+                reponses: ["is carrying", "'s carrying"],
+                audioText: "Look! My mother is carrying two heavy shopping bags in her hands.",
+                astuce: "Elle porte des sacs de courses dans ses mains (in her hands) -> is carrying."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète au <strong>Present Continuous</strong> avec le bon verbe (<em>to wear</em> ou <em>to carry</em>) :",
+                debut: "Today, my teacher ",
+                fin: " a brown suit with a white shirt.",
+                reponses: ["is wearing", "'s wearing"],
+                audioText: "Today, my teacher is wearing a brown suit with a white shirt.",
+                astuce: "Il s'agit des vêtements qu'il porte sur lui aujourd'hui -> is wearing."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète au <strong>Present Continuous</strong> avec le bon verbe (<em>to wear</em> ou <em>to carry</em>) :",
+                debut: "It is very hot, so Tom is not wearing his jacket: he ",
+                fin: " it over his arm.",
+                reponses: ["is carrying", "'s carrying"],
+                audioText: "It is very hot, so Tom is not wearing his jacket: he is carrying it over his arm.",
+                astuce: "Il ne porte pas sa veste sur lui, il la porte sur son bras (over his arm) -> is carrying!"
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète au <strong>Present Continuous</strong> avec le bon verbe (<em>to wear</em> ou <em>to carry</em>) :",
+                debut: "Look at Rosa! She ",
+                fin: " glasses and a striped green sweater.",
+                reponses: ["is wearing", "'s wearing"],
+                audioText: "Look at Rosa! She is wearing glasses and a striped green sweater.",
+                astuce: "En anglais, on utilise TO WEAR pour les lunettes (glasses) et les vêtements portés sur soi -> is wearing."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Attention au temps ! (<em>every day</em> = habitude &rarr; <strong>Simple Present</strong>). Choisis entre <em>wear/wears</em> et <em>carry/carries</em> :",
+                debut: "Every day, the pupil ",
+                fin: " a heavy backpack to school.",
+                reponses: ["carries"],
+                audioText: "Every day, the pupil carries a heavy backpack to school.",
+                astuce: "Porter un sac à dos = to carry. Au Simple Present avec 'the pupil' (he/she), carry devient carries (-ies) !"
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Attention au temps ! (<em>usually</em> = habitude &rarr; <strong>Simple Present</strong>). Choisis entre <em>wear/wears</em> et <em>carry/carries</em> :",
+                debut: "For physical education, I usually ",
+                fin: " shorts and a T-shirt.",
+                reponses: ["wear"],
+                audioText: "For physical education, I usually wear shorts and a T-shirt.",
+                astuce: "Avec 'usually' (habitude) et le sujet 'I', on utilise le Simple Present : I usually wear."
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète la question au <strong>Present Continuous</strong> (sujet <em>you</em> + verbe <em>to wear</em>) :",
+                debut: "What ",
+                fin: " today? — I'm wearing jeans and a white hoodie.",
+                reponses: ["are you wearing"],
+                audioText: "What are you wearing today?",
+                astuce: "Question au Present Continuous : What + are + you + wearing today?"
+            },
+            {
+                type: "verbes",
+                badge: "👜 To Wear ≠ To Carry",
+                badgeClass: "badge-verbes",
+                consigne: "Complète au <strong>Present Continuous</strong> avec <em>to wear</em> ou <em>to carry</em> :",
+                debut: "The waiter ",
+                fin: " a tray with three glasses of water in his hands.",
+                reponses: ["is carrying", "'s carrying"],
+                audioText: "The waiter is carrying a tray with three glasses of water in his hands.",
+                astuce: "Porter un plateau (a tray) dans ses mains = is carrying."
+            }
+        ],
+        vocab: [
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "un sweat à capuche",
+                audioText: "I'm wearing jeans and a white hoodie.",
+                debut: "Today, I'm wearing jeans and a white ",
+                fin: ".",
+                reponses: ["hoodie"],
+                astuce: "Un sweat à capuche = a hoodie (h-o-o-d-i-e)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "un pull",
+                audioText: "Rosa is wearing a white shirt and a green sweater.",
+                debut: "Rosa is wearing a white shirt and a green ",
+                fin: ".",
+                reponses: ["sweater"],
+                astuce: "Un pull = a sweater (s-w-e-a-t-e-r)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "un pantalon",
+                audioText: "I never wear tight trousers.",
+                debut: "I never wear tight ",
+                fin: ".",
+                reponses: ["trousers"],
+                astuce: "Un pantalon = trousers (toujours au pluriel en anglais, sans 'a' !)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "une salopette",
+                audioText: "The little boy is wearing blue dungarees.",
+                debut: "The little boy is wearing blue ",
+                fin: ".",
+                reponses: ["dungarees"],
+                astuce: "Une salopette = dungarees (d-u-n-g-a-r-e-e-s)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "un smoking",
+                audioText: "James Bond is wearing a black tuxedo with a bow.",
+                debut: "James Bond is wearing a black ",
+                fin: " with a bow.",
+                reponses: ["tuxedo"],
+                astuce: "Un smoking = a tuxedo (t-u-x-e-d-o)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "un chemisier",
+                audioText: "She is wearing a checked blouse and a skirt.",
+                debut: "She is wearing a checked ",
+                fin: " and a skirt.",
+                reponses: ["blouse"],
+                astuce: "Un chemisier = a blouse (b-l-o-u-s-e)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "un costume",
+                audioText: "My teacher is wearing a brown suit with a white shirt.",
+                debut: "My teacher is wearing a brown ",
+                fin: " with a white shirt.",
+                reponses: ["suit"],
+                astuce: "Un costume = a suit (s-u-i-t)."
+            },
+            {
+                type: "indice",
+                badge: "👕 Clothes",
+                badgeClass: "badge-vocab",
+                hint: "des collants",
+                audioText: "Emma is wearing a pink skirt, white tights and trainers.",
+                debut: "Emma is wearing a pink skirt, white ",
+                fin: " and trainers.",
+                reponses: ["tights"],
+                astuce: "Des collants = tights (t-i-g-h-t-s, avec -gh- et un -s final !)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "des cache-oreilles",
+                audioText: "Hollie is wearing some earmuffs because it is cold.",
+                debut: "Hollie is wearing some ",
+                fin: " because it is cold.",
+                reponses: ["earmuffs"],
+                astuce: "Des cache-oreilles = some earmuffs (ear + muffs avec deux f)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "un serre-tête",
+                audioText: "Emma is wearing a headband in her hair.",
+                debut: "Emma is wearing a ",
+                fin: " in her hair.",
+                reponses: ["headband"],
+                astuce: "Un serre-tête = a headband (head + band)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "des bretelles",
+                audioText: "She is wearing a pink skirt with some straps.",
+                debut: "She is wearing a pink skirt with some ",
+                fin: ".",
+                reponses: ["straps"],
+                astuce: "Des bretelles = some straps (s-t-r-a-p-s)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "des mitaines / moufles",
+                audioText: "Emma is wearing some mittens on her hands.",
+                debut: "Emma is wearing some ",
+                fin: " on her hands.",
+                reponses: ["mittens"],
+                astuce: "Des mitaines / moufles = some mittens (avec deux t)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "une cravate",
+                audioText: "He is wearing a white shirt and a red tie.",
+                debut: "He is wearing a white shirt and a red ",
+                fin: ".",
+                reponses: ["tie"],
+                astuce: "Une cravate = a tie (t-i-e)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "une ceinture",
+                audioText: "She is wearing jeans with a brown belt.",
+                debut: "She is wearing jeans with a brown ",
+                fin: ".",
+                reponses: ["belt"],
+                astuce: "Une ceinture = a belt (b-e-l-t)."
+            },
+            {
+                type: "indice",
+                badge: "🧣 Accessories",
+                badgeClass: "badge-vocab",
+                hint: "une écharpe",
+                audioText: "In winter, I wear a coat and a warm scarf.",
+                debut: "In winter, I wear a coat and a warm ",
+                fin: ".",
+                reponses: ["scarf"],
+                astuce: "Une écharpe = a scarf (s-c-a-r-f)."
+            },
+            {
+                type: "indice",
+                badge: "👟 Shoes",
+                badgeClass: "badge-vocab",
+                hint: "des baskets",
+                audioText: "Rosa is wearing jeans and trainers.",
+                debut: "Rosa is wearing jeans and ",
+                fin: ".",
+                reponses: ["trainers"],
+                astuce: "Des baskets = trainers (t-r-a-i-n-e-r-s)."
+            },
+            {
+                type: "indice",
+                badge: "👟 Shoes",
+                badgeClass: "badge-vocab",
+                hint: "des ballerines",
+                audioText: "Donna is wearing a skirt, tights and ballerinas.",
+                debut: "Donna is wearing a skirt, tights and ",
+                fin: ".",
+                reponses: ["ballerinas"],
+                astuce: "Des ballerines = ballerinas (b-a-l-l-e-r-i-n-a-s)."
+            },
+            {
+                type: "indice",
+                badge: "👟 Shoes",
+                badgeClass: "badge-vocab",
+                hint: "des pantoufles",
+                audioText: "At home, my grandfather wears warm slippers.",
+                debut: "At home, my grandfather wears warm ",
+                fin: ".",
+                reponses: ["slippers"],
+                astuce: "Des pantoufles = slippers (avec deux p)."
+            },
+            {
+                type: "indice",
+                badge: "👟 Shoes",
+                badgeClass: "badge-vocab",
+                hint: "des tongs",
+                audioText: "On the beach, I wear shorts and flip flops.",
+                debut: "On the beach, I wear shorts and ",
+                fin: ".",
+                reponses: ["flip flops", "flip-flops"],
+                astuce: "Des tongs = flip flops."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Patterns & Colours",
+                badgeClass: "badge-vocab",
+                hint: "rayé / à rayures",
+                audioText: "Rosa is wearing a striped green sweater.",
+                debut: "Rosa is wearing a ",
+                fin: " green sweater.",
+                reponses: ["striped"],
+                astuce: "Rayé / à rayures = striped (s-t-r-i-p-e-d, un seul p !)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Patterns & Colours",
+                badgeClass: "badge-vocab",
+                hint: "à pois",
+                audioText: "Donna is wearing a spotted skirt.",
+                debut: "Donna is wearing a ",
+                fin: " skirt.",
+                reponses: ["spotted"],
+                astuce: "À pois = spotted (s-p-o-t-t-e-d, avec deux t)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Patterns & Colours",
+                badgeClass: "badge-vocab",
+                hint: "à carreaux",
+                audioText: "He is wearing a checked shirt.",
+                debut: "He is wearing a ",
+                fin: " shirt.",
+                reponses: ["checked"],
+                astuce: "À carreaux = checked (c-h-e-c-k-e-d)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Patterns & Colours",
+                badgeClass: "badge-vocab",
+                hint: "uni / sans motif",
+                audioText: "She is wearing a plain white T-shirt.",
+                debut: "She is wearing a ",
+                fin: " white T-shirt.",
+                reponses: ["plain"],
+                astuce: "Uni = plain (p-l-a-i-n)."
+            },
+            {
+                type: "indice",
+                badge: "🎨 Patterns & Colours",
+                badgeClass: "badge-vocab",
+                hint: "bordeaux",
+                audioText: "My favourite outfit is a burgundy hoodie with a black dress.",
+                debut: "My favourite outfit is a ",
+                fin: " hoodie with a black dress.",
+                reponses: ["burgundy"],
+                astuce: "Bordeaux (couleur) = burgundy (b-u-r-g-u-n-d-y)."
+            }
+        ],
+        grammaire: [
+            {
+                type: "grammaire",
+                badge: "✍️ Piège Pluriel (sans 'a')",
+                badgeClass: "badge-grammaire",
+                consigne: "Traduis le groupe entre parenthèses (⚠️ attention : pas d'article <em>« a »</em> devant un vêtement pluriel !) :",
+                hint: "un pantalon vert",
+                audioText: "Hollie is wearing green trousers.",
+                debut: "Hollie is wearing ",
+                fin: ".",
+                reponses: ["green trousers", "a pair of green trousers"],
+                astuce: "En anglais, trousers est TOUJOURS pluriel -> on dit « green trousers » (ou « a pair of green trousers »), jamais <s>a green trousers</s> !"
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Piège Pluriel (sans 'a')",
+                badgeClass: "badge-grammaire",
+                consigne: "Traduis le groupe entre parenthèses (⚠️ attention au mot <em>jeans</em> en anglais !) :",
+                hint: "un jean bleu",
+                audioText: "My neighbour is wearing blue jeans and a black hoodie.",
+                debut: "My neighbour is wearing ",
+                fin: " and a black hoodie.",
+                reponses: ["blue jeans", "a pair of blue jeans"],
+                astuce: "Jeans est toujours pluriel en anglais : on écrit « blue jeans » (sans 'a' !), jamais <s>a blue jeans</s>."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Expression « a pair of »",
+                badgeClass: "badge-grammaire",
+                consigne: "Complète l'expression surlignée en rose sur ta feuille de cours (<em>« une paire de / un »</em> devant <em>shorts</em> ou <em>boots</em>) :",
+                hint: "une paire de",
+                audioText: "Kelly is wearing a T-shirt with a pair of shorts.",
+                debut: "Kelly is wearing a T-shirt with ",
+                fin: " shorts.",
+                reponses: ["a pair of"],
+                astuce: "Devant shorts, trousers, jeans, boots, trainers, shoes, on peut utiliser « a pair of » (une paire de)."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Ordre des mots (Adjectif + Nom)",
+                badgeClass: "badge-grammaire",
+                consigne: "Traduis le groupe entre parenthèses en plaçant l'adjectif de couleur au bon endroit :",
+                hint: "une chemise blanche",
+                audioText: "Rosa is wearing glasses and a white shirt.",
+                debut: "Rosa is wearing glasses and ",
+                fin: ".",
+                reponses: ["a white shirt"],
+                astuce: "En anglais, la couleur se place toujours AVANT le vêtement : a white shirt (et non <s>a shirt white</s>)."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Correction d'erreur fréquente",
+                badgeClass: "badge-grammaire",
+                consigne: "Sur la feuille 6, corrige l'erreur <s>« She is wear »</s> au Present Continuous :",
+                hint: "Elle porte",
+                audioText: "She is wearing jeans and trainers.",
+                debut: "",
+                fin: " jeans and trainers.",
+                reponses: ["she is wearing", "she's wearing"],
+                astuce: "Après « She is », il faut obligatoirement ajouter -ing au verbe : She is wearing (et jamais <s>She is wear</s>)."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Correction d'erreur fréquente",
+                badgeClass: "badge-grammaire",
+                consigne: "Traduis correctement <em>« des collants »</em> (attention à l'orthographe de la fin du mot !) :",
+                hint: "des collants",
+                audioText: "Emma is wearing tights and trainers.",
+                debut: "Emma is wearing ",
+                fin: " and trainers.",
+                reponses: ["tights", "some tights"],
+                astuce: "Attention : « tight » = serré/moulant, mais le nom « des collants » prend toujours un -s : tights (t-i-g-h-t-s) !"
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Réponse courte (Short Answer)",
+                badgeClass: "badge-grammaire",
+                consigne: "Réponds à la question 7d de ta feuille par une réponse courte négative :",
+                hint: "Non.",
+                audioText: "Do you like fashion? No, I don't.",
+                debut: "— Do you like fashion? — ",
+                fin: ".",
+                reponses: ["no, i don't", "no i don't", "no, i do not"],
+                astuce: "La question commence par « Do you... ? » -> réponse courte : No, I don't. (ou Yes, I do.)."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Jeu du Détective (Feuille 7)",
+                badgeClass: "badge-grammaire",
+                consigne: "Dans le jeu du détective (exercice 8), complète la question que pose le détective sur le voleur :",
+                hint: "Est-ce qu'il porte",
+                audioText: "Is he wearing a black hoodie?",
+                debut: "",
+                fin: " a black hoodie? — Yes, he is!",
+                reponses: ["is he wearing"],
+                astuce: "Question au Present Continuous à la 3e personne : Is he wearing... ? (Réponse courte des témoins : Yes, he is. / No, he isn't.)."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Jeu du Détective (Short Answer)",
+                badgeClass: "badge-grammaire",
+                consigne: "Dans le jeu du détective, les témoins ne peuvent répondre que par une réponse courte (<em>short answer</em>). Complète :",
+                hint: "Non.",
+                audioText: "Is the suspect wearing glasses? No, she isn't.",
+                debut: "— Is the suspect wearing glasses? — No, she ",
+                fin: ".",
+                reponses: ["isn't", "is not"],
+                astuce: "Question avec « Is she... ? » -> Réponse courte négative : No, she isn't."
+            },
+            {
+                type: "grammaire",
+                badge: "✍️ Ordre des mots",
+                badgeClass: "badge-grammaire",
+                consigne: "Traduis le groupe entre parenthèses (exercice 7c de ta feuille) :",
+                hint: "des pantalons moulants / serrés",
+                audioText: "I never wear tight trousers.",
+                debut: "I never wear ",
+                fin: ".",
+                reponses: ["tight trousers"],
+                astuce: "Adjectif « tight » (moulant/serré) + nom pluriel « trousers » (sans 'a') -> tight trousers."
+            }
+        ],
+        audio: [
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a sweater", reponses: ["a sweater", "sweater"], consigne: "Écris le vêtement entendu (un pull) :", astuce: "a sweater s'écrit s-w-e-a-t-e-r." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a hoodie", reponses: ["a hoodie", "hoodie"], consigne: "Écris le vêtement entendu (un sweat à capuche) :", astuce: "a hoodie s'écrit h-o-o-d-i-e." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "trousers", reponses: ["trousers"], consigne: "Écris le vêtement entendu (un pantalon — toujours pluriel) :", astuce: "trousers s'écrit t-r-o-u-s-e-r-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a skirt", reponses: ["a skirt", "skirt"], consigne: "Écris le vêtement entendu (une jupe) :", astuce: "a skirt s'écrit s-k-i-r-t (attention à ne pas confondre avec a shirt = une chemise)." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a jacket", reponses: ["a jacket", "jacket"], consigne: "Écris le vêtement entendu (une veste) :", astuce: "a jacket s'écrit j-a-c-k-e-t." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a coat", reponses: ["a coat", "coat"], consigne: "Écris le vêtement entendu (un manteau) :", astuce: "a coat s'écrit c-o-a-t." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a suit", reponses: ["a suit", "suit"], consigne: "Écris le vêtement entendu (un costume) :", astuce: "a suit s'écrit s-u-i-t." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a blouse", reponses: ["a blouse", "blouse"], consigne: "Écris le vêtement entendu (un chemisier) :", astuce: "a blouse s'écrit b-l-o-u-s-e." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "dungarees", reponses: ["dungarees"], consigne: "Écris le vêtement entendu (une salopette) :", astuce: "dungarees s'écrit d-u-n-g-a-r-e-e-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "a tuxedo", reponses: ["a tuxedo", "tuxedo"], consigne: "Écris le vêtement entendu (un smoking) :", astuce: "a tuxedo s'écrit t-u-x-e-d-o." },
+            { type: "audio", badge: "🔊 Dictée audio (Clothes)", badgeClass: "badge-audio", audioText: "tights", reponses: ["tights"], consigne: "Écris le vêtement entendu (des collants) :", astuce: "tights s'écrit t-i-g-h-t-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Shoes)", badgeClass: "badge-audio", audioText: "trainers", reponses: ["trainers"], consigne: "Écris les chaussures entendues (des baskets) :", astuce: "trainers s'écrit t-r-a-i-n-e-r-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Shoes)", badgeClass: "badge-audio", audioText: "ballerinas", reponses: ["ballerinas"], consigne: "Écris les chaussures entendues (des ballerines) :", astuce: "ballerinas s'écrit avec deux l : b-a-l-l-e-r-i-n-a-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Shoes)", badgeClass: "badge-audio", audioText: "slippers", reponses: ["slippers"], consigne: "Écris les chaussures entendues (des pantoufles) :", astuce: "slippers s'écrit avec deux p : s-l-i-p-p-e-r-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Shoes)", badgeClass: "badge-audio", audioText: "flip flops", reponses: ["flip flops", "flip-flops"], consigne: "Écris les chaussures entendues (des tongs) :", astuce: "flip flops." },
+            { type: "audio", badge: "🔊 Dictée audio (Accessories)", badgeClass: "badge-audio", audioText: "a scarf", reponses: ["a scarf", "scarf"], consigne: "Écris l'accessoire entendu (une écharpe) :", astuce: "a scarf s'écrit s-c-a-r-f." },
+            { type: "audio", badge: "🔊 Dictée audio (Accessories)", badgeClass: "badge-audio", audioText: "gloves", reponses: ["gloves"], consigne: "Écris l'accessoire entendu (des gants) :", astuce: "gloves s'écrit g-l-o-v-e-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Accessories)", badgeClass: "badge-audio", audioText: "some mittens", reponses: ["some mittens", "mittens"], consigne: "Écris l'accessoire entendu (des mitaines / moufles) :", astuce: "some mittens s'écrit avec deux t : m-i-t-t-e-n-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Accessories)", badgeClass: "badge-audio", audioText: "some earmuffs", reponses: ["some earmuffs", "earmuffs"], consigne: "Écris l'accessoire entendu (des cache-oreilles) :", astuce: "some earmuffs s'écrit e-a-r-m-u-f-f-s." },
+            { type: "audio", badge: "🔊 Dictée audio (Accessories)", badgeClass: "badge-audio", audioText: "a headband", reponses: ["a headband", "headband"], consigne: "Écris l'accessoire entendu (un serre-tête) :", astuce: "a headband s'écrit h-e-a-d-b-a-n-d." },
+            { type: "audio", badge: "🔊 Dictée audio (Patterns)", badgeClass: "badge-audio", audioText: "striped", reponses: ["striped"], consigne: "Écris l'adjectif de motif entendu (rayé / à rayures) :", astuce: "striped s'écrit s-t-r-i-p-e-d." },
+            { type: "audio", badge: "🔊 Dictée audio (Patterns)", badgeClass: "badge-audio", audioText: "spotted", reponses: ["spotted"], consigne: "Écris l'adjectif de motif entendu (à pois) :", astuce: "spotted s'écrit s-p-o-t-t-e-d (deux t)." },
+            { type: "audio", badge: "🔊 Dictée audio (Patterns)", badgeClass: "badge-audio", audioText: "checked", reponses: ["checked"], consigne: "Écris l'adjectif de motif entendu (à carreaux) :", astuce: "checked s'écrit c-h-e-c-k-e-d." },
+            { type: "audio", badge: "🔊 Dictée audio (Colours)", badgeClass: "badge-audio", audioText: "purple", reponses: ["purple"], consigne: "Écris la couleur entendue (violet) :", astuce: "purple s'écrit p-u-r-p-l-e." }
+        ]
+    };
+
+    /* =========================================================
+       ÉTAT GLOBAL & COMPATIBILITÉ CLÉ API
+       ========================================================= */
+    // On utilise la MÊME clé localStorage que dans /fr_louis_html/dictee4.html
+    // pour que la clé enregistrée sur l'appareil fonctionne immédiatement partout !
+    const STORAGE_KEY_API = 'gemini_api_key_dictee';
+    const FALLBACK_KEYS_API = ['gemini_api_key_dictee', 'gemini_api_key', 'GEMINI_API_KEY'];
+
+    let modeActuel = 'papier';
+    let sousModePapier = 'both'; // 'both' | 'dictation' | 'translation'
+    let questionsActuelles = [];
+
+    // État Dictée Papier (5 phrases, 1 par 1)
+    let phrasesPapierActuelles = [];
+    let indexPhraseCourante = 0;
+    let resultatsPhrasesPapier = [null, null, null, null, null];
+    let spoilerVisible = false;
+
+    // État Image & Recadrage (Cropper)
+    let imageSourceComplete = null;
+    let cropRect = { x: 0.05, y: 0.25, w: 0.90, h: 0.35 };
+    let imageRecadreeBase64 = null;
+
+    // État Voix Anglaise
+    let voixAnglaise = null;
+    const cacheAudioGemini = new Map();
+    let audioEnCours = null;
+    let listeVoixAnglaises = [];
+
+    /* =========================================================
+       SYNTHÈSE VOCALE ANGLAISE : GEMINI 3.8 FLASH TTS + CACHE + SECOURS
+       ========================================================= */
+    function scoreVoixNavigateur(v) {
+        let s = 0;
+        const nom = (v.name || '').toLowerCase();
+        const lang = (v.lang || '').toLowerCase();
+        if (lang === 'en-gb') s += 30;
+        else if (lang === 'en-us') s += 25;
+        else if (lang.startsWith('en')) s += 15;
+        if (nom.includes('natural') || nom.includes('online')) s += 50;
+        if (nom.includes('premium') || nom.includes('enhanced')) s += 45;
+        if (nom.includes('google')) s += 35;
+        if (nom.includes('daniel') || nom.includes('serena') || nom.includes('kate') || nom.includes('oliver') || nom.includes('samantha') || nom.includes('alex')) s += 25;
+        if (nom.includes('compact') || nom.includes('espeak') || nom.includes('rocko') || nom.includes('flo') || nom.includes('grandpa') || nom.includes('grandma')) s -= 40;
+        return s;
+    }
+
+    function initialiserVoix() {
+        if ('speechSynthesis' in window) {
+            const charger = () => {
+                const toutes = window.speechSynthesis.getVoices();
+                listeVoixAnglaises = toutes
+                    .filter(v => v.lang && v.lang.toLowerCase().startsWith('en'))
+                    .sort((a, b) => scoreVoixNavigateur(b) - scoreVoixNavigateur(a));
+
+                if (listeVoixAnglaises.length > 0) {
+                    voixAnglaise = listeVoixAnglaises[0];
+                }
+
+                const selectBrowser = document.getElementById('select-voix-browser');
+                if (selectBrowser && listeVoixAnglaises.length > 0) {
+                    selectBrowser.innerHTML = listeVoixAnglaises
+                        .map((v, i) => `<option value="${i}">${v.name} (${v.lang})</option>`)
+                        .join('');
+                }
+            };
+            window.speechSynthesis.onvoiceschanged = charger;
+            charger();
+        }
+    }
+
+    function selectionnerVoixNavigateurManuelle() {
+        const selectBrowser = document.getElementById('select-voix-browser');
+        const idx = parseInt(selectBrowser.value, 10);
+        if (!isNaN(idx) && listeVoixAnglaises[idx]) {
+            voixAnglaise = listeVoixAnglaises[idx];
+        }
+    }
+
+    function changerMoteurVoix() {
+        const moteur = document.getElementById('select-moteur-voix').value;
+        const selectGemini = document.getElementById('select-voix-gemini');
+        const selectBrowser = document.getElementById('select-voix-browser');
+        if (moteur === 'gemini') {
+            selectGemini.style.display = 'inline-block';
+            selectBrowser.style.display = 'none';
+        } else {
+            selectGemini.style.display = 'none';
+            selectBrowser.style.display = listeVoixAnglaises.length > 0 ? 'inline-block' : 'none';
+        }
+    }
+
+    function arreterAudioEnCours() {
+        if (audioEnCours) {
+            audioEnCours.pause();
+            audioEnCours.currentTime = 0;
+            audioEnCours = null;
+        }
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+        }
+    }
+
+    function ecouterNavigateur(texte, vitesse = 0.85) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(texte);
+            utterance.lang = 'en-GB';
+            utterance.rate = vitesse;
+            utterance.pitch = 1.0;
+            if (voixAnglaise) utterance.voice = voixAnglaise;
+            window.speechSynthesis.speak(utterance);
+        } else {
+            alert("Désolé, ton navigateur ne supporte pas la synthèse vocale.");
+        }
+    }
+
+    function base64VersBlobUrl(base64Data, mimeType = 'audio/wav') {
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: mimeType });
+        return URL.createObjectURL(blob);
+    }
+
+    function lireBlobAudio(blobUrl, playbackRate = 1.0, onEndCallback = null) {
+        arreterAudioEnCours();
+        const audio = new Audio(blobUrl);
+        audio.playbackRate = playbackRate;
+        audioEnCours = audio;
+        audio.onended = () => {
+            if (onEndCallback) onEndCallback();
+        };
+        audio.play().catch(err => {
+            console.error("Erreur lecture audio :", err);
+            if (onEndCallback) onEndCallback();
+        });
+    }
+
+    async function ecouter(texte, vitesse = 0.85, boutonDeclencheur = null) {
+        const apiKey = obtenirCleApiActive();
+        const selectMoteur = document.getElementById('select-moteur-voix');
+        const moteur = selectMoteur ? selectMoteur.value : 'gemini';
+        const statusEl = document.getElementById('tts-status-indicator');
+
+        if (moteur === 'gemini' && apiKey.length > 10) {
+            const selectVoix = document.getElementById('select-voix-gemini');
+            const voixChoisie = selectVoix ? selectVoix.value : 'Puck';
+            const cleCache = `${voixChoisie}::${texte}`;
+            const tauxLecture = (vitesse < 0.72) ? 0.76 : 1.0;
+
+            if (cacheAudioGemini.has(cleCache)) {
+                if (statusEl) statusEl.textContent = '✨ Lecture voix IA (en cache)';
+                lireBlobAudio(cacheAudioGemini.get(cleCache), tauxLecture, () => {
+                    if (statusEl) statusEl.textContent = '';
+                });
+                return;
+            }
+
+            const texteOriginalBtn = boutonDeclencheur ? boutonDeclencheur.innerHTML : null;
+            if (boutonDeclencheur) {
+                boutonDeclencheur.disabled = true;
+                boutonDeclencheur.innerHTML = '⏳ Voix IA...';
+            }
+            if (statusEl) {
+                statusEl.textContent = '⏳ Génération de la voix anglaise IA Gemini...';
+            }
+
+            try {
+                arreterAudioEnCours();
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify({
+                        model: 'gemini-3.8-flash-tts',
+                        input: [{
+                            type: 'user_input',
+                            content: [{
+                                type: 'text',
+                                text: texte,
+                                annotations: [{
+                                    type: 'speech_metadata',
+                                    style: 'British English school teacher reading an English sentence clearly, articulately, with natural British English pronunciation and a calm, measured pace for a language student'
+                                }]
+                            }]
+                        }],
+                        response_format: {
+                            type: 'audio'
+                        },
+                        generation_config: {
+                            speech_config: [
+                                { voice: voixChoisie }
+                            ]
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errText}`);
+                }
+
+                const data = await response.json();
+
+                let audioBase64 = data.output_audio?.data || null;
+                let audioMime = data.output_audio?.mime_type || 'audio/wav';
+
+                if (!audioBase64 && Array.isArray(data.steps)) {
+                    for (const step of data.steps) {
+                        if (step.type === 'model_output' && Array.isArray(step.content)) {
+                            for (const item of step.content) {
+                                if (item.type === 'audio' && item.data) {
+                                    audioBase64 = item.data;
+                                    if (item.mime_type) audioMime = item.mime_type;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (!audioBase64) {
+                    throw new Error("Aucune donnée audio reçue de Gemini TTS.");
+                }
+
+                const blobUrl = base64VersBlobUrl(audioBase64, audioMime);
+                cacheAudioGemini.set(cleCache, blobUrl);
+
+                const badgeCache = document.getElementById('current-cache-badge');
+                if (badgeCache) badgeCache.style.display = 'inline-block';
+
+                if (statusEl) statusEl.textContent = '🔊 Lecture voix anglaise IA Gemini';
+                lireBlobAudio(blobUrl, tauxLecture, () => {
+                    if (statusEl) statusEl.textContent = '';
+                });
+
+            } catch (err) {
+                console.warn("Repli sur la voix du navigateur suite à une erreur Gemini TTS :", err);
+                if (statusEl) statusEl.textContent = '⚠️ Voix appareil (secours)';
+                ecouterNavigateur(texte, vitesse);
+            } finally {
+                if (boutonDeclencheur && texteOriginalBtn !== null) {
+                    boutonDeclencheur.disabled = false;
+                    boutonDeclencheur.innerHTML = texteOriginalBtn;
+                }
+            }
+        } else {
+            ecouterNavigateur(texte, vitesse);
+        }
+    }
+
+    /* =========================================================
+       GESTION & TEST DE LA CLÉ API GEMINI (PARTAGÉE AVEC FR_LOUIS_HTML)
+       ========================================================= */
+    function lireCleStockee() {
+        for (const k of FALLBACK_KEYS_API) {
+            const val = (localStorage.getItem(k) || '').trim();
+            if (val.length > 10) {
+                // Synchroniser sur STORAGE_KEY_API si trouvé ailleurs
+                if (k !== STORAGE_KEY_API) {
+                    localStorage.setItem(STORAGE_KEY_API, val);
+                }
+                return val;
+            }
+        }
+        // Vérifier également si une clé a été passée dans l'URL (?apiKey=... ou ?key=...)
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const urlKey = (params.get('apiKey') || params.get('key') || '').trim();
+            if (urlKey.length > 10) {
+                localStorage.setItem(STORAGE_KEY_API, urlKey);
+                return urlKey;
+            }
+        } catch (_) {}
+        return '';
+    }
+
+    function obtenirCleApiActive() {
+        const input = document.getElementById('api-key-input');
+        const cleSaisie = input ? input.value.trim() : '';
+        const cleStockee = lireCleStockee();
+        return cleSaisie || cleStockee;
+    }
+
+    function chargerCleApi() {
+        const cle = lireCleStockee();
+        const dot = document.getElementById('api-status-dot');
+        const txt = document.getElementById('api-status-text');
+        const btnToggle = document.getElementById('btn-toggle-key-form');
+        const btnClear = document.getElementById('btn-clear-key');
+        const formWrapper = document.getElementById('api-key-form-wrapper');
+        const input = document.getElementById('api-key-input');
+
+        if (cle.length > 10) {
+            dot.className = 'status-dot ok';
+            const masque = cle.slice(0, 6) + '••••••••' + cle.slice(-4);
+            txt.textContent = `Clé API Gemini active (${masque})`;
+            btnToggle.textContent = '⚙️ Modifier la clé';
+            btnClear.style.display = 'inline-block';
+            formWrapper.style.display = 'none';
+            input.value = cle;
+        } else {
+            dot.className = 'status-dot missing';
+            txt.textContent = 'Clé API Gemini requise pour la voix IA et la photo';
+            btnToggle.textContent = '🔑 Entrer ma clé API';
+            btnClear.style.display = 'none';
+            formWrapper.style.display = 'flex';
+            input.value = '';
+        }
+        mettreAJourBoutonCorrection();
+    }
+
+    function basculerFormulaireCle() {
+        const formWrapper = document.getElementById('api-key-form-wrapper');
+        formWrapper.style.display = (formWrapper.style.display === 'none') ? 'flex' : 'none';
+    }
+
+    function basculerVisibiliteCle() {
+        const input = document.getElementById('api-key-input');
+        input.type = (input.type === 'password') ? 'text' : 'password';
+    }
+
+    function enregistrerCleApi() {
+        const input = document.getElementById('api-key-input');
+        const cle = input.value.trim();
+        if (!cle) {
+            alert("Merci d'entrer une clé API Gemini valide.");
+            return;
+        }
+        localStorage.setItem(STORAGE_KEY_API, cle);
+        chargerCleApi();
+    }
+
+    function supprimerCleApi() {
+        if (confirm("Veux-tu vraiment effacer la clé API enregistrée sur cet appareil ?")) {
+            FALLBACK_KEYS_API.forEach(k => localStorage.removeItem(k));
+            document.getElementById('api-test-result').style.display = 'none';
+            chargerCleApi();
+        }
+    }
+
+    async function testerCleApi() {
+        const resultBox = document.getElementById('api-test-result');
+        const dot = document.getElementById('api-status-dot');
+        const apiKey = obtenirCleApiActive();
+
+        if (!apiKey || apiKey.length < 10) {
+            resultBox.className = 'api-test-result failure';
+            resultBox.innerHTML = '❌ Aucune clé API entrée. Colle ta clé API Gemini dans le champ ci-dessus puis reclique sur <strong>🧪 Tester</strong>.';
+            document.getElementById('api-key-form-wrapper').style.display = 'flex';
+            document.getElementById('api-key-input').focus();
+            return;
+        }
+
+        resultBox.className = 'api-test-result testing';
+        resultBox.innerHTML = '⏳ Test de connexion à Gemini (<code>gemini-3.8-flash</code>) en cours...';
+
+        const t0 = performance.now();
+        try {
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey
+                },
+                body: JSON.stringify({
+                    model: 'gemini-3.8-flash',
+                    input: 'Reply only with the single word: OK'
+                })
+            });
+
+            const dureeMs = Math.round(performance.now() - t0);
+
+            if (!response.ok) {
+                let detail = '';
+                try {
+                    const errJson = await response.json();
+                    const msg = Array.isArray(errJson) ? errJson[0]?.error?.message : errJson?.error?.message;
+                    detail = msg || JSON.stringify(errJson);
+                } catch (_) {
+                    detail = await response.text();
+                }
+                throw new Error(`Code HTTP ${response.status} — ${detail}`);
+            }
+
+            const data = await response.json();
+            let texteReponse = data.output_text || '';
+            if (!texteReponse && Array.isArray(data.steps)) {
+                const modelStep = data.steps.filter(s => s.type === 'model_output').pop();
+                const textPart = modelStep?.content?.find(c => c.type === 'text');
+                if (textPart) texteReponse = textPart.text;
+            }
+
+            localStorage.setItem(STORAGE_KEY_API, apiKey);
+            chargerCleApi();
+
+            dot.className = 'status-dot ok';
+            resultBox.className = 'api-test-result success';
+            resultBox.innerHTML = `✅ <strong>Clé API parfaitement valide !</strong> Connexion réussie à <code>gemini-3.8-flash</code> en ${dureeMs} ms (réponse : <em>« ${echapperHtml(texteReponse.trim() || 'OK')} »</em>). Clé sauvegardée sur cet appareil.`;
+
+        } catch (err) {
+            dot.className = 'status-dot error';
+            resultBox.className = 'api-test-result failure';
+            resultBox.innerHTML = `❌ <strong>Échec du test de la clé API :</strong><br>${echapperHtml(err.message)}`;
+        }
+    }
+
+    /* =========================================================
+       LOGIQUE ÉCRITURE SUR PAPIER : 1 PHRASE À LA FOIS (SUR 5)
+       ========================================================= */
+    function melanger(tableau) {
+        const arr = [...tableau];
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function changerSousModePapier(sm) {
+        sousModePapier = sm;
+        document.querySelectorAll('.submode-btn').forEach(b => b.classList.remove('active'));
+        const btn = document.getElementById(`submode-${sm}`);
+        if (btn) btn.classList.add('active');
+        afficherPhraseCourante();
+    }
+
+    function nouvelleDicteePapier() {
+        phrasesPapierActuelles = melanger(PHRASES_DICTEE_PAPIER).slice(0, 5);
+        indexPhraseCourante = 0;
+        resultatsPhrasesPapier = [null, null, null, null, null];
+        spoilerVisible = false;
+
+        document.getElementById('paper-score-banner').style.display = 'none';
+        document.getElementById('paper-all-results').innerHTML = '';
+
+        afficherPhraseCourante();
+    }
+
+    function calculerScoreActuel() {
+        let totalFautes = 0;
+        resultatsPhrasesPapier.forEach(res => {
+            if (res && Array.isArray(res.fautes)) {
+                totalFautes += res.fautes.length;
+            }
+        });
+        return {
+            score: Math.max(0, 10 - totalFautes),
+            totalFautes
+        };
+    }
+
+    function afficherBarreProgressionPapier() {
+        const pillsContainer = document.getElementById('paper-progress-pills');
+        pillsContainer.innerHTML = '';
+
+        phrasesPapierActuelles.forEach((_, idx) => {
+            const pill = document.createElement('button');
+            pill.type = 'button';
+            let cls = 'progress-pill';
+            let icone = '';
+
+            if (idx === indexPhraseCourante) {
+                cls += ' current';
+            }
+            if (resultatsPhrasesPapier[idx]) {
+                const nbF = (resultatsPhrasesPapier[idx].fautes || []).length;
+                if (nbF === 0) {
+                    cls += ' done-ok';
+                    icone = ' ✔';
+                } else {
+                    cls += ' done-err';
+                    icone = ` (-${nbF})`;
+                }
+            }
+
+            pill.className = cls;
+            pill.textContent = `Phrase ${idx + 1}${icone}`;
+            pill.onclick = () => allerAPhrase(idx);
+            pillsContainer.appendChild(pill);
+        });
+
+        const { score } = calculerScoreActuel();
+        document.getElementById('live-score-pill').textContent = `Score : ${score} / 10`;
+    }
+
+    function allerAPhrase(idx) {
+        indexPhraseCourante = idx;
+        spoilerVisible = false;
+        afficherPhraseCourante();
+    }
+
+    function afficherPhraseCourante() {
+        afficherBarreProgressionPapier();
+
+        const item = phrasesPapierActuelles[indexPhraseCourante] || { en: '', fr: '', focus: '' };
+        const phraseEn = item.en;
+        const phraseFr = item.fr;
+
+        document.getElementById('current-sentence-title').textContent =
+            `✍️ Phrase ${indexPhraseCourante + 1} sur 5 : Écris en anglais sur ton papier`;
+
+        const frBox = document.getElementById('current-sentence-fr');
+        const btnListenNormal = document.getElementById('btn-listen-normal');
+        const btnListenSlow = document.getElementById('btn-listen-slow');
+
+        if (sousModePapier === 'dictation') {
+            frBox.style.display = 'none';
+            btnListenNormal.style.display = 'inline-flex';
+            btnListenSlow.style.display = 'inline-flex';
+        } else if (sousModePapier === 'translation') {
+            frBox.style.display = 'block';
+            frBox.innerHTML = `🇫🇷 Traduis sur ton papier : <em>« ${echapperHtml(phraseFr)} »</em>`;
+            btnListenNormal.style.display = 'none';
+            btnListenSlow.style.display = 'none';
+        } else {
+            frBox.style.display = 'block';
+            frBox.innerHTML = `🇫🇷 Sens en français : <em>« ${echapperHtml(phraseFr)} »</em>`;
+            btnListenNormal.style.display = 'inline-flex';
+            btnListenSlow.style.display = 'inline-flex';
+        }
+
+        const selectVoix = document.getElementById('select-voix-gemini');
+        const voixChoisie = selectVoix ? selectVoix.value : 'Puck';
+        const dejaEnCache = cacheAudioGemini.has(`${voixChoisie}::${phraseEn}`);
+        document.getElementById('current-cache-badge').style.display = dejaEnCache ? 'inline-block' : 'none';
+
+        const spoilerEl = document.getElementById('current-sentence-spoiler');
+        spoilerEl.innerHTML = `🇬🇧 <strong>Phrase attendue :</strong> ${echapperHtml(phraseEn)}<br><span style="font-size:0.86rem; color:#78350f;">🎯 Point clé : ${echapperHtml(item.focus)}</span>`;
+        spoilerEl.style.display = spoilerVisible ? 'block' : 'none';
+        document.getElementById('spoiler-btn-label').textContent = spoilerVisible
+            ? 'Masquer la phrase anglaise'
+            : 'Voir la phrase anglaise (secours)';
+
+        const resultContainer = document.getElementById('current-sentence-result');
+        const nextActions = document.getElementById('next-sentence-actions');
+        resultContainer.innerHTML = '';
+
+        if (resultatsPhrasesPapier[indexPhraseCourante]) {
+            resultContainer.innerHTML = genererCarteCorrectionPhrase(
+                indexPhraseCourante,
+                resultatsPhrasesPapier[indexPhraseCourante]
+            );
+            nextActions.style.display = 'block';
+            mettreAJourBoutonSuivant();
+        } else {
+            nextActions.style.display = 'none';
+        }
+
+        mettreAJourBoutonCorrection();
+    }
+
+    function ecouterPhraseCourante(vitesse, btnEl) {
+        const item = phrasesPapierActuelles[indexPhraseCourante];
+        if (!item || !item.en) return;
+        ecouter(item.en, vitesse, btnEl);
+    }
+
+    function basculerTexteSecours() {
+        spoilerVisible = !spoilerVisible;
+        const spoilerEl = document.getElementById('current-sentence-spoiler');
+        spoilerEl.style.display = spoilerVisible ? 'block' : 'none';
+        document.getElementById('spoiler-btn-label').textContent = spoilerVisible
+            ? 'Masquer la phrase anglaise'
+            : 'Voir la phrase anglaise (secours)';
+    }
+
+    /* =========================================================
+       OUTIL DE SÉLECTION DE ZONE SUR L'IMAGE (CROP INTERACTIF)
+       ========================================================= */
+    function gererSelectionPhoto(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const MAX_DIM = 1800;
+                let w = img.width;
+                let h = img.height;
+                if (w > MAX_DIM || h > MAX_DIM) {
+                    if (w > h) {
+                        h = Math.round((h * MAX_DIM) / w);
+                        w = MAX_DIM;
+                    } else {
+                        w = Math.round((w * MAX_DIM) / h);
+                        h = MAX_DIM;
+                    }
+                }
+                const c = document.createElement('canvas');
+                c.width = w;
+                c.height = h;
+                c.getContext('2d').drawImage(img, 0, 0, w, h);
+
+                const resizedImg = new Image();
+                resizedImg.onload = function() {
+                    imageSourceComplete = resizedImg;
+                    const cropperImg = document.getElementById('cropper-img');
+                    cropperImg.onload = function() {
+                        document.getElementById('cropper-wrapper').style.display = 'block';
+                        cropRect = { x: 0.04, y: 0.20, w: 0.92, h: 0.35 };
+                        actualiserAffichageCropBox();
+                    };
+                    cropperImg.src = resizedImg.src;
+                };
+                resizedImg.src = c.toDataURL('image/jpeg', 0.90);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function pivoterImage(degres) {
+        if (!imageSourceComplete) return;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const w = imageSourceComplete.width;
+        const h = imageSourceComplete.height;
+
+        canvas.width = h;
+        canvas.height = w;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.rotate((degres * Math.PI) / 180);
+        ctx.drawImage(imageSourceComplete, -w / 2, -h / 2);
+
+        const rotatedImg = new Image();
+        rotatedImg.onload = function() {
+            imageSourceComplete = rotatedImg;
+            const cropperImg = document.getElementById('cropper-img');
+            cropperImg.onload = function() {
+                actualiserAffichageCropBox();
+            };
+            cropperImg.src = rotatedImg.src;
+        };
+        rotatedImg.src = canvas.toDataURL('image/jpeg', 0.90);
+    }
+
+    function reinitialiserZoneCrop() {
+        cropRect = { x: 0.02, y: 0.05, w: 0.96, h: 0.90 };
+        actualiserAffichageCropBox();
+    }
+
+    function actualiserAffichageCropBox() {
+        const imgEl = document.getElementById('cropper-img');
+        const boxEl = document.getElementById('crop-box');
+        if (!imgEl || !boxEl || !imageSourceComplete) return;
+
+        const dispW = imgEl.clientWidth || imgEl.naturalWidth;
+        const dispH = imgEl.clientHeight || imgEl.naturalHeight;
+        if (!dispW || !dispH) return;
+
+        boxEl.style.left = `${cropRect.x * dispW}px`;
+        boxEl.style.top = `${cropRect.y * dispH}px`;
+        boxEl.style.width = `${cropRect.w * dispW}px`;
+        boxEl.style.height = `${cropRect.h * dispH}px`;
+
+        genererApercuRecadre();
+        mettreAJourBoutonCorrection();
+    }
+
+    function genererApercuRecadre() {
+        if (!imageSourceComplete) return;
+        const previewCanvas = document.getElementById('cropped-preview-canvas');
+        const ctx = previewCanvas.getContext('2d');
+
+        const sx = Math.round(cropRect.x * imageSourceComplete.width);
+        const sy = Math.round(cropRect.y * imageSourceComplete.height);
+        const sw = Math.max(20, Math.round(cropRect.w * imageSourceComplete.width));
+        const sh = Math.max(20, Math.round(cropRect.h * imageSourceComplete.height));
+
+        previewCanvas.width = sw;
+        previewCanvas.height = sh;
+        ctx.drawImage(imageSourceComplete, sx, sy, sw, sh, 0, 0, sw, sh);
+
+        const dataUrl = previewCanvas.toDataURL('image/jpeg', 0.88);
+        imageRecadreeBase64 = dataUrl.split(',')[1];
+    }
+
+    function initialiserInteractionsCropper() {
+        const stage = document.getElementById('cropper-stage');
+        const imgEl = document.getElementById('cropper-img');
+        let modeDrag = null;
+        let startPt = { x: 0, y: 0 };
+        let startRect = { ...cropRect };
+
+        function obtenirPointNormalise(clientX, clientY) {
+            const rect = imgEl.getBoundingClientRect();
+            const nx = (clientX - rect.left) / Math.max(1, rect.width);
+            const ny = (clientY - rect.top) / Math.max(1, rect.height);
+            return { x: nx, y: ny };
+        }
+
+        function demarrerDrag(clientX, clientY, target) {
+            if (!imageSourceComplete) return;
+            const handle = target.getAttribute('data-handle');
+            if (handle) {
+                modeDrag = handle;
+            } else if (target.id === 'crop-box' || target.closest('#crop-box')) {
+                modeDrag = 'move';
+            } else {
+                const pt = obtenirPointNormalise(clientX, clientY);
+                const newX = Math.max(0, Math.min(1 - cropRect.w, pt.x - cropRect.w / 2));
+                const newY = Math.max(0, Math.min(1 - cropRect.h, pt.y - cropRect.h / 2));
+                cropRect.x = newX;
+                cropRect.y = newY;
+                actualiserAffichageCropBox();
+                modeDrag = 'move';
+            }
+            startPt = obtenirPointNormalise(clientX, clientY);
+            startRect = { ...cropRect };
+        }
+
+        function deplacerDrag(clientX, clientY) {
+            if (!modeDrag) return;
+            const pt = obtenirPointNormalise(clientX, clientY);
+            const dx = pt.x - startPt.x;
+            const dy = pt.y - startPt.y;
+            const MIN_SIZE = 0.06;
+
+            if (modeDrag === 'move') {
+                cropRect.x = Math.max(0, Math.min(1 - startRect.w, startRect.x + dx));
+                cropRect.y = Math.max(0, Math.min(1 - startRect.h, startRect.y + dy));
+            } else {
+                let x1 = startRect.x;
+                let y1 = startRect.y;
+                let x2 = startRect.x + startRect.w;
+                let y2 = startRect.y + startRect.h;
+
+                if (modeDrag.includes('w')) x1 = Math.max(0, Math.min(x2 - MIN_SIZE, x1 + dx));
+                if (modeDrag.includes('e')) x2 = Math.min(1, Math.max(x1 + MIN_SIZE, x2 + dx));
+                if (modeDrag.includes('n')) y1 = Math.max(0, Math.min(y2 - MIN_SIZE, y1 + dy));
+                if (modeDrag.includes('s')) y2 = Math.min(1, Math.max(y1 + MIN_SIZE, y2 + dy));
+
+                cropRect = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+            }
+            actualiserAffichageCropBox();
+        }
+
+        function terminerDrag() {
+            modeDrag = null;
+        }
+
+        stage.addEventListener('mousedown', e => {
+            e.preventDefault();
+            demarrerDrag(e.clientX, e.clientY, e.target);
+        });
+        window.addEventListener('mousemove', e => {
+            if (modeDrag) {
+                e.preventDefault();
+                deplacerDrag(e.clientX, e.clientY);
+            }
+        });
+        window.addEventListener('mouseup', terminerDrag);
+
+        stage.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                e.preventDefault();
+                const t = e.touches[0];
+                demarrerDrag(t.clientX, t.clientY, e.target);
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchmove', e => {
+            if (modeDrag && e.touches.length === 1) {
+                e.preventDefault();
+                const t = e.touches[0];
+                deplacerDrag(t.clientX, t.clientY);
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchend', terminerDrag);
+        window.addEventListener('resize', () => {
+            if (imageSourceComplete) actualiserAffichageCropBox();
+        });
+    }
+
+    function mettreAJourBoutonCorrection() {
+        const btn = document.getElementById('btn-corriger-phrase');
+        if (!btn) return;
+        const cle = obtenirCleApiActive();
+        const num = indexPhraseCourante + 1;
+        btn.disabled = !(imageRecadreeBase64 && cle.length > 10);
+
+        if (!imageRecadreeBase64) {
+            btn.textContent = `📷 Prends une photo et encadre la phrase ${num} / 5`;
+        } else if (cle.length <= 10) {
+            btn.textContent = '🔑 Configure ta clé API Gemini en haut pour corriger';
+        } else {
+            btn.textContent = `🤖 Vérifier ma phrase ${num} / 5 avec Gemini 3.8 Flash`;
+        }
+    }
+
+    /* =========================================================
+       CORRECTION DE LA PHRASE ANGLAISE MANUSCRITE AVEC GEMINI 3.8 FLASH
+       ========================================================= */
+    async function corrigerPhraseCouranteAvecGemini() {
+        const apiKey = obtenirCleApiActive();
+        if (!apiKey || apiKey.length < 10) {
+            alert("Merci d'enregistrer ou tester ta clé API Gemini en haut de la page.");
+            return;
+        }
+        if (!imageRecadreeBase64) {
+            alert("Merci de prendre une photo et d'encadrer ta phrase écrite sur papier.");
+            return;
+        }
+
+        const loading = document.getElementById('ai-loading');
+        const btn = document.getElementById('btn-corriger-phrase');
+        const resultContainer = document.getElementById('current-sentence-result');
+        const itemAttendu = phrasesPapierActuelles[indexPhraseCourante];
+        const phraseAttendue = itemAttendu.en;
+        const phraseFr = itemAttendu.fr;
+
+        loading.style.display = 'block';
+        btn.disabled = true;
+        resultContainer.innerHTML = '';
+
+        const promptTexte = `Tu es un professeur d'anglais bienveillant qui corrige une phrase manuscrite en anglais écrite par un élève francophone (Louis, 12 ans) sur papier, portant sur le thème des vêtements ("Get Dressed") et des verbes "to wear" vs "to carry".
+
+Phrase anglaise attendue : "${phraseAttendue}"
+(Sens en français : "${phraseFr}")
+
+Instructions de correction :
+1. Transcris fidèlement ce que l'élève a écrit en anglais dans l'image recadrée ("transcription_eleve").
+2. Compare ce que l'élève a écrit avec la phrase anglaise attendue.
+3. Accepte les variantes anglaises grammaticalement correctes (par exemple "I'm wearing" ou "I am wearing", "She's wearing" ou "She is wearing", "a pair of boots" ou "boots", "some mittens" ou "mittens").
+4. Relève chaque vraie faute :
+   - orthographe du vocabulaire anglais (ex: hoodie, sweater, trousers, earmuffs, tights, ballerinas, trainers, striped, spotted, checked, burgundy, etc.)
+   - confusion entre "to wear" (porter un vêtement sur soi) et "to carry" (porter un sac ou objet à la main/au bras)
+   - erreur de temps ou d'auxiliaire (ex: oublier "is/am/are" ou oublier "-ing" comme écrire "She is wear" au lieu de "She is wearing", ou mettre le Present Continuous avec "never"/"usually")
+   - ajout fautif de l'article "a" devant un nom pluriel en anglais (ex: écrire "a jeans", "a trousers", "a shorts", "a tights", "a glasses")
+   - mauvais ordre des mots (en anglais l'adjectif de couleur ou de motif se place AVANT le nom, ex: "a white shirt" et non "a shirt white").
+5. Explique chaque faute en français de manière claire et encourageante pour Louis. Ne pénalise pas la ponctuation mineure ou une majuscule peu marquée.`;
+
+        const singleSentenceSchema = {
+            type: "object",
+            properties: {
+                transcription_eleve: { type: "string" },
+                fautes: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                            mot_eleve: { type: "string" },
+                            mot_attendu: { type: "string" },
+                            explication: { type: "string" }
+                        },
+                        required: ["mot_eleve", "mot_attendu", "explication"]
+                    }
+                },
+                commentaire: { type: "string" }
+            },
+            required: ["transcription_eleve", "fautes", "commentaire"]
+        };
+
+        try {
+            const response = await fetch('https://generativelanguage.googleapis.com/v1beta/interactions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-goog-api-key': apiKey
+                },
+                body: JSON.stringify({
+                    model: 'gemini-3.8-flash',
+                    input: [
+                        { type: 'text', text: promptTexte },
+                        {
+                            type: 'image',
+                            data: imageRecadreeBase64,
+                            mime_type: 'image/jpeg'
+                        }
+                    ],
+                    response_format: {
+                        type: 'text',
+                        mime_type: 'application/json',
+                        schema: singleSentenceSchema
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                const errText = await response.text();
+                throw new Error(`Erreur API Gemini (${response.status}) : ${errText}`);
+            }
+
+            const data = await response.json();
+
+            let rawJson = data.output_text || null;
+            if (!rawJson && Array.isArray(data.steps)) {
+                const modelSteps = data.steps.filter(s => s.type === 'model_output');
+                const lastStep = modelSteps[modelSteps.length - 1];
+                if (lastStep && Array.isArray(lastStep.content)) {
+                    const textPart = lastStep.content.find(c => c.type === 'text');
+                    if (textPart) rawJson = textPart.text;
+                }
+            }
+
+            if (!rawJson) {
+                throw new Error("Réponse inattendue du modèle Gemini.");
+            }
+
+            const resultatPhrase = JSON.parse(rawJson);
+            resultatPhrase.phrase_attendue = phraseAttendue;
+            resultatPhrase.phrase_fr = phraseFr;
+            resultatsPhrasesPapier[indexPhraseCourante] = resultatPhrase;
+
+            afficherBarreProgressionPapier();
+            resultContainer.innerHTML = genererCarteCorrectionPhrase(indexPhraseCourante, resultatPhrase);
+
+            const nextActions = document.getElementById('next-sentence-actions');
+            nextActions.style.display = 'block';
+            mettreAJourBoutonSuivant();
+
+            if (resultatsPhrasesPapier.every(r => r !== null)) {
+                afficherBilanFinal5Phrases();
+            }
+
+        } catch (err) {
+            console.error(err);
+            alert("Erreur lors de la correction avec Gemini :\n" + err.message);
+        } finally {
+            loading.style.display = 'none';
+            mettreAJourBoutonCorrection();
+        }
+    }
+
+    function echapperHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function genererCarteCorrectionPhrase(idx, res) {
+        const fautes = Array.isArray(res.fautes) ? res.fautes : [];
+        const item = phrasesPapierActuelles[idx] || {};
+        const phraseAttendue = res.phrase_attendue || item.en || '';
+
+        let fautesHtml = '';
+        if (fautes.length === 0) {
+            fautesHtml = `<div style="margin-top: 8px; color: var(--success); font-weight: 700;">✅ Perfect! Aucune faute dans cette phrase ! Bravo Louis !</div>`;
+        } else {
+            fautesHtml = fautes.map(f => `
+                <div class="error-item">
+                    <span class="wrong-word">${echapperHtml(f.mot_eleve)}</span>
+                    &rarr;
+                    <span class="right-word">${echapperHtml(f.mot_attendu)}</span>
+                    <div style="margin-top: 4px; color: #475569;">💡 ${echapperHtml(f.explication)}</div>
+                </div>
+            `).join('');
+        }
+
+        const commentaireHtml = res.commentaire
+            ? `<div style="margin-top: 8px; font-size: 0.92rem; color: #334155; font-style: italic;">💬 ${echapperHtml(res.commentaire)}</div>`
+            : '';
+
+        return `
+            <div class="ai-correction-card ${fautes.length === 0 ? 'perfect' : 'has-errors'}">
+                <div class="card-top">
+                    <span class="q-number">Correction de la Phrase ${idx + 1} / 5</span>
+                    <span class="badge ${fautes.length === 0 ? 'badge-grammaire' : 'badge-vocab'}">
+                        ${fautes.length === 0 ? '✔ 0 faute' : `✘ ${fautes.length} faute${fautes.length > 1 ? 's' : ''} (-${fautes.length} pt${fautes.length > 1 ? 's' : ''})`}
+                    </span>
+                </div>
+                <div class="comparison-row">
+                    <strong>📖 Lu sur ton papier :</strong><br>
+                    <span style="color: #1e293b;">${echapperHtml(res.transcription_eleve)}</span>
+                </div>
+                <div class="comparison-row">
+                    <strong>✅ Phrase anglaise attendue :</strong><br>
+                    <span style="color: #15803d; font-weight: 600;">${echapperHtml(phraseAttendue)}</span>
+                </div>
+                ${fautesHtml}
+                ${commentaireHtml}
+            </div>
+        `;
+    }
+
+    function mettreAJourBoutonSuivant() {
+        const btnNext = document.getElementById('btn-next-sentence');
+        const toutEstCorrige = resultatsPhrasesPapier.every(r => r !== null);
+
+        if (toutEstCorrige) {
+            btnNext.textContent = '🏆 Voir mon score final sur 10';
+        } else if (indexPhraseCourante < 4) {
+            btnNext.textContent = `➡️ Passer à la phrase ${indexPhraseCourante + 2} sur 5`;
+        } else {
+            const premierManquant = resultatsPhrasesPapier.findIndex(r => r === null);
+            btnNext.textContent = `➡️ Aller à la phrase ${premierManquant + 1} sur 5`;
+        }
+    }
+
+    function passerPhraseSuivante() {
+        const toutEstCorrige = resultatsPhrasesPapier.every(r => r !== null);
+        if (toutEstCorrige) {
+            afficherBilanFinal5Phrases();
+            document.getElementById('paper-score-banner').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        if (indexPhraseCourante < 4) {
+            allerAPhrase(indexPhraseCourante + 1);
+        } else {
+            const premierManquant = resultatsPhrasesPapier.findIndex(r => r === null);
+            if (premierManquant !== -1) allerAPhrase(premierManquant);
+        }
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    function afficherBilanFinal5Phrases() {
+        const banner = document.getElementById('paper-score-banner');
+        const scoreDisplay = document.getElementById('paper-score-display');
+        const scoreMessage = document.getElementById('paper-score-message');
+        const allResults = document.getElementById('paper-all-results');
+
+        const { score, totalFautes } = calculerScoreActuel();
+        scoreDisplay.textContent = `${score} / 10`;
+
+        const resumeFautes = totalFautes === 0
+            ? 'Aucune faute sur les 5 phrases en anglais !'
+            : `${totalFautes} faute${totalFautes > 1 ? 's' : ''} au total sur les 5 phrases (-1 point par faute)`;
+
+        if (score === 10) {
+            banner.style.backgroundColor = 'var(--success-bg)';
+            banner.style.color = 'var(--success)';
+            scoreMessage.innerHTML = `🎉 <strong>Perfect score! 10 / 10 !</strong> ${resumeFautes}`;
+            lancerConfettis();
+        } else if (score >= 8) {
+            banner.style.backgroundColor = '#ecfdf5';
+            banner.style.color = '#047857';
+            scoreMessage.innerHTML = `👏 <strong>Great job!</strong> ${resumeFautes}`;
+        } else if (score >= 5) {
+            banner.style.backgroundColor = 'var(--warning-bg)';
+            banner.style.color = '#b45309';
+            scoreMessage.innerHTML = `👍 <strong>Good effort!</strong> ${resumeFautes}`;
+        } else {
+            banner.style.backgroundColor = 'var(--error-bg)';
+            banner.style.color = 'var(--error)';
+            scoreMessage.innerHTML = `💪 <strong>Keep practising!</strong> ${resumeFautes}`;
+        }
+
+        banner.style.display = 'block';
+
+        allResults.innerHTML = `<h3 style="margin: 20px 0 10px; color: #1e293b;">📋 Récapitulatif de tes 5 phrases :</h3>` +
+            resultatsPhrasesPapier.map((res, idx) => genererCarteCorrectionPhrase(idx, res)).join('');
+    }
+
+    /* =========================================================
+       NAVIGATION ENTRE LES MODES (PAPIER VS QUIZ À COMPLÉTER)
+       ========================================================= */
+    function changerMode(mode) {
+        modeActuel = mode;
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        const btnActif = Array.from(document.querySelectorAll('.mode-btn')).find(b => b.getAttribute('onclick').includes(`'${mode}'`));
+        if (btnActif) btnActif.classList.add('active');
+
+        const paperSection = document.getElementById('paper-mode-section');
+        const classicSection = document.getElementById('classic-quiz-section');
+
+        if (mode === 'papier') {
+            paperSection.style.display = 'block';
+            classicSection.style.display = 'none';
+            if (phrasesPapierActuelles.length === 0) {
+                nouvelleDicteePapier();
+            }
+        } else {
+            paperSection.style.display = 'none';
+            classicSection.style.display = 'block';
+            nouveauQuiz();
+        }
+    }
+
+    function selectionnerQuestions() {
+        if (modeActuel === 'mixte') {
+            const qVerbes = melanger(BANQUE.verbes).slice(0, 3);
+            const qVocab = melanger(BANQUE.vocab).slice(0, 3);
+            const qGram = melanger(BANQUE.grammaire).slice(0, 2);
+            const qAudio = melanger(BANQUE.audio).slice(0, 2);
+            return melanger([...qVerbes, ...qVocab, ...qGram, ...qAudio]);
+        } else {
+            return melanger(BANQUE[modeActuel]).slice(0, 10);
+        }
+    }
+
+    function genererAffichageQuiz() {
+        const conteneur = document.getElementById('quiz-container');
+        conteneur.innerHTML = '';
+
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-card';
+            card.id = `card-${idx}`;
+
+            const topHtml = `
+                <div class="card-top">
+                    <span class="q-number">Question ${idx + 1} / 10</span>
+                    <span class="badge ${q.badgeClass}">${q.badge}</span>
+                </div>
+            `;
+
+            let bodyHtml = '';
+            const safeAudio = (q.audioText || '').replace(/'/g, "\\'");
+
+            if (q.type === 'audio') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        ${q.consigne}
+                    </div>
+                    <div class="question-body">
+                        <button type="button" class="btn-audio" onclick="ecouter('${safeAudio}', 0.85, this)" title="Cliquer pour écouter">
+                            🔊 Écouter en anglais
+                        </button>
+                        <input type="text" class="quiz-input" id="input-${idx}" placeholder="Écris en anglais..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                    </div>
+                `;
+            } else if (q.type === 'verbes') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        ${q.consigne}
+                    </div>
+                    <div class="question-body">
+                        ${q.audioText ? `<button type="button" class="btn-audio" onclick="ecouter('${safeAudio}', 0.85, this)" title="Écouter la phrase">🔊</button>` : ''}
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <input type="text" class="quiz-input" id="input-${idx}" placeholder="wear / carry..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            } else if (q.type === 'grammaire') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        ${q.consigne}
+                    </div>
+                    <div class="question-body">
+                        ${q.audioText ? `<button type="button" class="btn-audio" onclick="ecouter('${safeAudio}', 0.85, this)" title="Écouter la phrase">🔊</button>` : ''}
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        ${q.hint ? `<span class="q-hint">(${q.hint})</span>` : ''}
+                        <input type="text" class="quiz-input" id="input-${idx}" placeholder="Complète en anglais..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            } else if (q.type === 'indice') {
+                bodyHtml = `
+                    <div style="width: 100%; margin-bottom: 8px; font-size: 0.95rem; color: #475569;">
+                        Traduis en anglais le mot indiqué entre parenthèses (tu peux aussi écouter la phrase 🔊) :
+                    </div>
+                    <div class="question-body">
+                        ${q.audioText ? `<button type="button" class="btn-audio" onclick="ecouter('${safeAudio}', 0.85, this)" title="Écouter la phrase">🔊</button>` : ''}
+                        ${q.debut ? `<span class="q-text">${q.debut}</span>` : ''}
+                        <span class="q-hint">(${q.hint})</span>
+                        <input type="text" class="quiz-input" id="input-${idx}" placeholder="Mot en anglais..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="gererToucheEntree(event, ${idx})">
+                        ${q.fin ? `<span class="q-text">${q.fin}</span>` : ''}
+                    </div>
+                `;
+            }
+
+            const feedbackHtml = `
+                <div id="feedback-${idx}" class="correction-feedback"></div>
+            `;
+
+            card.innerHTML = topHtml + bodyHtml + feedbackHtml;
+            conteneur.appendChild(card);
+        });
+    }
+
+    function gererToucheEntree(event, idx) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const suivant = document.getElementById(`input-${idx + 1}`);
+            if (suivant) {
+                suivant.focus();
+            } else {
+                corrigerQuiz();
+            }
+        }
+    }
+
+    function normaliser(str) {
+        if (!str) return "";
+        return str
+            .replace(/[’']/g, "'")
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase()
+            .replace(/[.!?]+$/, '');
+    }
+
+    function corrigerQuiz() {
+        let score = 0;
+        let nonRepondues = 0;
+
+        for (let i = 0; i < questionsActuelles.length; i++) {
+            const input = document.getElementById(`input-${i}`);
+            if (input.value.trim() === '') {
+                nonRepondues++;
+            }
+        }
+
+        if (nonRepondues > 0) {
+            const confirmMsg = `Il te reste ${nonRepondues} question(s) sans réponse.\nVeux-tu quand même corriger ton quiz maintenant ?`;
+            if (!confirm(confirmMsg)) {
+                for (let i = 0; i < questionsActuelles.length; i++) {
+                    const input = document.getElementById(`input-${i}`);
+                    if (input.value.trim() === '') {
+                        input.focus();
+                        break;
+                    }
+                }
+                return;
+            }
+        }
+
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            const saisie = normaliser(input.value);
+            const reponsesNormalisees = q.reponses.map(r => normaliser(r));
+
+            const estCorrect = reponsesNormalisees.includes(saisie);
+            input.disabled = true;
+
+            card.classList.remove('correct', 'incorrect');
+
+            if (estCorrect) {
+                score++;
+                card.classList.add('correct');
+                feedback.innerHTML = `✔ Well done! Bonne réponse (${echapperHtml(q.reponses[0])}).`;
+            } else {
+                card.classList.add('incorrect');
+                const bonneReponseAffichee = q.reponses[0];
+                let msg = `✘ Oups ! Réponse attendue : <strong>« ${echapperHtml(bonneReponseAffichee)} »</strong>`;
+                if (q.astuce) {
+                    msg += `<span class="rule-tip">💡 Explication : ${q.astuce}</span>`;
+                }
+                feedback.innerHTML = msg;
+            }
+        });
+
+        const banner = document.getElementById('score-banner');
+        const scoreDisplay = document.getElementById('score-display');
+        const scoreMessage = document.getElementById('score-message');
+
+        scoreDisplay.textContent = `${score} / 10`;
+
+        if (score === 10) {
+            banner.style.backgroundColor = 'var(--success-bg)';
+            banner.style.color = 'var(--success)';
+            scoreMessage.innerHTML = '🎉 <strong>Perfect score! 10 / 10 !</strong> Tu maîtrises parfaitement le vocabulaire Get Dressed et To wear / To carry !';
+            lancerConfettis();
+        } else if (score >= 8) {
+            banner.style.backgroundColor = '#ecfdf5';
+            banner.style.color = '#047857';
+            scoreMessage.innerHTML = '👏 <strong>Très bon score !</strong> Encore un tout petit effort pour le 10/10 !';
+        } else if (score >= 5) {
+            banner.style.backgroundColor = 'var(--warning-bg)';
+            banner.style.color = '#b45309';
+            scoreMessage.innerHTML = '👍 <strong>Pas mal !</strong> Relis bien les explications sous tes erreurs et réessaie !';
+        } else {
+            banner.style.backgroundColor = 'var(--error-bg)';
+            banner.style.color = 'var(--error)';
+            scoreMessage.innerHTML = '💪 <strong>Ne te décourage pas !</strong> Ouvre la fiche mémo en haut pour écouter et réviser les mots puis relance un quiz.';
+        }
+
+        banner.style.display = 'block';
+
+        document.getElementById('btn-submit').style.display = 'none';
+        document.getElementById('btn-retry').style.display = 'block';
+        document.getElementById('btn-new-quiz').style.display = 'block';
+
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function reessayerMemeQuiz() {
+        document.getElementById('score-banner').style.display = 'none';
+        document.getElementById('btn-submit').style.display = 'block';
+        document.getElementById('btn-retry').style.display = 'none';
+        document.getElementById('btn-new-quiz').style.display = 'none';
+
+        questionsActuelles.forEach((q, idx) => {
+            const input = document.getElementById(`input-${idx}`);
+            const card = document.getElementById(`card-${idx}`);
+            const feedback = document.getElementById(`feedback-${idx}`);
+
+            input.disabled = false;
+            input.value = '';
+            card.classList.remove('correct', 'incorrect');
+            feedback.innerHTML = '';
+        });
+
+        const premier = document.getElementById('input-0');
+        if (premier) premier.focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function nouveauQuiz() {
+        questionsActuelles = selectionnerQuestions();
+        genererAffichageQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* =========================================================
+       CONFETTIS (Pur JavaScript sans dépendance)
+       ========================================================= */
+    function lancerConfettis() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particules = [];
+        const couleurs = ['#2563eb', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+
+        for (let i = 0; i < 90; i++) {
+            particules.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height * 0.4,
+                w: Math.random() * 9 + 5,
+                h: Math.random() * 5 + 4,
+                couleur: couleurs[Math.floor(Math.random() * couleurs.length)],
+                vx: (Math.random() - 0.5) * 4,
+                vy: Math.random() * 4 + 2,
+                rotation: Math.random() * 360,
+                vRot: (Math.random() - 0.5) * 8
+            });
+        }
+
+        let animationFrame;
+        let duree = 0;
+
+        function animer() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particules.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.vRot;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.couleur;
+                ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+                ctx.restore();
+            });
+
+            duree++;
+            if (duree < 140) {
+                animationFrame = requestAnimationFrame(animer);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animationFrame);
+            }
+        }
+
+        animer();
+    }
+
+    // Lancement au chargement
+    window.addEventListener('DOMContentLoaded', () => {
+        initialiserVoix();
+        initialiserInteractionsCropper();
+        chargerCleApi();
+        nouvelleDicteePapier();
+    });
+</script>
+
+</body>
+</html>
